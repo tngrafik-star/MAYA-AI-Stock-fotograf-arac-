@@ -1,17 +1,68 @@
 import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs } from './db.js';
 import { logout, updateProfile, updateSubscription } from './auth.js';
 import { getCategories, generateAIData, generateGeminiMetadata } from './ai.js';
+import { supabase } from './supabase.js';
 
 // Seed DB just in case
 initDB();
 
-const initApp = () => {
+const initApp = async () => {
   // 1. Session Verification
-  const currentUser = getCurrentUser();
-  if (!currentUser) {
-    // If not logged in, redirect to index.html immediately
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (!session) {
+    // If not logged in, clear storage and redirect to index.html immediately
+    localStorage.removeItem('maya_current_user');
     window.location.href = '/index.html';
     return;
+  }
+
+  // Ensure localStorage is synced with session
+  let currentUser = getCurrentUser();
+  if (!currentUser) {
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (profile) {
+        currentUser = {
+          id: session.user.id,
+          name: profile.name,
+          email: profile.email,
+          plan: profile.plan,
+          generations_limit: profile.generations_limit,
+          generations_used: profile.generations_used,
+          gemini_api_key: profile.gemini_api_key,
+          created_at: profile.created_at
+        };
+      } else {
+        currentUser = {
+          id: session.user.id,
+          name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
+          email: session.user.email,
+          plan: 'starter',
+          generations_limit: 100,
+          generations_used: 0,
+          created_at: session.user.created_at
+        };
+      }
+      localStorage.setItem('maya_current_user', JSON.stringify(currentUser));
+    } catch (e) {
+      console.error('Failed to sync profile on app load:', e);
+      currentUser = {
+        id: session.user.id,
+        name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
+        email: session.user.email,
+        plan: 'starter',
+        generations_limit: 100,
+        generations_used: 0,
+        created_at: session.user.created_at
+      };
+      localStorage.setItem('maya_current_user', JSON.stringify(currentUser));
+    }
   }
 
   // State Variables
@@ -126,7 +177,7 @@ const initApp = () => {
     document.getElementById('stats-total-gen').textContent = history.length;
     
     const limitVal = user.generations_limit === 999999 ? 'Sınırsız' : user.generations_limit;
-    document.getElementById('stats-credits').textContent = user.generations_limit - user.generations_used;
+    document.getElementById('stats-credits').textContent = user.generations_limit === 999999 ? 'Sınırsız' : user.generations_limit - user.generations_used;
     document.getElementById('stats-credits-change').textContent = `${user.generations_used} / ${limitVal} limit`;
     document.getElementById('stats-plan').textContent = user.plan;
 
@@ -179,7 +230,16 @@ const initApp = () => {
       cosmetics: 'Kozmetik & Güzellik',
       tech: 'Teknoloji & Aksesuar',
       food: 'Yiyecek & İçecek',
-      landscape: 'Doğa & Manzara'
+      landscape: 'Doğa & Manzara',
+      fashion: 'Moda & Giyim',
+      fitness: 'Spor & Sağlıklı Yaşam',
+      business: 'İş Dünyası & Ofis',
+      architecture: 'Mimari & Yapı',
+      animals: 'Evcil Hayvanlar & Vahşi Yaşam',
+      travel: 'Seyahat & Kültür',
+      automotive: 'Otomotiv & Taşıtlar',
+      portrait: 'İnsanlar & Portre',
+      other: 'Diğer / Genel'
     };
     return cats[key] || 'Genel';
   }
