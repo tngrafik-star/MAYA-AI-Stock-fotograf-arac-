@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MayaSolutions - Lüks Yapay Zeka Stok Fotoğraf Asistanı</title>
+  <meta name="description" content="Profesyonel fotoğrafçılar ve e-ticaret satıcıları için yapay zeka destekli başlık, açıklama ve SEO etiket oluşturma aracı.">
+  
+  <!-- Theme Initializer (Avoid white flash on dark theme load) -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('maya-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-solutions">SOLUTIONS</span></a>
+      <ul class="nav-links">
+        <li><a href="#features">Özellikler</a></li>
+        <li><a href="#how-it-works">Çalışma Şekli</a></li>
+        <li><a href="#pricing">Fiyatlandırma</a></li>
+        <li><a href="#faq">SSS</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-auth-actions">
+        <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 8px;">
+          <!-- Moon Icon (for dark mode selection) -->
+          <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+          </svg>
+          <!-- Sun Icon (for light mode selection) -->
+          <svg class="theme-icon sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18" style="display: none;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v2.25m0 13.5V21M4.22 4.22l1.59 1.59m12.38 12.38l1.59 1.59M3 12h2.25m13.5 0H21M5.81 18.19l1.59-1.59m12.38-12.38l1.59-1.59M12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9z" />
+          </svg>
+        </button>
+        <button class="btn-text" id="open-login-btn">Giriş Yap</button>
+        <button class="btn btn-primary" id="open-signup-btn">Ücretsiz Dene</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="hero-badge-line"></span>
+        <span class="hero-badge-text">Yapay Zeka Destekli Stok Metadata Platformu</span>
+        <span class="hero-badge-line"></span>
+      </div>
+      <h1>Ürünleri Satışa Hazır Hale Getiren Yapay Zeka</h1>
+      <p>MayaSolutions, fotoğraflarınızı analiz eder ve saniyeler içinde Trendyol, Hepsiburada, n11, Amazon, Stock, Shutterstock, Freepik ve e-ticaret siteleri için yüksek dönüşümlü başlık, açıklama ve anahtar kelimeler oluşturur.</p>
+      
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="hero-primary-cta">Ücretsiz Dene</button>
+        <a href="#how-it-works" class="btn btn-secondary">Nasıl Çalışır</a>
+      </div>
+
+      <!-- Mockup Area -->
+      <div class="hero-mockup">
+        <div class="mockup-inner">
+          <!-- Styled preview mockup of the dashboard to amaze the user -->
+          <div style="width: 200px; border-right: 1px solid var(--color-border-dark); background-color: var(--color-card-bg); padding: 20px; text-align: left; display: flex; flex-direction: column; gap: 30px;">
+            <div class="logo" style="font-size: 16px;"><span class="logo-maya">MAYA</span><span class="logo-solutions">SOLUTIONS</span></div>
+            <div style="display: flex; flex-direction: column; gap: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary);">
+              <div style="color: var(--color-accent); font-weight: 600;">• GÖSTERGE PANELİ</div>
+              <div>• YENİ YÜKLEME</div>
+              <div>• GEÇMİŞ</div>
+              <div>• DIŞA AKTAR</div>
+              <div>• HESAP</div>
+            </div>
+          </div>
+          <div style="flex: 1; padding: 30px; text-align: left; display: flex; flex-direction: column; gap: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
+              <div>
+                <h4 style="font-family: var(--font-heading); font-size: 24px;">Hoş Geldiniz</h4>
+                <p style="font-size: 12px; color: var(--color-text-secondary);">Portföyünüzü ölçeklendirmeye bugün devam edin.</p>
+              </div>
+              <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 12px; font-weight: 600;">PRO HESAP</div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+              <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">Toplam Analiz</div>
+                <div style="font-family: var(--font-heading); font-size: 28px;">124</div>
+              </div>
+              <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">Kalan Kredi</div>
+                <div style="font-family: var(--font-heading); font-size: 28px;">876</div>
+              </div>
+              <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">Platform Entegrasyonu</div>
+                <div style="font-family: var(--font-heading); font-size: 28px;">5+</div>
+              </div>
+            </div>
+            
+            <div style="flex: 1; border: 1px dashed var(--color-border-dark); border-radius: var(--border-radius-sm); display: flex; align-items: center; justify-content: center; background-color: var(--color-card-bg);">
+              <div style="text-align: center;">
+                <span style="font-size: 28px; display: block; color: var(--color-text-muted);">📷</span>
+                <span style="font-size: 12px; color: var(--color-text-secondary);">Görselinizi buraya sürükleyin veya göz atın</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label">Adım Adım</span>
+        <h2>Nasıl Çalışır?</h2>
+        <p>Görsellerinizi pazaryerlerine ulaştırmanın en hızlı ve akıllıca yolu.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3>Fotoğrafı Yükle</h3>
+          <p>Yüksek çözünürlüklü stok fotoğrafınızı veya ürün görselinizi sürükleyip platforma bırakın.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3>Yapay Zeka Analiz Etsin</h3>
+          <p>Gelişmiş görsel işleme modelimiz renkleri, kompozisyonu, nesneleri ve potansiyel SEO değerlerini çözsün.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3>Metadata Oluştur</h3>
+          <p>Saniyeler içinde Adobe Stock, Shutterstock ve E-ticaret platformlarına özel Türkçe metadata setleri üretilsin.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <h3>Platformlara Yükle</h3>
+          <p>Dışa aktarılan CSV dosyaları veya hızlı kopyalama araçlarıyla saniyeler içinde yüklemenizi tamamlayın.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label">Özellikler</span>
+        <h2>Profesyonel Çözümler</h2>
+        <p>Stok üreticileri ve ticari markalar için özel olarak tasarlanmış gelişmiş araçlar.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-8.982m-8.982 0L15 3v8.196M9.813 15.904L4.5 10.5m5.313 5.404L15 11.25" />
+            </svg>
+          </div>
+          <h3>Yapay Zeka Metadata Üretici</h3>
+          <p>Yüklenen fotoğrafa uygun, arama hacmi yüksek Türkçe başlık ve pazaryeri uyumlu açıklamalar oluşturur.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581a2.25 2.25 0 003.182 0l4.318-4.318a2.25 2.25 0 000-3.182L11.16 3.659A2.25 2.25 0 009.568 3z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+            </svg>
+          </div>
+          <h3>Akıllı Anahtar Kelime Motoru</h3>
+          <p>Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ kelimelik etiket havuzları üretir.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+          </div>
+          <h3>Toplu İşlem (Batch Processing)</h3>
+          <p>Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          </div>
+          <h3>Gelişmiş Dışa Aktarım</h3>
+          <p>Adobe Stock, Shutterstock, Freepik veya Etsy gibi online satış kanallarına özel CSV formatlarında çıktı alın.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+          </div>
+          <h3>Geçmiş ve Arşiv Yönetimi</h3>
+          <p>Daha önce yaptığınız tüm analiz ve üretimleri güvenle saklayın, dilediğiniz an tekrar arayın ve kopyalayın.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110 21a3.745 3.745 0 01-3.068-1.593 3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0114 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+            </svg>
+          </div>
+          <h3>Çoklu Platform Uyumluluğu</h3>
+          <p>Tek bir tıklamayla hem popüler stok siteleri hem de online satış kanalları (Etsy, Trendyol vs.) için etiket oluşturun.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="section">
+    <div class="container">
+      <div class="benefits-split">
+        <div class="benefits-content">
+          <span class="micro-label">Avantajlar</span>
+          <h2>Daha Fazla Üretin,<br>Daha Hızlı Satın.</h2>
+          <p>MayaSolutions, yaratıcı iş akışınızdaki en sıkıcı ve zaman alan süreci tamamen otomatikleştirerek asıl işinize odaklanmanızı sağlar.</p>
+          
+          <div class="benefits-list">
+            <div class="benefit-item">
+              <h4>Zaman Tasarrufu</h4>
+              <p>Her görsel için tek tek anahtar kelime girmeyi bırakın. Zamandan %90 tasarruf edin.</p>
+            </div>
+            <div class="benefit-item">
+              <h4>Maksimum Keşif</h4>
+              <p>SEO uyumlu algoritmalar sayesinde görsellerinizin pazaryerlerindeki görünürlüğünü katlayın.</p>
+            </div>
+            <div class="benefit-item">
+              <h4>Metadata Kalitesi</h4>
+              <p>Hatalı ve alakasız etiketlerden kurtulun, arama sonuçlarıyla birebir örtüşen veriler sunun.</p>
+            </div>
+            <div class="benefit-item">
+              <h4>Portföy Büyüme Hızı</h4>
+              <p>Toplu dışa aktarım sayesinde yeni stok ürünlerinizi günler yerine saatler içinde satışa açın.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="benefits-image" style="padding: 0;">
+          <video 
+            id="promo-video" 
+            src="/MayaSolutions_Sunum.mp4" 
+            loop 
+            muted 
+            autoplay 
+            playsinline
+          ></video>
+          <div class="video-overlay">
+            <button class="video-control-btn" id="video-play-btn" title="Oynat / Durdur">
+              <!-- Play Icon (hidden initially because of autoplay) -->
+              <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" style="display: none;">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <!-- Pause Icon (shown initially because of autoplay) -->
+              <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+            <button class="video-mute-btn" id="video-mute-btn" title="Sesi Aç / Kapat">
+              <!-- Mute Icon (speaker with slash, shown by default since video is muted on load) -->
+              <svg id="mute-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              </svg>
+              <!-- Unmute Icon (speaker with waves, hidden by default) -->
+              <svg id="unmute-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" style="display: none;">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label">Fiyatlandırma</span>
+        <h2>Esnek ve Şeffaf Planlar</h2>
+        <p>Bireysel üreticilerden büyük ajanslara kadar her ölçeğe uygun üyelik paketleri.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Starter</h3>
+            <div class="pricing-price">9.99 $<span>/ ay</span></div>
+          </div>
+          <ul class="pricing-features">
+            <li>Aylık 100 Görsel Analizi</li>
+            <li>Adobe Stock ve Shutterstock Uyumlu</li>
+            <li>Standart Anahtar Kelimeler</li>
+            <li>Geçmiş Arşivine Erişim</li>
+            <li>Bireysel Kullanıcı Lisansı</li>
+          </ul>
+          <button class="btn btn-secondary pricing-cta-btn" data-plan="starter">Satın Al</button>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card popular">
+          <span class="pricing-badge">En Popüler</span>
+          <div class="pricing-header">
+            <h3>Pro</h3>
+            <div class="pricing-price">29.99 $<span>/ ay</span></div>
+          </div>
+          <ul class="pricing-features">
+            <li>Aylık 1.000 Görsel Analizi</li>
+            <li>Çoklu Platform & E-Ticaret Uyumluluğu</li>
+            <li>Toplu İşlem (Batch Processing)</li>
+            <li>CSV formatında Dışa Aktarma</li>
+            <li>Öncelikli İşlem Kuyruğu</li>
+          </ul>
+          <button class="btn btn-primary pricing-cta-btn" data-plan="pro">Satın Al</button>
+        </div>
+
+        <!-- Studio Plan -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Studio</h3>
+            <div class="pricing-price">49.99 $<span>/ ay</span></div>
+          </div>
+          <ul class="pricing-features">
+            <li>Sınırsız Görsel Analizi</li>
+            <li>Gelişmiş Takım Erişimi (5 Kullanıcı)</li>
+            <li>Gelişmiş Dışa Aktarma & Entegrasyon</li>
+            <li>7/24 Özel Destek Hattı</li>
+            <li>Özel API Erişimi Lisansı</li>
+          </ul>
+          <button class="btn btn-secondary pricing-cta-btn" data-plan="studio">Satın Al</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label">Görüşler</span>
+        <h2>Yaratıcıların Tercihi</h2>
+        <p>Dünya standartlarında stok portföyü yöneten Türk yaratıcıların MayaSolutions hakkındaki yorumları.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"MayaSolutions sayesinde her hafta sisteme yüklediğim 200'den fazla stok fotoğrafının etiketleme süresi 4 saatten 15 dakikaya düştü. Üstelik satışlarımda gözle görülür bir artış var."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">EY</div>
+            <div class="author-info">
+              <h4>Emre Yıldız</h4>
+              <p>Bağımsız Stok Fotoğrafçısı</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Etsy ve Amazon üzerinden sattığımız el yapımı ahşap ürünlerin etiketleme ve SEO açıklamalarını MayaSolutions ile yapıyoruz. Türkçe ve İngilizce sonuçlardaki doğruluk ve şıklık mükemmel."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SC</div>
+            <div class="author-info">
+              <h4>Selin Çelik</h4>
+              <p>E-Ticaret Marka Sahibi</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Bir görsel ajans olarak yüzlerce müşterimizin ürün görsellerini arşivliyor ve katalogluyoruz. MayaSolutions'ın sunduğu CSV toplu dışa aktarma ve geçmiş paneli tam aradığımız profesyonel çözüm."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">BA</div>
+            <div class="author-info">
+              <h4>Barış Arslan</h4>
+              <p>Kreatif Direktör, Studio Piks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label">Sorular</span>
+        <h2>Sıkça Sorulan Sorular</h2>
+        <p>MayaSolutions hakkında merak ettiğiniz temel konular ve yanıtları.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">Yapay zeka metadata üretim doğruluğu nedir?</button>
+          <div class="faq-answer">
+            <p>MayaSolutions, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Hangi platformları destekliyorsunuz?</button>
+          <div class="faq-answer">
+            <p>Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Yüklediğim görsellerin gizliliği nasıl korunuyor?</button>
+          <div class="faq-answer">
+            <p>Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">İstediğim zaman aboneliğimi iptal edebilir miyim?</button>
+          <div class="faq-answer">
+            <p>Evet, dilediğiniz an taahhüt olmadan aboneliğinizi panelinizdeki faturalandırma sayfasından iptal edebilir veya planlar arasında geçiş yapabilirsiniz. İptal durumunda haklarınız fatura kesim tarihine kadar devam eder.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Portföyünüzü Büyütmeye Bugün Başlayın</h2>
+      <p>Hemen ücretsiz hesabınızı oluşturun ve ilk 10 görselinizi saniyeler içinde analiz edin.</p>
+      <button class="btn" id="final-cta-btn">Ücretsiz Hesap Oluştur</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-solutions">SOLUTIONS</span></a>
+          <p>Yaratıcıların iş akışlarını yapay zeka ile optimize eden, lüks ve işlevsel metadata platformu.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Ürün</h4>
+          <ul>
+            <li><a href="#features">Özellikler</a></li>
+            <li><a href="#pricing">Fiyatlandırma</a></li>
+            <li><a href="#how-it-works">Çalışma Şekli</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Şirket</h4>
+          <ul>
+            <li><a href="#">Hakkımızda</a></li>
+            <li><a href="#">Kariyer</a></li>
+            <li><a href="#">İletişim</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Yasal</h4>
+          <ul>
+            <li><a href="#">Kullanım Koşulları</a></li>
+            <li><a href="#">Gizlilik Politikası</a></li>
+            <li><a href="#">KVKK Aydınlatma</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 MayaSolutions. Tüm Hakları Saklıdır.</p>
+        <p>İstanbul, Türkiye</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+
+  <!-- Login Modal -->
+  <div class="modal" id="login-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="close-login-btn"></button>
+      <h3>Giriş Yap</h3>
+      <p class="modal-subtitle">Hesabınıza erişerek çalışmalarınıza devam edin.</p>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">E-POSTA ADRESİ</label>
+          <input class="form-input" type="email" id="login-email" required placeholder="ornek@mayasolutions.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-password">ŞİFRE</label>
+          <input class="form-input" type="password" id="login-password" required placeholder="••••••••">
+          <a href="#" class="form-link" id="open-forgot-btn">Şifremi Unuttum</a>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Giriş Yap</button>
+      </form>
+      
+      <div class="divider">veya</div>
+      
+      <button class="google-btn" id="google-login-btn-1">
+        <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+        </svg>
+        Google ile Giriş Yap
+      </button>
+      
+      <div class="modal-footer">
+        Hesabınız yok mu? <a href="#" id="link-to-signup">Hesap Oluştur</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal" id="signup-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="close-signup-btn"></button>
+      <h3>Hesap Oluştur</h3>
+      <p class="modal-subtitle">Hemen kaydolun ve portföyünüzü optimize etmeye başlayın.</p>
+      
+      <form id="signup-form">
+        <div class="form-group">
+          <label class="form-label" for="signup-name">ADINIZ SOYADINIZ</label>
+          <input class="form-input" type="text" id="signup-name" required placeholder="Ali Çoban">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-email">E-POSTA ADRESİ</label>
+          <input class="form-input" type="email" id="signup-email" required placeholder="ornek@mayasolutions.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-password">ŞİFRE</label>
+          <input class="form-input" type="password" id="signup-password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Kayıt Ol</button>
+      </form>
+      
+      <div class="divider">veya</div>
+      
+      <button class="google-btn" id="google-login-btn-2">
+        <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+        </svg>
+        Google ile Kaydol
+      </button>
+      
+      <div class="modal-footer">
+        Hesabınız var mı? <a href="#" id="link-to-login">Giriş Yap</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal" id="forgot-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="close-forgot-btn-x"></button>
+      <h3>Şifremi Unuttum</h3>
+      <p class="modal-subtitle">E-posta adresinizi girin, size sıfırlama bağlantısı gönderelim.</p>
+      
+      <form id="forgot-form">
+        <div class="form-group">
+          <label class="form-label" for="forgot-email">E-POSTA ADRESİ</label>
+          <input class="form-input" type="email" id="forgot-email" required placeholder="ornek@mayasolutions.com">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Sıfırlama Bağlantısı Gönder</button>
+      </form>
+      
+      <div class="modal-footer">
+        Şifrenizi hatırladınız mı? <a href="#" id="link-back-to-login">Giriş Yap'a Dön</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
