@@ -4,10 +4,16 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
+console.log('🔍 [Debug] Supabase URL:', supabaseUrl || 'NOT FOUND');
+console.log('🔍 [Debug] Supabase Anon Key Length:', supabaseAnonKey ? supabaseAnonKey.length : 0);
+
 const isValidUrl = (url) => {
   try {
-    return url && url.startsWith('http') && !url.includes('your_supabase_project_url_here');
+    const valid = url && url.startsWith('http') && !url.includes('your_supabase_project_url_here');
+    console.log('🔍 [Debug] Is URL Valid?', url, '->', !!valid);
+    return valid;
   } catch (e) {
+    console.error('🔍 [Debug] URL validation error:', e);
     return false;
   }
 };
