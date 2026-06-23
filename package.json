@@ -9,7 +9,7 @@
     "dev:backend": "node server.js",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "start": "node server.js",
-    "build": "vite build",
+    "build": "node write-env.js && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
