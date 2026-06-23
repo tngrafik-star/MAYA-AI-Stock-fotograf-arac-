@@ -354,6 +354,7 @@ const initApp = async () => {
   }
 
   function handleSelectedFile(file) {
+    console.log('📂 [Debug] handleSelectedFile called for file:', file ? file.name : 'null', 'Type:', file ? file.type : 'unknown');
     if (!file.type.startsWith('image/')) {
       showToast('Lütfen sadece resim dosyası yükleyin.', 'error');
       return;
@@ -367,9 +368,18 @@ const initApp = async () => {
 
   // Real or Simulated AI Analyzer Flow
   function startSimulatedGeneration() {
+    console.log('📂 [Debug] startSimulatedGeneration triggered, selectedFile:', selectedFile ? selectedFile.name : 'null');
     if (!selectedFile) return;
 
     const user = getCurrentUser();
+    console.log('📂 [Debug] Current User retrieved:', user);
+
+    if (!user) {
+      console.error('📂 [Debug] User object is null! Checking session...');
+      showToast('Oturum bulunamadı. Lütfen tekrar giriş yapın.', 'error');
+      return;
+    }
+
     // Check credits
     if (user.generations_used >= user.generations_limit) {
       showToast('Kullanım limitinize ulaştınız! Lütfen aboneliğinizi yükseltin.', 'warning');
