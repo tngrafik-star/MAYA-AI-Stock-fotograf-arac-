@@ -28,84 +28,102 @@ const initMain = () => {
   };
 
   // Listen for auth state changes to update UI reactively
-  supabase.auth.onAuthStateChange(async (event, session) => {
+  supabase.auth.onAuthStateChange((event, session) => {
     const user = session?.user;
     currentSessionUser = user ? getCurrentUser() || user : null;
     
-    let displayName = 'Kullanıcı';
-    if (user) {
-      displayName = user.user_metadata?.name || user.email.split('@')[0];
-      const localUser = getCurrentUser();
-      if (localUser && localUser.id === user.id) {
-        displayName = localUser.name;
+    // Helper function to update landing page UI once name is resolved
+    const updateUI = (name) => {
+      if (user) {
+        if (navAuthActions) {
+          navAuthActions.innerHTML = `
+            <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--color-border); cursor: pointer; color: var(--color-text-primary); width: 38px; height: 38px; border-radius: var(--border-radius-sm);">
+              <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+              </svg>
+            </button>
+            <span style="font-size: 13px; color: var(--color-text-secondary); font-weight: 500; margin-right: 12px;">Hoş Geldin, <strong>${name}</strong></span>
+            <a href="/app/" class="btn btn-primary">Panele Git</a>
+          `;
+        }
+        const currentHeroCta = document.getElementById('hero-primary-cta');
+        if (currentHeroCta) {
+          currentHeroCta.textContent = 'Panele Git';
+          const newBtn = currentHeroCta.cloneNode(true);
+          currentHeroCta.replaceWith(newBtn);
+          newBtn.addEventListener('click', () => {
+            window.location.href = '/app/';
+          });
+        }
+        const currentFinalCta = document.getElementById('final-cta-btn');
+        if (currentFinalCta) {
+          currentFinalCta.textContent = 'Panele Git';
+          const newBtn = currentFinalCta.cloneNode(true);
+          currentFinalCta.replaceWith(newBtn);
+          newBtn.addEventListener('click', () => {
+            window.location.href = '/app/';
+          });
+        }
       } else {
-        try {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('name')
-            .eq('id', user.id)
-            .maybeSingle();
-          if (profile && profile.name) displayName = profile.name;
-        } catch (e) {}
+        if (navAuthActions) {
+          navAuthActions.innerHTML = `
+            <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 8px;">
+              <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+              </svg>
+            </button>
+            <button class="btn-text" id="open-login-btn">Giriş Yap</button>
+            <button class="btn btn-primary" id="open-signup-btn">Ücretsiz Dene</button>
+          `;
+          document.getElementById('open-login-btn')?.addEventListener('click', () => openModal('login-modal'));
+          document.getElementById('open-signup-btn')?.addEventListener('click', () => openModal('signup-modal'));
+        }
+        const currentHeroCta = document.getElementById('hero-primary-cta');
+        if (currentHeroCta) {
+          currentHeroCta.textContent = 'Ücretsiz Dene';
+          const newBtn = currentHeroCta.cloneNode(true);
+          currentHeroCta.replaceWith(newBtn);
+          newBtn.addEventListener('click', () => openModal('signup-modal'));
+        }
+        const currentFinalCta = document.getElementById('final-cta-btn');
+        if (currentFinalCta) {
+          currentFinalCta.textContent = 'Ücretsiz Hesap Oluştur';
+          const newBtn = currentFinalCta.cloneNode(true);
+          currentFinalCta.replaceWith(newBtn);
+          newBtn.addEventListener('click', () => openModal('signup-modal'));
+        }
       }
-    }
+      setupThemeToggleListener();
+    };
 
     if (user) {
-      if (navAuthActions) {
-        navAuthActions.innerHTML = `
-          <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--color-border); cursor: pointer; color: var(--color-text-primary); width: 38px; height: 38px; border-radius: var(--border-radius-sm);">
-            <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-            </svg>
-          </button>
-          <span style="font-size: 13px; color: var(--color-text-secondary); font-weight: 500; margin-right: 12px;">Hoş Geldin, <strong>${displayName}</strong></span>
-          <a href="/app/" class="btn btn-primary">Panele Git</a>
-        `;
-      }
-      if (heroPrimaryCta) {
-        heroPrimaryCta.textContent = 'Panele Git';
-        const newBtn = heroPrimaryCta.cloneNode(true);
-        heroPrimaryCta.replaceWith(newBtn);
-        newBtn.addEventListener('click', () => {
-          window.location.href = '/app/';
-        });
-      }
-      if (finalCtaBtn) {
-        finalCtaBtn.textContent = 'Panele Git';
-        const newBtn = finalCtaBtn.cloneNode(true);
-        finalCtaBtn.replaceWith(newBtn);
-        newBtn.addEventListener('click', () => {
-          window.location.href = '/app/';
-        });
+      const initialName = user.user_metadata?.name || user.email.split('@')[0];
+      const localUser = getCurrentUser();
+      const displayName = (localUser && localUser.id === user.id) ? localUser.name : initialName;
+      
+      // Update UI immediately with initial name
+      updateUI(displayName);
+
+      // Fetch official name asynchronously to avoid deadlock
+      if (!localUser || localUser.id !== user.id) {
+        setTimeout(async () => {
+          try {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('name')
+              .eq('id', user.id)
+              .maybeSingle();
+            if (profile && profile.name) {
+              updateUI(profile.name);
+            }
+          } catch (e) {
+            console.error('Failed to fetch profile name in main.js:', e);
+          }
+        }, 0);
       }
     } else {
-      if (navAuthActions) {
-        navAuthActions.innerHTML = `
-          <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 8px;">
-            <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-            </svg>
-          </button>
-          <button class="btn-text" id="open-login-btn">Giriş Yap</button>
-          <button class="btn btn-primary" id="open-signup-btn">Ücretsiz Dene</button>
-        `;
-        document.getElementById('open-login-btn')?.addEventListener('click', () => openModal('login-modal'));
-        document.getElementById('open-signup-btn')?.addEventListener('click', () => openModal('signup-modal'));
-      }
-      if (heroPrimaryCta) {
-        heroPrimaryCta.textContent = 'Ücretsiz Dene';
-        const newBtn = heroPrimaryCta.cloneNode(true);
-        heroPrimaryCta.replaceWith(newBtn);
-        newBtn.addEventListener('click', () => openModal('signup-modal'));
-      }
-      if (finalCtaBtn) {
-        finalCtaBtn.textContent = 'Ücretsiz Hesap Oluştur';
-        const newBtn = finalCtaBtn.cloneNode(true);
-        finalCtaBtn.replaceWith(newBtn);
-        newBtn.addEventListener('click', () => openModal('signup-modal'));
-      }
+      updateUI('Kullanıcı');
     }
-    setupThemeToggleListener();
   });
 
   // Header background on scroll
@@ -128,6 +146,38 @@ const initMain = () => {
   if (openSignupBtn) openSignupBtn.addEventListener('click', () => openModal('signup-modal'));
   if (closeLoginBtn) closeLoginBtn.addEventListener('click', () => closeModal('login-modal'));
   if (closeSignupBtn) closeSignupBtn.addEventListener('click', () => closeModal('signup-modal'));
+
+  // Legal Modals Event Listeners
+  const openTermsBtn = document.getElementById('open-terms-btn');
+  const openPrivacyBtn = document.getElementById('open-privacy-btn');
+  const openKvkkBtn = document.getElementById('open-kvkk-btn');
+
+  const closeTermsBtn = document.getElementById('close-terms-btn');
+  const closePrivacyBtn = document.getElementById('close-privacy-btn');
+  const closeKvkkBtn = document.getElementById('close-kvkk-btn');
+
+  if (openTermsBtn) {
+    openTermsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('terms-modal');
+    });
+  }
+  if (openPrivacyBtn) {
+    openPrivacyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('privacy-modal');
+    });
+  }
+  if (openKvkkBtn) {
+    openKvkkBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal('kvkk-modal');
+    });
+  }
+
+  if (closeTermsBtn) closeTermsBtn.addEventListener('click', () => closeModal('terms-modal'));
+  if (closePrivacyBtn) closePrivacyBtn.addEventListener('click', () => closeModal('privacy-modal'));
+  if (closeKvkkBtn) closeKvkkBtn.addEventListener('click', () => closeModal('kvkk-modal'));
 
   // Switch between modals
   const linkToSignup = document.getElementById('link-to-signup');

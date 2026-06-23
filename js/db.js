@@ -1,38 +1,46 @@
 import { supabase } from './supabase.js';
 
 // Setup listener for auth state change to sync profiles to localStorage
-supabase.auth.onAuthStateChange(async (event, session) => {
+supabase.auth.onAuthStateChange((event, session) => {
   if (session && session.user) {
-    // Fetch profile details from the profiles table
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', session.user.id)
-      .maybeSingle();
+    // Run the profile sync asynchronously in the next event loop tick to prevent auth deadlocks
+    setTimeout(async () => {
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
 
-    if (profile) {
-      localStorage.setItem('maya_current_user', JSON.stringify({
-        id: session.user.id,
-        name: profile.name,
-        email: profile.email,
-        plan: profile.plan,
-        generations_limit: profile.generations_limit,
-        generations_used: profile.generations_used,
-        gemini_api_key: profile.gemini_api_key,
-        created_at: profile.created_at
-      }));
-    } else {
-      // Basic fallback
-      localStorage.setItem('maya_current_user', JSON.stringify({
-        id: session.user.id,
-        name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
-        email: session.user.email,
-        plan: 'starter',
-        generations_limit: 100,
-        generations_used: 0,
-        created_at: session.user.created_at
-      }));
-    }
+        if (error) throw error;
+
+        if (profile) {
+          localStorage.setItem('maya_current_user', JSON.stringify({
+            id: session.user.id,
+            name: profile.name,
+            email: profile.email,
+            plan: profile.plan,
+            generations_limit: profile.generations_limit,
+            generations_used: profile.generations_used,
+            gemini_api_key: profile.gemini_api_key,
+            created_at: profile.created_at
+          }));
+        } else {
+          // Basic fallback
+          localStorage.setItem('maya_current_user', JSON.stringify({
+            id: session.user.id,
+            name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
+            email: session.user.email,
+            plan: 'starter',
+            generations_limit: 100,
+            generations_used: 0,
+            created_at: session.user.created_at
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to sync profile in onAuthStateChange:', err);
+      }
+    }, 0);
   } else {
     // User logged out
     localStorage.removeItem('maya_current_user');

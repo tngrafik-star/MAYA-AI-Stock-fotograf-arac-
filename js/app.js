@@ -8,10 +8,34 @@ initDB();
 
 const initApp = async () => {
   console.log('📂 [Debug] initApp starting...');
-  // 1. Session Verification
-  const { data: { session } } = await supabase.auth.getSession();
-  console.log('📂 [Debug] Supabase session checked:', session ? 'Active Session Found' : 'NO SESSION - Redirecting to index.html');
   
+  // 1. Session Verification (with a 3-second timeout protection to prevent deadlocks/freezes)
+  let session = null;
+  try {
+    const sessionPromise = supabase.auth.getSession().then(({ data }) => data.session);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Session check timed out')), 3000)
+    );
+    session = await Promise.race([sessionPromise, timeoutPromise]);
+    console.log('📂 [Debug] Supabase session checked:', session ? 'Active Session Found' : 'NO SESSION - Redirecting to index.html');
+  } catch (err) {
+    console.warn('📂 [Debug] Supabase session check failed or timed out:', err);
+    // Attempt fallback to cached local storage session
+    const cachedUser = localStorage.getItem('maya_current_user');
+    if (cachedUser) {
+      console.log('📂 [Debug] Fallback: Found cached user in localStorage. App will proceed.');
+      const parsed = JSON.parse(cachedUser);
+      session = {
+        user: {
+          id: parsed.id,
+          email: parsed.email,
+          user_metadata: { name: parsed.name },
+          created_at: parsed.created_at
+        }
+      };
+    }
+  }
+
   if (!session) {
     // If not logged in, clear storage and redirect to index.html immediately
     localStorage.removeItem('maya_current_user');
