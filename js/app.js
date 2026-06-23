@@ -439,6 +439,10 @@ const initApp = async () => {
             activeMetadata = generatedData;
             populateResultsView(generatedData);
             
+            // Hide simulation warning banner
+            const warningBanner = document.getElementById('simulation-warning-banner');
+            if (warningBanner) warningBanner.style.display = 'none';
+
             // Adjust screens
             loading.style.display = 'none';
             results.style.display = 'block';
@@ -451,35 +455,41 @@ const initApp = async () => {
           });
         })
         .catch(err => {
-          // Fallback to simulation if key is missing
-          if (err.message && err.message.includes('API Anahtarı bulunamadı')) {
-            showToast('API Anahtarı tanımlanmamış. Simüle edilmiş veri modunda çalışılıyor.', 'warning');
-            setTimeout(() => {
-              const generatedData = generateAIData(categoryKey, selectedFile.name);
-              
-              // Save to Database
-              saveGeneration(user.id, e.target.result, generatedData).then(() => {
-                // Load details to display
-                activeMetadata = generatedData;
-                populateResultsView(generatedData);
-                
-                // Adjust screens
-                loading.style.display = 'none';
-                results.style.display = 'block';
-                
-                showToast('Simüle edilmiş metadata üretildi!', 'success');
-              }).catch(dbErr => {
-                showToast(`Veritabanına kaydedilemedi: ${dbErr.message}`, 'error');
-                loading.style.display = 'none';
-                dropzone.style.display = 'flex';
-              });
-            }, 1500);
-          } else {
-            console.error(err);
-            showToast(`Analiz başarısız oldu: ${err.message}`, 'error');
-            loading.style.display = 'none';
-            dropzone.style.display = 'flex';
+          console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
+          
+          let warnMsg = 'Kişisel Gemini API Anahtarınız bulunamadı. Simülasyon modunda çalışılıyor.';
+          if (err.message && (err.message.includes('API key not valid') || err.message.includes('invalid') || err.message.includes('API_KEY_INVALID') || err.message.includes('API key'))) {
+            warnMsg = 'Gemini API Anahtarı geçersiz! Lütfen Hesap Ayarlarından kontrol edin. Simülasyon modunda çalışılıyor.';
+          } else if (err.message && err.message.includes('quota')) {
+            warnMsg = 'Gemini API kotası doldu! Simülasyon modunda çalışılıyor.';
           }
+          
+          showToast(warnMsg, 'warning');
+          
+          setTimeout(() => {
+            const generatedData = generateAIData(categoryKey, selectedFile.name);
+            
+            // Save to Database
+            saveGeneration(user.id, e.target.result, generatedData).then(() => {
+              // Load details to display
+              activeMetadata = generatedData;
+              populateResultsView(generatedData);
+              
+              // Show simulation warning banner
+              const warningBanner = document.getElementById('simulation-warning-banner');
+              if (warningBanner) warningBanner.style.display = 'block';
+
+              // Adjust screens
+              loading.style.display = 'none';
+              results.style.display = 'block';
+              
+              showToast('Simüle edilmiş örnek metadata üretildi!', 'success');
+            }).catch(dbErr => {
+              showToast(`Veritabanına kaydedilemedi: ${dbErr.message}`, 'error');
+              loading.style.display = 'none';
+              dropzone.style.display = 'flex';
+            });
+          }, 1500);
         });
     };
     reader.readAsDataURL(selectedFile);
