@@ -7,8 +7,10 @@ import { supabase } from './supabase.js';
 initDB();
 
 const initApp = async () => {
+  console.log('📂 [Debug] initApp starting...');
   // 1. Session Verification
   const { data: { session } } = await supabase.auth.getSession();
+  console.log('📂 [Debug] Supabase session checked:', session ? 'Active Session Found' : 'NO SESSION - Redirecting to index.html');
   
   if (!session) {
     // If not logged in, clear storage and redirect to index.html immediately
