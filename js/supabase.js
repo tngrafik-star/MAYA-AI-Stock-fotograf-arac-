@@ -1,3 +1,4 @@
+// Supabase Client Initialization (Vercel Build Trigger)
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
@@ -16,7 +17,12 @@ const createDummySupabase = () => {
   return {
     isDummy: true,
     auth: {
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      onAuthStateChange: (cb) => {
+        if (typeof cb === 'function') {
+          setTimeout(() => cb('INITIAL_SESSION', null), 0);
+        }
+        return { data: { subscription: { unsubscribe: () => {} } } };
+      },
       getSession: async () => ({ data: { session: null }, error: null }),
       signInWithPassword: async () => ({ data: { user: null }, error: new Error('Supabase yapılandırılmamış. Lütfen .env dosyasını kontrol edin.') }),
       signUp: async () => ({ data: { user: null }, error: new Error('Supabase yapılandırılmamış. Lütfen .env dosyasını kontrol edin.') }),
