@@ -132,6 +132,49 @@ const initApp = async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const tabParam = urlParams.get('tab');
   const selectPlanParam = urlParams.get('selectPlan');
+  const paymentParam = urlParams.get('payment');
+
+  if (paymentParam === 'success') {
+    showToast('Ödemeniz başarıyla alındı! Profiliniz güncelleniyor...', 'success');
+    window.history.replaceState({}, document.title, window.location.pathname);
+    
+    // Periodically check Supabase profiles table for plan update (webhook lag handler)
+    let checkCount = 0;
+    const checkInterval = setInterval(async () => {
+      checkCount++;
+      try {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .maybeSingle();
+        
+        if (profile && (profile.plan !== currentUser.plan || checkCount > 5)) {
+          clearInterval(checkInterval);
+          currentUser = {
+            id: session.user.id,
+            name: profile.name,
+            email: profile.email,
+            plan: profile.plan,
+            generations_limit: profile.generations_limit,
+            generations_used: profile.generations_used,
+            gemini_api_key: profile.gemini_api_key,
+            created_at: profile.created_at
+          };
+          localStorage.setItem('maya_current_user', JSON.stringify(currentUser));
+          updateSidebarProfile();
+          loadDashboardHome();
+          loadBillingSettings();
+          showToast('Hesabınız başarıyla güncellendi!', 'success');
+        }
+      } catch (e) {
+        console.error('Failed to sync profile after payment:', e);
+      }
+    }, 1000);
+  } else if (paymentParam === 'cancel') {
+    showToast('Ödeme işlemi iptal edildi.', 'warning');
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 
   if (tabParam) {
     switchView(tabParam);
@@ -851,13 +894,30 @@ const initApp = async () => {
     // Set highlights on selected card
     ['starter', 'pro', 'studio'].forEach(plan => {
       const card = document.getElementById(`billing-card-${plan}`);
-      const btn = card.querySelector('.change-plan-btn');
+      let btn = card.querySelector('.change-plan-btn') || card.querySelector('.vip-support-btn');
       
       if (user.plan === plan) {
         card.classList.add('popular');
-        btn.textContent = 'Mevcut Planınız';
-        btn.disabled = true;
-        btn.className = 'btn btn-primary change-plan-btn';
+        
+        if (plan === 'studio') {
+          // Clone to strip existing event listeners and bind mailto action
+          const newBtn = btn.cloneNode(true);
+          newBtn.textContent = '✉ 7/24 VIP Mail Desteği';
+          newBtn.disabled = false;
+          newBtn.className = 'btn btn-primary vip-support-btn';
+          newBtn.style.backgroundColor = '#10B981'; // Emerald Green for support
+          newBtn.style.borderColor = '#10B981';
+          newBtn.style.color = '#FFFFFF';
+          newBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = `mailto:support@mayasolutions.com?subject=MayaSolutions%20-%20Studio%20VIP%20Destek%20Talebi&body=Merhaba,%20MayaSolutions%20Studio%20planı%20kullanıcısıyım.%20Destek%20istediğim%20konu:`;
+          });
+          btn.replaceWith(newBtn);
+        } else {
+          btn.textContent = 'Mevcut Planınız';
+          btn.disabled = true;
+          btn.className = 'btn btn-primary change-plan-btn';
+        }
         
         // Add badge
         if (!card.querySelector('.pricing-badge')) {
@@ -868,9 +928,25 @@ const initApp = async () => {
         }
       } else {
         card.classList.remove('popular');
-        btn.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Planına Geç`;
-        btn.disabled = false;
-        btn.className = 'btn btn-secondary change-plan-btn';
+        
+        // If it was a VIP button, clone it back to make it a normal button
+        if (btn.classList.contains('vip-support-btn')) {
+          const newBtn = btn.cloneNode(true);
+          newBtn.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Planına Geç`;
+          newBtn.disabled = false;
+          newBtn.className = 'btn btn-secondary change-plan-btn';
+          newBtn.style.backgroundColor = '';
+          newBtn.style.borderColor = '';
+          newBtn.style.color = '';
+          newBtn.addEventListener('click', () => {
+            handlePlanUpgrade(plan);
+          });
+          btn.replaceWith(newBtn);
+        } else {
+          btn.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Planına Geç`;
+          btn.disabled = false;
+          btn.className = 'btn btn-secondary change-plan-btn';
+        }
         
         const badge = card.querySelector('.pricing-badge');
         if (badge) badge.remove();
@@ -880,11 +956,38 @@ const initApp = async () => {
 
   // Handle plan upgrade action
   async function handlePlanUpgrade(plan) {
+    const user = getCurrentUser();
+    if (!user) {
+      showToast('Oturum bulunamadı. Lütfen giriş yapın.', 'error');
+      return;
+    }
+
     try {
-      await updateSubscription(plan);
-      showToast(`Aboneliğiniz başarıyla ${plan.toUpperCase()} seviyesine yükseltildi!`, 'success');
-      loadBillingSettings();
-      await loadDashboardHome();
+      showToast('Ödeme sayfasına yönlendiriliyorsunuz...', 'success');
+      
+      const response = await fetch('/api/payment/lemon/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          plan: plan,
+          userId: user.id,
+          successUrl: window.location.origin + '/app/?payment=success',
+          cancelUrl: window.location.origin + '/app/?payment=cancel'
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error?.message || 'Ödeme oturumu oluşturulamadı.');
+      }
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('Geçersiz ödeme yönlendirme URL\'i.');
+      }
     } catch (err) {
       showToast(err.message, 'error');
     }
