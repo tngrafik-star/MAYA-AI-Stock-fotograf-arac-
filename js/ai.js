@@ -532,15 +532,105 @@ export function generateAIData(categoryKey, filename = '') {
 }
 
 export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null) {
-  const response = await fetch('/api/generate', {
+  // 1. Determine API Key
+  const apiKey = customApiKey || import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey || apiKey === 'your_gemini_api_key_here') {
+    throw new Error("Gemini API Anahtarı bulunamadı. Lütfen profilinizden bir anahtar ekleyin veya sunucu yöneticisiyle iletişime geçin.");
+  }
+
+  // 2. Map Category Name
+  const cats = {
+    decor: 'Yaşam & Dekorasyon',
+    cosmetics: 'Kozmetik & Güzellik',
+    tech: 'Teknoloji & Aksesuar',
+    food: 'Yiyecek & İçecek',
+    landscape: 'Doğa & Manzara',
+    fashion: 'Moda & Giyim',
+    fitness: 'Spor & Sağlıklı Yaşam',
+    business: 'İş Dünyası & Ofis',
+    architecture: 'Mimari & Yapı',
+    animals: 'Evcil Hayvanlar & Vahşi Yaşam',
+    travel: 'Seyahat & Kültür',
+    automotive: 'Otomotiv & Taşıtlar',
+    portrait: 'İnsanlar & Portre',
+    other: 'Diğer / Genel'
+  };
+  const categoryName = cats[categoryKey] || 'Genel';
+
+  // 3. Parse base64DataUrl
+  const regex = /^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/;
+  const matches = base64DataUrl.match(regex);
+  if (!matches) {
+    throw new Error("Geçersiz resim formatı.");
+  }
+  const mimeType = matches[1];
+  const base64Data = matches[2];
+
+  // 4. Construct Prompt
+  const prompt = `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
+Görsel Kategorisi: ${categoryName}
+
+JSON Yapısı ve Kurallar:
+{
+  "category": "${categoryKey}",
+  "title": "Görselin içeriğini en iyi yansıtan, SEO uyumlu, profesyonel Türkçe stok başlığı (maksimum 70 karakter).",
+  "description": "Görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan 2-3 cümlelik detaylı Türkçe açıklama.",
+  "keywords": "Görselle en alakalı 30 adet Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır (örn: kupa, seramik, kahve fincanı...). Tamamı küçük harf olmalıdır.",
+  "tags": "E-Ticaret için optimize edilmiş, en fazla 20 karakter uzunluğunda 13 adet ürün etiketi, aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
+  
+  "adobe": {
+    "title": "Stok başlığı ile aynı veya çok benzer bir başlık.",
+    "keywords": "Yukarıdaki keywords listesinden seçilen en alakalı 30 anahtar kelime, aralarında virgülle ayrılmış şekilde."
+  },
+  
+  "shutterstock": {
+    "title": "Başlığın sonuna ' - Stok Fotoğrafı' eklenmiş hali.",
+    "keywords": "Keywords listesinden seçilen ve genişletilen en fazla 50 anahtar kelime, aralarında virgülle ayrılmış şekilde."
+  },
+  
+  "freepik": {
+    "title": "Başlığın tamamen küçük harflerle yazılmış hali.",
+    "keywords": "Keywords listesinden seçilen en fazla 25 anahtar kelime, tamamen küçük harflerle yazılmış ve aralarında virgülle ayrılmış şekilde."
+  },
+  
+  "vecteezy": {
+    "title": "Stok başlığı ile aynı.",
+    "description": "Stok açıklaması ile aynı.",
+    "keywords": "Keywords listesinden seçilen en fazla 20 anahtar kelime, aralarında virgülle ayrılmış şekilde."
+  },
+  
+  "ecommerce": {
+    "title": "E-ticaret siteleri (Etsy, Trendyol vs.) için optimize edilmiş, anahtar kelimeler içeren boru işareti (|) ile ayrılmış zengin başlık (örn: 'El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi').",
+    "description": "Premium e-ticaret ürün açıklaması. Emojilerle süslenmiş, maddeler halinde özellikler, kullanım alanları ve hediye tavsiyeleri içermelidir.",
+    "tags": "Etsy/Trendyol uyumlu, aralarında virgülle ayrılmış tam olarak 13 adet küçük harfli etiket."
+  }
+}
+
+ÇIKTI SADECE YUKARIDAKİ JSON ŞABLONUNA UYGUN BİR JSON OLMALIDIR. Başka açıklama veya kod bloğu içermemelidir.`;
+
+  // 5. Direct API request to Google Gemini
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      base64DataUrl,
-      categoryKey,
-      customApiKey
+      contents: [
+        {
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                mimeType: mimeType,
+                data: base64Data
+              }
+            }
+          ]
+        }
+      ],
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
     })
   });
 
@@ -554,5 +644,11 @@ export async function generateGeminiMetadata(base64DataUrl, categoryKey, customA
     throw new Error(errMsg);
   }
 
-  return await response.json();
+  const result = await response.json();
+  const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!rawText) {
+    throw new Error("API boş yanıt döndürdü.");
+  }
+
+  return JSON.parse(rawText.trim());
 }
