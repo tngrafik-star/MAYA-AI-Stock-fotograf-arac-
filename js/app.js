@@ -1011,7 +1011,7 @@ const initApp = async () => {
     try {
       showToast('Ödeme sayfasına yönlendiriliyorsunuz...', 'success');
       
-      const response = await fetch('/api/payment/create-checkout-session', {
+      const response = await fetch('/api/payment/lemon/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -1019,7 +1019,7 @@ const initApp = async () => {
         body: JSON.stringify({
           plan: plan,
           userId: user.id,
-          successUrl: window.location.origin + '/app/?payment=success&session_id={CHECKOUT_SESSION_ID}',
+          successUrl: window.location.origin + '/app/?payment=success',
           cancelUrl: window.location.origin + '/app/?payment=cancel'
         })
       });
