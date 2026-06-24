@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
@@ -28,7 +29,14 @@ if (process.env.STRIPE_SECRET_KEY) {
 // Initialize Supabase Admin Client
 const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
-const supabaseAdmin = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
+const supabaseAdmin = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false
+  },
+  realtime: {
+    transport: WebSocket
+  }
+}) : null;
 
 // Initialize Nodemailer SMTP Transporter
 let emailTransporter = null;
