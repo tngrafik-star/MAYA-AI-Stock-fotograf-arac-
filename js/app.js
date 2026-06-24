@@ -431,7 +431,7 @@ const initApp = async () => {
       const userKey = user.gemini_api_key || '';
 
       // Real API call via secure backend proxy
-      generateGeminiMetadata(e.target.result, categoryKey, userKey)
+      generateGeminiMetadata(e.target.result, categoryKey, userKey, user.plan)
         .then(generatedData => {
           // Save to Database
           saveGeneration(user.id, e.target.result, generatedData).then(() => {
@@ -467,7 +467,7 @@ const initApp = async () => {
           showToast(warnMsg, 'warning');
           
           setTimeout(() => {
-            const generatedData = generateAIData(categoryKey, selectedFile.name);
+            const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan);
             
             // Save to Database
             saveGeneration(user.id, e.target.result, generatedData).then(() => {

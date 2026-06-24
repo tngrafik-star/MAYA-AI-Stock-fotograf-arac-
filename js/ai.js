@@ -394,7 +394,6 @@ Kurulumu kolay vantuzlu standı ve araç şarj kiti ile birlikte eksiksiz gelir.
 • Bağlantı: USB kablosu ile bilgisayara, powerbanke veya priz adaptörüne bağlanarak çalışır.
       
 Fotoğraf ve video çekimlerinizde gölgeleri yok eder, gözlerde estetik halka yansıması oluşturur.`,
-      tags: 'halka isik, ring light, tripodlu isik, yayin isigi, makyaj lambasi, fotograf aksesuari, youtube isigi, telefon tripodu, led halka isik, portre cekimi, isik standi, taşinabilir isik, video ekipmani'
     }
   },
   other: {
@@ -436,7 +435,7 @@ export function getCategories() {
   }));
 }
 
-export function generateAIData(categoryKey, filename = '') {
+export function generateAIData(categoryKey, filename = '', userPlan = 'starter') {
   // If no category selected, try to infer from filename
   let selectedCategory = categoryKey;
   if (!selectedCategory && filename) {
@@ -486,52 +485,160 @@ export function generateAIData(categoryKey, filename = '') {
   
   // Keywords array
   const kwList = baseKeywords.split(', ').map(k => k.trim());
+
+  let finalTitle = baseTitle;
+  let finalDesc = baseDesc;
+  let finalKeywords = kwList;
+
+  // Scale data quality based on userPlan
+  if (userPlan === 'starter') {
+    finalKeywords = kwList.slice(0, 20);
+  } else if (userPlan === 'pro') {
+    finalDesc = `${baseDesc} Bu yüksek çözünürlüklü ve detaylı görsel, profesyonel projeleriniz için optimize edilmiştir.`;
+    finalKeywords = kwList.concat(['profesyonel çekim', 'seo uyumlu', 'estetik görsel']).slice(0, 35);
+  } else if (userPlan === 'studio') {
+    finalTitle = `[STUDIO VIP] ${baseTitle}`;
+    finalDesc = `${baseDesc} En üst düzey VIP stüdyo standartlarında; profesyonel stüdyo ışıklandırması, üstün odak netliği, zengin dokular ve derin kompozisyon kalitesiyle ticari projeleriniz için özel olarak üretilmiştir.`;
+    finalKeywords = kwList.concat(['premium kalite', 'stüdyo çekimi', 'vip tasarım', 'ultra yüksek çözünürlük', 'ticari kullanım', 'profesyonel ışıklandırma']).slice(0, 50);
+  }
+
+  // Align e-commerce details with the selected random index to fix mismatch bug
+  let ecoTitle = "";
+  let ecoDesc = "";
+  let ecoTags = "";
+
+  if (selectedCategory === 'decor') {
+    if (randomIndex === 0) {
+      ecoTitle = "El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi";
+      ecoDesc = `✨ Kahve saatlerinize estetik katacak tamamen el yapımı seramik kupa.
+      
+• Malzeme: Yüksek kaliteli stoneware kil and gıdaya uygun mat sır.
+• Hacim: Yaklaşık 320 ml.
+• Hediye Seçeneği: Şık kraft kutusunda, korumalı ambalajıyla gönderilir.`;
+      ecoTags = "seramik kupa, el yapimi kupa, kahve kupasi, tasarim kupa, hediye bardak, mutfak dekoru";
+    } else if (randomIndex === 1) {
+      ecoTitle = "Bohem Tarzı Toprak Saksıda Kuru Çiçek | Pampas Otu Aranjmanı | Ev Dekorasyonu";
+      ecoDesc = `✨ Evinize sıcak bir atmosfer getirecek el yapımı toprak saksıda kurutulmuş çiçek aranjmanı.
+      
+• Malzeme: Doğal toprak saksı ve kurutulmuş pampas otları.
+• Kullanım: Bakım gerektirmez, uzun ömürlü ve estetiktir.
+• Stil: Bohem ve minimalist iç mekan tasarımları için idealdir.`;
+      ecoTags = "toprak saksi, kuru cicek, pampas otu, bohem dekorasyon, ev dekoru, minimalist tasarim";
+    } else if (randomIndex === 2) {
+      ecoTitle = "Doğal Soya Mumu Seti | Lüks Mermer Sunum Tepsisi | Aromaterapi Mum Hediye Seti";
+      ecoDesc = `✨ Sakinleştirici aromaterapi etkili, %100 doğal soya mumları ve lüks mermer tepsi.
+      
+• Malzeme: Organik soya balmumu, doğal uçucu yağlar ve gerçek mermer tepsi.
+• Özellikler: Kurşunsuz pamuk fitil, temiz yanma.
+• Kullanım: Spa, meditasyon ve dekoratif amaçlı kullanım için harikadır.`;
+      ecoTags = "soya mumu, mermer tepsi, aromaterapi mum, hediye set, dogal mum, dekoratif mum";
+    } else {
+      ecoTitle = "Keten Dokulu Dekoratif Kırlent Kılıfı | Rustik Minder Kılıfı | İskandinav Ev Tekstili";
+      ecoDesc = `✨ Evinizde konforlu ve şık köşeler yaratacak doğal keten dokulu kırlent kılıfı.
+      
+• Malzeme: Premium keten karışımlı kumaş.
+• Boyut: 45x45 cm (Gizli fermuarlı).
+• Yıkama: 30 derecede hassas yıkamaya uygundur.`;
+      ecoTags = "kirlent kilifi, keten minder, rustik dekorasyon, iskandinav tarzi, ev tekstili, yastik kilifi";
+    }
+  } else if (selectedCategory === 'cosmetics') {
+    if (randomIndex === 0) {
+      ecoTitle = "Nemlendirici Cilt Bakım Serumu | %100 Doğal Hyalüronik Asit & Vegan Yüz Serumu - Anti-Aging Parıltı";
+      ecoDesc = `🌿 Cildinizin ihtiyacı olan yoğun nemi ve ışıltıyı doğal yollarla geri kazanın.
+      
+• İçerik: Hyalüronik Asit, Aloe Vera, Gül Suyu ve Vitamin E.
+• Etki: Yoğun nem bariyeri oluşturur, ince çizgileri dolgunlaştırır.
+• Hacim: 30ml damlalıklı cam şişe.`;
+      ecoTags = "yuz serumu, cilt bakimi, organik serum, nemlendirici, hyaluronik asit, vegan kozmetik";
+    } else if (randomIndex === 1) {
+      ecoTitle = "Besleyici Organik Gece Kremi | Yüz Nemlendirici Krem | Ahşap Spatula Hediyeli";
+      ecoDesc = `🌿 Gece boyu cildinizi besleyen ve yenileyen %100 organik gece bakım kremi.
+      
+• Malzeme: Organik bitki özleri, Shea yağı ve doğal vitaminler.
+• Kullanım: Temiz cilde gece yatmadan önce spatula yardımıyla uygulayın.
+• Özellik: Paraben ve alkol içermez.`;
+      ecoTags = "gece kremi, nemlendirici krem, organik krem, yuz nemlendirici, dogal guzellik";
+    } else if (randomIndex === 2) {
+      ecoTitle = "Yeşil Kil Maskesi Seti | Cilt Arındırıcı Detoks Kil Maskesi | Bambu Uygulama Fırçası Dahil";
+      ecoDesc = `🌿 Cildinizi derinlemesine temizleyen, gözenek sıkılaştırıcı doğal yeşil kil maskesi seti.
+      
+• Paket İçeriği: Organik toz kil, seramik kase ve bambu maske fırçası.
+• Etki: Yağ dengesini düzenler, siyah noktaları arındırır.
+• Uygulama: Haftada 1-2 kez temiz cilde uygulayıp durulayın.`;
+      ecoTags = "kil maskesi, arindirici maske, gozenek sikilastirici, bambu firca, detoks cilt bakimi";
+    } else {
+      ecoTitle = "Aromaterapi Masaj Yağı | Gül Yapraklı Nemlendirici Vücut Yağı | Damlalıklı Cam Şişe";
+      ecoDesc = `🌿 Zihninizi ve bedeninizi dinlendirecek, taze gül yaprakları ile zenginleştirilmiş aromaterapi yağı.
+      
+• İçerik: Saf tatlı badem yağı, jojoba yağı ve doğal gül yağı.
+• Kullanım: Masaj yağı veya banyo sonrası vücut nemlendiricisi olarak kullanılabilir.
+• Hacim: 50ml.`;
+      ecoTags = "masaj yagi, aromaterapi yag, gul yagi, vucut nemlendirici, dogal kozmetik, spa yagi";
+    }
+  } else {
+    // Other categories: dynamically map to index
+    ecoTitle = `${finalTitle} | Premium Özel Tasarım Ürün`;
+    ecoDesc = `✨ ${finalDesc}
+    
+• Ürün Türü: Premium tasarım ve yüksek malzeme kalitesi.
+• Özellikler: Kullanışlı yapısı, estetik görünümü ile günlük hayatınıza renk katar.
+• Kutu İçeriği: Ürünün kendisi, korumalı ambalajı ve kullanım kılavuzu ile birlikte gönderilir.`;
+    ecoTags = finalKeywords.slice(0, 13).join(', ');
+  }
+
+  // Add plan specific touch to e-commerce descriptions
+  if (userPlan === 'pro') {
+    ecoDesc += `\n\n🔥 [PRO Özel Kampanya] Bu ay yapacağınız ilk alışverişte geçerli %10 indirim kuponu paketle birlikte gönderilecektir!`;
+  } else if (userPlan === 'studio') {
+    ecoTitle = `[STUDIO VIP] ${ecoTitle}`;
+    ecoDesc = `👑 **STUDIO VIP PREMIUM ÜRÜN** 👑\n\n${ecoDesc}\n\n✨ Bu ürün VIP Studio planı çerçevesinde yüksek çözünürlüklü profesyonel stüdyo çekimleriyle listelenmiştir. Koşulsuz iade ve 7/24 VIP müşteri desteği garantilidir.`;
+  }
   
   // Generate specific platforms metadata
   return {
     category: selectedCategory,
     // Raw Base
-    title: baseTitle,
-    description: baseDesc,
-    keywords: baseKeywords,
-    tags: template.ecommerce.tags,
+    title: finalTitle,
+    description: finalDesc,
+    keywords: finalKeywords.join(', '),
+    tags: ecoTags,
     
     // Adobe Stock (Requires short clean titles and top keywords)
     adobe: {
-      title: baseTitle,
-      keywords: kwList.slice(0, 30).join(', ')
+      title: finalTitle,
+      keywords: finalKeywords.slice(0, 30).join(', ')
     },
     
     // Shutterstock (Requires descriptive titles, detailed descriptions, up to 50 keywords)
     shutterstock: {
-      title: `${baseTitle} - Stok Fotoğrafı`,
-      description: `${baseDesc} Yüksek çözünürlüklü ticari kullanım için ideal görsel.`,
-      keywords: kwList.concat(['stok görsel', 'shutterstock', 'yüksek çözünürlük', 'fotoğrafçılık']).slice(0, 50).join(', ')
+      title: `${finalTitle} - Stok Fotoğrafı`,
+      description: `${finalDesc} Yüksek çözünürlüklü ticari kullanım için ideal görsel.`,
+      keywords: finalKeywords.concat(['stok görsel', 'shutterstock', 'yüksek çözünürlük', 'fotoğrafçılık']).slice(0, 50).join(', ')
     },
     
     // Freepik (Editorial title, lowercase tags)
     freepik: {
-      title: baseTitle.toLowerCase(),
-      keywords: kwList.map(k => k.toLowerCase()).slice(0, 25).join(', ')
+      title: finalTitle.toLowerCase(),
+      keywords: finalKeywords.map(k => k.toLowerCase()).slice(0, 25).join(', ')
     },
     
     // Vecteezy (Clean title, tags)
     vecteezy: {
-      title: baseTitle,
-      description: baseDesc,
-      keywords: kwList.slice(0, 20).join(', ')
+      title: finalTitle,
+      description: finalDesc,
+      keywords: finalKeywords.slice(0, 20).join(', ')
     },
     
     // E-Ticaret / Ürün Satış (Tailored title, sales description, Etsy/Trendyol 13 tags)
     ecommerce: {
-      title: template.ecommerce.title,
-      description: template.ecommerce.description,
-      tags: template.ecommerce.tags.split(', ').slice(0, 13).join(', ')
+      title: ecoTitle,
+      description: ecoDesc,
+      tags: ecoTags.split(', ').slice(0, 13).join(', ')
     }
   };
 }
 
-export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null) {
+export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null, userPlan = 'starter') {
   // 1. Determine API Key
   const apiKey = customApiKey || import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey || apiKey === 'your_gemini_api_key_here') {
@@ -566,16 +673,45 @@ export async function generateGeminiMetadata(base64DataUrl, categoryKey, customA
   const mimeType = matches[1];
   const base64Data = matches[2];
 
+  // Choose model based on user plan
+  let modelName = 'gemini-2.5-flash';
+  if (userPlan === 'pro' || userPlan === 'studio') {
+    modelName = 'gemini-2.5-pro';
+  }
+
+  // Construct plan instructions
+  let planInstructions = "";
+  if (userPlan === 'starter') {
+    planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
+- Başlık: Maksimum 60 karakterlik sade bir başlık.
+- Açıklama: En fazla 2 cümlelik basit bir açıklama.
+- Anahtar kelimeler (keywords): 20 ila 30 adet arası standart anahtar kelime seç.`;
+  } else if (userPlan === 'pro') {
+    planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
+- Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler içeren zengin başlık (maksimum 75 karakter).
+- Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
+- Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine uygun popüler etiketler.`;
+  } else if (userPlan === 'studio') {
+    planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
+- Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter, başına [STUDIO VIP] ekleme, sadece zengin başlık).
+- Açıklama: En az 4 cümlelik, görselin kompozisyonunu, ışık kalitesini (yumuşak stüdyo ışığı vb.), dokularını ve sanatsal açısını betimleyen detaylı bir analiz metni.
+- Anahtar kelimeler (keywords): Tam olarak 45 ila 50 adet arası niş ve en yüksek hacimli stok/e-ticaret etiketleri.
+- E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler, kutu içeriği ve hediye tavsiyeleri içeren zengin bir pazarlama kopyası olmalıdır.`;
+  }
+
   // 4. Construct Prompt
   const prompt = `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
 Görsel Kategorisi: ${categoryName}
 
+Plan Kuralları:
+${planInstructions}
+
 JSON Yapısı ve Kurallar:
 {
   "category": "${categoryKey}",
-  "title": "Görselin içeriğini en iyi yansıtan, SEO uyumlu, profesyonel Türkçe stok başlığı (maksimum 70 karakter).",
-  "description": "Görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan 2-3 cümlelik detaylı Türkçe açıklama.",
-  "keywords": "Görselle en alakalı 30 adet Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır (örn: kupa, seramik, kahve fincanı...). Tamamı küçük harf olmalıdır.",
+  "title": "Görselin içeriğini en iyi yansıtan, plan kurallarına uygun, SEO uyumlu Türkçe başlık.",
+  "description": "Plan kurallarına uygun, görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan Türkçe açıklama.",
+  "keywords": "Plan kurallarında belirtilen miktarda en alakalı Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır (örn: kupa, seramik, kahve fincanı...). Tamamı küçük harf olmalıdır.",
   "tags": "E-Ticaret için optimize edilmiş, en fazla 20 karakter uzunluğunda 13 adet ürün etiketi, aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
   
   "adobe": {
@@ -601,7 +737,7 @@ JSON Yapısı ve Kurallar:
   
   "ecommerce": {
     "title": "E-ticaret siteleri (Etsy, Trendyol vs.) için optimize edilmiş, anahtar kelimeler içeren boru işareti (|) ile ayrılmış zengin başlık (örn: 'El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi').",
-    "description": "Premium e-ticaret ürün açıklaması. Emojilerle süslenmiş, maddeler halinde özellikler, kullanım alanları ve hediye tavsiyeleri içermelidir.",
+    "description": "Premium e-ticaret ürün açıklaması. Plan kurallarına ve e-ticaret formatına uygun zengin ürün açıklaması.",
     "tags": "Etsy/Trendyol uyumlu, aralarında virgülle ayrılmış tam olarak 13 adet küçük harfli etiket."
   }
 }
@@ -609,7 +745,7 @@ JSON Yapısı ve Kurallar:
 ÇIKTI SADECE YUKARIDAKİ JSON ŞABLONUNA UYGUN BİR JSON OLMALIDIR. Başka açıklama veya kod bloğu içermemelidir.`;
 
   // 5. Direct API request to Google Gemini
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -652,3 +788,4 @@ JSON Yapısı ve Kurallar:
 
   return JSON.parse(rawText.trim());
 }
+

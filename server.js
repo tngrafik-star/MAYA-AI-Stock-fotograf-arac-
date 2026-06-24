@@ -215,7 +215,7 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 // Endpoint for metadata generation
 app.post('/api/generate', async (req, res) => {
   try {
-    const { base64DataUrl, categoryKey, customApiKey } = req.body;
+    const { base64DataUrl, categoryKey, customApiKey, plan } = req.body;
     
     if (!base64DataUrl) {
       return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
@@ -227,6 +227,8 @@ app.post('/api/generate', async (req, res) => {
         error: { message: "Gemini API Anahtarı bulunamadı. Lütfen sunucuda tanımlayın veya hesap bilgilerinizden ekleyin." } 
       });
     }
+
+    const userPlan = plan || 'starter';
 
     // 1. Get Category Name
     const cats = {
@@ -256,16 +258,45 @@ app.post('/api/generate', async (req, res) => {
     const mimeType = matches[1];
     const base64Data = matches[2];
 
+    // Select Gemini model based on user plan
+    let modelName = 'gemini-2.5-flash';
+    if (userPlan === 'pro' || userPlan === 'studio') {
+      modelName = 'gemini-2.5-pro';
+    }
+
+    // Construct plan instructions
+    let planInstructions = "";
+    if (userPlan === 'starter') {
+      planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
+- Başlık: Maksimum 60 karakterlik sade bir başlık.
+- Açıklama: En fazla 2 cümlelik basit bir açıklama.
+- Anahtar kelimeler (keywords): 20 ila 30 adet arası standart anahtar kelime seç.`;
+    } else if (userPlan === 'pro') {
+      planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
+- Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler içeren zengin başlık (maksimum 75 karakter).
+- Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
+- Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine uygun popüler etiketler.`;
+    } else if (userPlan === 'studio') {
+      planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
+- Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter, başına [STUDIO VIP] ekleme, sadece zengin başlık).
+- Açıklama: En az 4 cümlelik, görselin kompozisyonunu, ışık kalitesini (yumuşak stüdyo ışığı vb.), dokularını ve sanatsal açısını betimleyen detaylı bir analiz metni.
+- Anahtar kelimeler (keywords): Tam olarak 45 ila 50 adet arası niş ve en yüksek hacimli stok/e-ticaret etiketleri.
+- E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler, kutu içeriği ve hediye tavsiyeleri içeren zengin bir pazarlama kopyası olmalıdır.`;
+    }
+
     // 3. Prompt Construction
     const prompt = `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
 Görsel Kategorisi: ${categoryName}
 
+Plan Kuralları:
+${planInstructions}
+
 JSON Yapısı ve Kurallar:
 {
   "category": "${categoryKey}",
-  "title": "Görselin içeriğini en iyi yansıtan, SEO uyumlu, profesyonel Türkçe stok başlığı (maksimum 70 karakter).",
-  "description": "Görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan 2-3 cümlelik detaylı Türkçe açıklama.",
-  "keywords": "Görselle en alakalı 30 adet Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır (örn: kupa, seramik, kahve fincanı...). Tamamı küçük harf olmalıdır.",
+  "title": "Görselin içeriğini en iyi yansıtan, plan kurallarına uygun, SEO uyumlu Türkçe başlık.",
+  "description": "Plan kurallarına uygun, görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan Türkçe açıklama.",
+  "keywords": "Plan kurallarında belirtilen miktarda en alakalı Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır (örn: kupa, seramik, kahve fincanı...). Tamamı küçük harf olmalıdır.",
   "tags": "E-Ticaret için optimize edilmiş, en fazla 20 karakter uzunluğunda 13 adet ürün etiketi, aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
   
   "adobe": {
@@ -291,7 +322,7 @@ JSON Yapısı ve Kurallar:
   
   "ecommerce": {
     "title": "E-ticaret siteleri (Etsy, Trendyol vs.) için optimize edilmiş, anahtar kelimeler içeren boru işareti (|) ile ayrılmış zengin başlık (örn: 'El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi').",
-    "description": "Premium e-ticaret ürün açıklaması. Emojilerle süslenmiş, maddeler halinde özellikler, kullanım alanları ve hediye tavsiyeleri içermelidir.",
+    "description": "Premium e-ticaret ürün açıklaması. Plan kurallarına ve e-ticaret formatına uygun zengin ürün açıklaması.",
     "tags": "Etsy/Trendyol uyumlu, aralarında virgülle ayrılmış tam olarak 13 adet küçük harfli etiket."
   }
 }
@@ -299,7 +330,7 @@ JSON Yapısı ve Kurallar:
 ÇIKTI SADECE YUKARIDAKİ JSON ŞABLONUNA UYGUN BİR JSON OLMALIDIR. Başka açıklama veya kod bloğu içermemelidir.`;
 
     // 4. API Request using Node 20 global fetch
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
