@@ -666,6 +666,10 @@ if (!process.env.VERCEL) {
 }
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`🚀 Güvenli API Proxy Sunucusu http://localhost:${PORT} adresinde çalışıyor.`);
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Güvenli API Proxy Sunucusu http://localhost:${PORT} adresinde çalışıyor.`);
+  });
+}
+
+export default app;
