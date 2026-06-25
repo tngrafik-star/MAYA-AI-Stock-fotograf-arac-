@@ -5,7 +5,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
-import WebSocket from 'ws';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
@@ -32,9 +31,6 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SU
 const supabaseAdmin = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: false
-  },
-  realtime: {
-    transport: WebSocket
   }
 }) : null;
 
@@ -56,14 +52,16 @@ if (smtpHost && smtpUser && smtpPass && smtpHost !== 'your_smtp_host_here') {
     }
   });
 
-  // Verify SMTP connection config on boot
-  emailTransporter.verify((error, success) => {
-    if (error) {
-      console.error('❌ SMTP Connection verification failed:', error.message);
-    } else {
-      console.log('📧 SMTP Server is ready to send email replies.');
-    }
-  });
+  // Verify SMTP connection config on boot (only in non-Vercel environments to prevent function timeouts)
+  if (!process.env.VERCEL) {
+    emailTransporter.verify((error, success) => {
+      if (error) {
+        console.error('❌ SMTP Connection verification failed:', error.message);
+      } else {
+        console.log('📧 SMTP Server is ready to send email replies.');
+      }
+    });
+  }
 } else {
   console.warn('⚠️ SMTP Configuration is missing or using placeholder values. AI email auto-responder is disabled.');
 }
@@ -650,19 +648,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files from the 'dist' directory
-app.use(express.static(path.join(__dirname, 'dist')));
+// Serve static files and handle SPA fallback only when not running on Vercel
+if (!process.env.VERCEL) {
+  // Serve static files from the 'dist' directory
+  app.use(express.static(path.join(__dirname, 'dist')));
 
-// Fallback for SPA routing
-app.get(/.*/, (req, res) => {
-  if (req.path.startsWith('/app/')) {
-    res.sendFile(path.join(__dirname, 'dist', 'app', 'index.html'));
-  } else if (req.path.startsWith('/auth/callback/')) {
-    res.sendFile(path.join(__dirname, 'dist', 'auth', 'callback', 'index.html'));
-  } else {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  }
-});
+  // Fallback for SPA routing
+  app.get(/.*/, (req, res) => {
+    if (req.path.startsWith('/app/')) {
+      res.sendFile(path.join(__dirname, 'dist', 'app', 'index.html'));
+    } else if (req.path.startsWith('/auth/callback/')) {
+      res.sendFile(path.join(__dirname, 'dist', 'auth', 'callback', 'index.html'));
+    } else {
+      res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    }
+  });
+}
 
 // Start Server
 app.listen(PORT, () => {
