@@ -216,15 +216,15 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 app.post('/api/generate', async (req, res) => {
   try {
     const { base64DataUrl, categoryKey, customApiKey, plan } = req.body;
-    
+
     if (!base64DataUrl) {
       return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
     }
 
     const apiKey = customApiKey || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(400).json({ 
-        error: { message: "Gemini API Anahtarı bulunamadı. Lütfen sunucuda tanımlayın veya hesap bilgilerinizden ekleyin." } 
+      return res.status(400).json({
+        error: { message: "Gemini API Anahtarı bulunamadı. Lütfen sunucuda tanımlayın veya hesap bilgilerinizden ekleyin." }
       });
     }
 
@@ -361,7 +361,7 @@ JSON Yapısı ve Kurallar:
       try {
         const errJson = JSON.parse(errText);
         errMsg = errJson.error?.message || errMsg;
-      } catch (e) {}
+      } catch (e) { }
       return res.status(response.status).json({ error: { message: errMsg } });
     }
 
@@ -390,8 +390,8 @@ app.post('/api/payment/create-checkout-session', async (req, res) => {
     }
 
     if (!stripe) {
-      return res.status(400).json({ 
-        error: { message: "Stripe API anahtarı tanımlanmamış. Lütfen .env dosyasında STRIPE_SECRET_KEY tanımlayın." } 
+      return res.status(400).json({
+        error: { message: "Stripe API anahtarı tanımlanmamış. Lütfen .env dosyasında STRIPE_SECRET_KEY tanımlayın." }
       });
     }
 
@@ -452,10 +452,10 @@ app.post('/api/payment/lemon/create-checkout-session', async (req, res) => {
 
     const apiKey = process.env.LEMON_SQUEEZY_API_KEY;
     const storeId = process.env.LEMON_SQUEEZY_STORE_ID;
-    
+
     if (!apiKey || apiKey === 'your_lemonsqueezy_api_key_here' || !storeId || storeId === 'your_lemonsqueezy_store_id_here') {
-      return res.status(400).json({ 
-        error: { message: "Lemon Squeezy API anahtarı veya Store ID tanımlanmamış. Lütfen .env dosyasında tanımlayın." } 
+      return res.status(400).json({
+        error: { message: "Lemon Squeezy API anahtarı veya Store ID tanımlanmamış. Lütfen .env dosyasında tanımlayın." }
       });
     }
 
@@ -526,7 +526,7 @@ app.post('/api/payment/lemon/create-checkout-session', async (req, res) => {
         } else if (errJson.error) {
           errMsg = errJson.error;
         }
-      } catch (e) {}
+      } catch (e) { }
       return res.status(response.status).json({ error: { message: errMsg } });
     }
 
@@ -621,7 +621,7 @@ Yanıt Kuralları:
     if (emailTransporter) {
       // Parse clean sender email from the "from" header (e.g. "Name <email@domain.com>" -> "email@domain.com")
       const toEmail = from.includes('<') ? from.substring(from.indexOf('<') + 1, from.indexOf('>')) : from.trim();
-      
+
       const mailOptions = {
         from: `"MayaSolutions Destek" <${process.env.EMAIL_SMTP_USER}>`,
         to: toEmail,
