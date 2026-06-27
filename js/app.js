@@ -2,7 +2,7 @@ import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs
 import { logout, updateProfile, updateSubscription } from './auth.js';
 import { getCategories, generateAIData, generateGeminiMetadata } from './ai.js';
 import { supabase } from './supabase.js';
-import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale } from './i18n/index.js';
+import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
 
 // Seed DB just in case
@@ -423,7 +423,7 @@ const initApp = async () => {
       const userKey = user.gemini_api_key || '';
 
       // Real API call via secure backend proxy
-      generateGeminiMetadata(e.target.result, categoryKey, userKey, user.plan)
+      generateGeminiMetadata(e.target.result, categoryKey, userKey, user.plan, getCurrentLanguage())
         .then(generatedData => {
           // Save to Database
           saveGeneration(user.id, e.target.result, generatedData).then(() => {
@@ -457,7 +457,7 @@ const initApp = async () => {
           }
           
           setTimeout(() => {
-            const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan);
+            const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan, getCurrentLanguage());
             
             // Save to Database
             saveGeneration(user.id, e.target.result, generatedData).then(() => {

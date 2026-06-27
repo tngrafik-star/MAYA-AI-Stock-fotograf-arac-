@@ -1,5 +1,375 @@
 // AI Metadata Simulator for MayaSolutions
-// Generates realistic Turkish stock & e-commerce metadata based on category selection
+// Generates realistic stock & e-commerce metadata based on category and language selection
+
+const CATEGORY_TEMPLATES_EN = {
+  decor: {
+    name: 'Lifestyle & Decor',
+    titles: [
+      'Minimalist Ceramic Mug with Natural Wooden Tray',
+      'Bohemian Style Dried Flowers in an Earthy Ceramic Pot',
+      'Natural Soy Candles on a Luxury Marble Tray',
+      'Linen-Textured Decorative Pillow on a Rustic Armchair'
+    ],
+    descriptions: [
+      'Handmade ceramic coffee mug and a chic wooden serving tray shot in a modern room with natural light. Home decor and quiet lifestyle concept.',
+      'Dried pampas grass arrangement in a matte terracotta pot with a linen-detail background. Minimalist interior design and warm atmosphere.',
+      'Handmade soy candle with calming aromatherapy effect burning on a marble serving tray. Aesthetic spa and home self-care theme.',
+      'Beige linen-fabric cushion on wooden furniture creating an aesthetic and comfortable corner. Warm Scandinavian home style.'
+    ],
+    keywords: [
+      'home decor, ceramic mug, minimalist living, scandinavian style, coffee time, handmade ceramic, wooden tray, natural living, aesthetic room, bohemian decor, earth tones, calm atmosphere, dried flowers, soy candle, marble tray, linen pillow, rustic style, cozy home, home textile, handcrafted'
+    ],
+    ecommerce: {
+      title: 'Handmade Ceramic Coffee Mug | Custom Design Cup | Gift Mug - Minimalist Scandinavian Series',
+      description: `✨ Fully handmade ceramic mug that will add aesthetics to your home and coffee times.
+
+• Material: High-quality stoneware clay and food-safe matte glaze.
+• Volume: Approximately 320 ml.
+• Gift Option: Shipped in a stylish kraft box with protective packaging.`,
+      tags: 'ceramic mug, handmade mug, coffee cup, design mug, gift cup, kitchen decor, scandinavian mug, coffee lover, handmade ceramic, natural mug'
+    }
+  },
+  cosmetics: {
+    name: 'Cosmetics & Beauty',
+    titles: [
+      'Moisturizing Skin Serum in a Glass Bottle with Dropper',
+      'Organic Face Cream with Wooden Spatula',
+      'Natural Clay Mask with Eco Bamboo Brush',
+      'Cosmetic Oil Bottle with Rose Petals in Soft Light'
+    ],
+    descriptions: [
+      'Clean-ingredient moisturizing face serum in a clear glass bottle with dropper on a minimalist background. Luxury skincare and beauty routine.',
+      'Nourishing organic night cream in a matte glass jar presented with a wooden spatula. Natural beauty and wellness concept product photo.',
+      'Green clay mask prepared in a ceramic bowl and a bamboo application brush. Skin purification, detox and spa salon theme.',
+      'Herbal massage oil in a glass dropper bottle surrounded by fresh pink rose petals. Aromatherapy, relaxation and natural cosmetics product shoot.'
+    ],
+    keywords: [
+      'skincare, face serum, cosmetic bottle, organic beauty, natural cosmetics, glass dropper, moisturizing serum, spa and wellness, clean ingredients, skincare routine, beauty product, massage oil, clay mask, organic cream, bamboo brush, aromatherapy, herbal oil, luxury cosmetics, smooth skin, personal care'
+    ],
+    ecommerce: {
+      title: 'Organic Moisturizing Skin Serum | 100% Natural Hyaluronic Acid & Vegan Face Serum - Anti-Aging Glow',
+      description: `🌿 Naturally restore the intense moisture and radiance your skin needs.
+
+• Ingredients: Hyaluronic Acid, Aloe Vera Extract, Organic Rose Water and Vitamin E.
+• Effect: Penetrates deeper skin layers, plumps fine lines, creates an intense moisture barrier.
+• Volume: 30ml amber glass bottle with dropper.`,
+      tags: 'face serum, skincare, organic serum, natural cosmetics, moisturizer, hyaluronic acid, vegan cosmetics, anti aging, clean beauty, glowing skin'
+    }
+  },
+  tech: {
+    name: 'Technology & Accessories',
+    titles: [
+      'Elegant Wireless Over-Ear Bluetooth Headphones',
+      'Matte Black Smartwatch with Magnetic Charging Unit',
+      'Metallic Laptop on a Minimalist Work Desk',
+      'Slim Smartphone with Wireless Charging Stand'
+    ],
+    descriptions: [
+      'Premium matte grey wireless over-ear headphones with advanced noise cancellation. Technology product shot in a clean and stylish studio background.',
+      'Matte black stainless steel smartwatch with health tracking and sports modes on a minimalist stand. Modern wearable technology detail.',
+      'Slim aluminum laptop closed on a stylish desk setup. Home office and productivity concept.',
+      'Three-camera luxury smartphone with a burnt orange leather case on a vertical wireless charging unit. Mobile technology and accessories.'
+    ],
+    keywords: [
+      'smartwatch, wireless headphones, bluetooth headphones, wearable tech, smartphone, laptop, tech accessories, matte black, metallic design, minimalist desk, home office, premium headphones, wireless charging, phone case, productivity, sound system, sport watch, leather case, modern office, luxury tech'
+    ],
+    ecommerce: {
+      title: 'Premium Active Noise Cancelling (ANC) Wireless Bluetooth Headphones | 40 Hour Playback Over-Ear Headphones - Matte Black',
+      description: `🎧 Silence the outside world and focus on the depths of music.
+
+• Sound Quality: Hi-Res Audio certified, 40mm dynamic drivers with deep bass and crystal clear highs.
+• Active Noise Cancellation (ANC): Blocks external sounds up to 90%.
+• Battery Life: Up to 30 hours with ANC on, 40 hours with ANC off per single charge.`,
+      tags: 'bluetooth headphones, wireless headphones, noise cancelling, anc headphones, black headphones, music headphones, gaming headphones, tech gift, travel headphones'
+    }
+  },
+  food: {
+    name: 'Food & Beverage',
+    titles: [
+      'Freshly Ground Coffee Beans and Coffee Brewing Equipment',
+      'Extra Virgin Olive Oil Bottle with Rosemary on Dark Background',
+      'Freshly Baked Sourdough Bread Slices on Wooden Board',
+      'Iced Hibiscus Tea with Fresh Mint Leaves in Glass'
+    ],
+    descriptions: [
+      'Fresh filter coffee brewing via pour-over (V60) method with roasted coffee beans around. Specialty coffee culture photograph.',
+      'Cold-pressed homemade extra virgin olive oil in a dark green glass bottle with fresh thyme and rosemary branches on rustic dark wooden table.',
+      'Crispy crust freshly baked sourdough bread, porous inside. Rustic artisan bakery shot on linen cloth.',
+      'Refreshing red hibiscus tea in a clear glass with melting ice cubes and fresh green mint. Natural cold beverage concept.'
+    ],
+    keywords: [
+      'filter coffee, coffee bean, olive oil, organic food, sourdough bread, baking, cold beverage, hibiscus tea, rustic food photography, fresh spices, cold pressed, organic olive oil, v60 brewing, specialty coffee, coffee shop, healthy eating, artisan bread, fresh mint, iced tea, gourmet flavors'
+    ],
+    ecommerce: {
+      title: 'Aegean Cold-Pressed Extra Virgin Olive Oil | 100% Organic Early Harvest Olive Oil - 500ml Elegant Glass Bottle',
+      description: `🌿 Superior quality extra virgin olive oil obtained by cold-pressing early harvest olives from ancient Aegean olive trees.
+
+• Acidity: Maximum 0.3% oleic acid (Ultra low acidity).
+• Flavor Profile: Rich fruity taste with aromas of freshly cut grass, green apple and tomato leaf.`,
+      tags: 'extra virgin olive oil, cold pressed, early harvest, organic olive oil, gourmet, natural oil, aegean olive oil, salad oil, healthy eating, glass bottle oil, gift olive oil'
+    }
+  },
+  landscape: {
+    name: 'Nature & Landscape',
+    titles: [
+      'Pine Forest Under Mist and Smoky Mountain Peaks',
+      'Wavy Sea with Golden Reflections at Sunset',
+      'Forest Path Covered with Golden Yellow Leaves in Autumn',
+      'Snowy Camping Tent Under a Starry Sky'
+    ],
+    descriptions: [
+      'Majestic mountain range and dense pine trees covered with a layer of fog in the early morning hours. Wild nature and adventure.',
+      'Golden light reflections created by the setting evening sun as foamy ocean waves crash onto the shore. Peaceful nature and vacation theme.',
+      'A winding forest path covered with fallen yellow and orange autumn leaves stretching into the distance. Tranquility and seasonal transition.',
+      'Orange camping tent illuminated from inside under the Milky Way galaxy in the clear winter sky. Adventure and outdoor sports.'
+    ],
+    keywords: [
+      'pine forest, misty mountains, sunset, ocean waves, golden hour, autumn leaves, forest path, winter camp, camping tent, milky way, starry sky, wild nature, landscape photography, outdoor adventure, travel routes, tranquility, travel diary, mountain climbing, nature walk, wilderness'
+    ],
+    ecommerce: {
+      title: 'Misty Pine Forest Landscape Premium Wall Poster | Large Format Nature-Themed Print - Artistic Framed Print',
+      description: `🌲 Special artistic photo print that will change the atmosphere of your home or office and bring the peace of nature to your walls.
+
+• Print Quality: Ultra-high resolution print on 250gr museum-quality acid-free matte fine art paper.
+• Frame Detail: Minimalist matte black wooden frame with break-resistant high transparency plexiglas protection.`,
+      tags: 'wall poster, nature print, framed art, forest poster, minimalist art, fine art print, home gift, living room decor, large format poster, artistic photo, landscape art'
+    }
+  },
+  fashion: {
+    name: 'Fashion & Apparel',
+    titles: [
+      'Modern Denim Jacket and White T-Shirt Combination in Studio',
+      'Stylish Women Sunglasses and Trench Coat in Street Style',
+      'Retro Leather Boot and Woven Bag Detail',
+      'Summer Hat and Linen Dress in Pastel Tones'
+    ],
+    descriptions: [
+      'New season denim jacket and sporty chic concept fashion photography under minimalist studio light.',
+      'A stylish woman with trendy sunglasses and a classic trench coat walking in the city center on a sunny day.',
+      'Retro-style brown leather boots and a hand-woven linen bag on a shoulder on old cobblestone streets.',
+      'Straw hat and flowing beige linen dress detail wearable at the beach or a summer party.'
+    ],
+    keywords: [
+      'fashion apparel, denim jacket, street style, trench coat, sunglasses, new season, studio shoot, retro fashion, leather boots, woven bag, summer dress, linen fabric, straw hat, style outfit, chic clothing, youth style, autumn fashion, textile product, wardrobe, daily elegance'
+    ],
+    ecommerce: {
+      title: 'Unisex Oversize Denim Jacket | New Season Premium Denim Jacket - Classic Blue',
+      description: `🧥 Premium denim jacket with a timeless design that will be the savior piece of your wardrobe.
+
+• Fabric: 100% cotton denim, durable and breathable texture.
+• Cut: Modern oversize cut, compatible fit for every size.`,
+      tags: 'denim jacket, oversize jacket, unisex jacket, blue jacket, street fashion, premium denim, cotton jacket, trend jacket, fashion gift'
+    }
+  },
+  fitness: {
+    name: 'Sports & Wellness',
+    titles: [
+      'Woman Exercising on Yoga Mat with Sports Water Bottle',
+      'Running Shoe Detail on Running Track at Late Afternoon Light',
+      'Steel Dumbbells and Sweat Towel in Fitness Gym',
+      'Detox Smoothie and Fresh Fruits on Natural Wooden Table'
+    ],
+    descriptions: [
+      'Female athlete doing exercise movements on a green yoga mat in a calm studio with a steel water bottle nearby.',
+      'Dynamic movement moment of a runner near sunset on a running track with sports shoes.',
+      'Chrome-plated dumbbells on a weight rack and a microfiber towel in a professional fitness gym.',
+      'Green spinach and banana smoothie in a glass bottle with fresh kiwi and chia seeds around.'
+    ],
+    keywords: [
+      'healthy living, yoga mat, sports water bottle, exercise, running shoes, gym, dumbbell weights, detox smoothie, green drink, chia seeds, sports nutrition, cardio, fitness training, pilates, healthy eating, active lifestyle, sweat towel, motivation, morning workout, stretching'
+    ],
+    ecommerce: {
+      title: 'Dual-Color Non-Slip TPE Yoga and Pilates Mat | 6mm Thickness Sports Mat - Eco-Friendly and Durable',
+      description: `🧘‍♀️ High-density non-slip yoga mat to make your exercises more comfortable and safe.
+
+• Material: Eco-friendly, recyclable TPE (Latex and PVC free).
+• Thickness: 6mm optimal thickness protects your joints and facilitates balance.`,
+      tags: 'yoga mat, pilates mat, sports mat, non-slip mat, exercise mat, home workout, fitness equipment, tpe mat, healthy lifestyle, blue mat, sports gift'
+    }
+  },
+  business: {
+    name: 'Business & Office',
+    titles: [
+      'Employees and Whiteboard in a Modern Meeting Room',
+      'Designer Drawing Tablet and Notebook on Office Desk',
+      'Analyst Doing Financial Graph Analysis with Calculator',
+      'Young Team Brainstorming Behind Glass'
+    ],
+    descriptions: [
+      'Professional team writing notes on a whiteboard and brainstorming in a bright meeting room with wide windows.',
+      'Drawing tablet, stylus pen and a stylish notebook with a coffee cup on a graphic designer desk.',
+      'Expert analyzing budget and sales graphs printed on light-colored papers in a bright environment.',
+      'Young entrepreneur team planning a new project by pinning colorful sticky notes on the office glass partition.'
+    ],
+    keywords: [
+      'business, meeting room, brainstorming, office desk, graphic tablet, drawing pen, financial analysis, sales chart, young entrepreneurs, sticky notes, collaboration, office environment, corporate life, career, modern office, planning meeting, business management, data analysis, digital design, teamwork'
+    ],
+    ecommerce: {
+      title: 'Smart Leather Desk Pad and Office Organizer | Premium Leather Keyboard Mouse Pad - Large Brown',
+      description: `💼 Premium handmade leather desk pad that will bring luxury and order to your office desk.
+
+• Material: 100% first quality faux leather (easy to clean, waterproof).
+• Size: 80cm x 40cm wide surface area.`,
+      tags: 'leather desk pad, desk organizer, office accessory, mouse pad, large mouse pad, work desk, gift office, corporate gift, stylish office, home office'
+    }
+  },
+  architecture: {
+    name: 'Architecture & Building',
+    titles: [
+      'City View and Geometric Structures from Skyscraper Glass',
+      'Spiral Stairs and Light Play in Modern Museum Building',
+      'Brick Wall and Steel Beams in Loft Style Home',
+      'Wooden Windows and Ivy of a Historic Stone Mansion'
+    ],
+    descriptions: [
+      'Reflective glass surfaces of modern architecture skyscrapers and a geometric frame taken from below.',
+      'Huge spiral staircase in the reinforced concrete architecture of the art museum and natural daylight filtering from above.',
+      'Industrial-inspired brick wall cladding, black metal details and pendant lamps in a high-ceilinged loft apartment.',
+      'Green ivy surrounding the arched wooden windows of a restored stone house with traditional architecture.'
+    ],
+    keywords: [
+      'modern architecture, skyscrapers, geometric structures, spiral stairs, museum building, interior design, loft apartment, brick wall, industrial design, stone mansion, wooden window, ivy, reinforced concrete, light reflection, urban texture, restoration, building facade, minimal architecture, architectural detail, art gallery'
+    ],
+    ecommerce: {
+      title: '3D Brick Pattern Self-Adhesive Wall Panel | Heat and Sound Insulated Decorative Wallpaper - Pack of 10',
+      description: `🧱 Decorative adhesive panel to change the atmosphere of your home without calling a professional.
+
+• Material: Soft polyethylene foam (protective against impacts, suitable for children rooms).
+• Application: Simply remove the protective tape and stick to a clean wall. Can be easily cut with scissors.`,
+      tags: 'wall panel, adhesive panel, brick pattern, wallpaper, home decor, insulated panel, practical decor, living room wall, 3d wallpaper, foam panel'
+    }
+  },
+  animals: {
+    name: 'Pets & Wildlife',
+    titles: [
+      'Cute Tabby Cat Sunbathing by the Window',
+      'Golden Retriever Running in the Park with Wet Nose',
+      'Bright Orange Japanese Goldfish Gliding in Aquarium',
+      'Green Budgerigar on a Branch with Colorful Feathers'
+    ],
+    descriptions: [
+      'A cute green-eyed tabby cat stretched out on a sunlit window sill.',
+      'A happy and energetic Golden Retriever dog running with tongue out in greenery.',
+      'A cute orange ornamental fish gliding with shimmering scales among aquarium plants.',
+      'A lively yellow-green budgerigar standing upright on a wooden perch outside the cage or in its natural environment.'
+    ],
+    keywords: [
+      'pet, tabby cat, cute cat, cat eyes, golden retriever, happy dog, dog training, goldfish, aquarium plants, budgerigar, colorful feathers, animal love, veterinary, cat food, dog toy, pet care, nature and animals, cute paw, furry friends, domestic animal'
+    ],
+    ecommerce: {
+      title: 'Orthopedic Calming Plush Cat and Dog Bed | Washable Fluffy Round Pet Bed - Grey (60cm)',
+      description: `🐱 Ultra-soft plush bed designed for your furry friends to have the most comfortable and deep sleep.
+
+• Material: First-class fluffy plush fabric and antibacterial bead fiber fill.
+• Design: The round donut design makes your cat or dog feel safe and cuddled.`,
+      tags: 'cat bed, dog bed, plush bed, pet bed, fluffy bed, orthopedic bed, cat nest, dog nest, washable bed, cat supplies, grey bed, pet accessory'
+    }
+  },
+  travel: {
+    name: 'Travel & Culture',
+    titles: [
+      'Colorful Houses and Cobblestone Streets in the Old City',
+      'Historic Castle and Green Valley View at the Mountain Foot',
+      'Colorful Exotic Spices in Sacks at a Spice Market',
+      'Traveler with Backpack Finding Way with Map and Compass'
+    ],
+    descriptions: [
+      'Old cobblestone street in a historic neighborhood with pastel-colored windowed houses on both sides.',
+      'Majestic historic castle ruins built on steep rocks and the river valley stretching below.',
+      'Red chili flakes, yellow turmeric, cardamom and cinnamon sticks in sacks lined up side by side in a traditional bazaar.',
+      'A tourist drawing their route on a world map on a wooden table with a brass compass.'
+    ],
+    keywords: [
+      'travel, old city, colorful houses, cobblestone, historic castle, green valley, spice market, exotic spices, backpacker, world map, compass, tourism, holiday destination, history and culture, travel diary, adventure travel, cultural heritage, old streets, explorer, photo journey'
+    ],
+    ecommerce: {
+      title: 'Waterproof Multi-Function Travel Backpack | USB Charging Port Large Capacity Luggage Bag - Unisex Black',
+      description: `✈️ Smart backpack to keep all your belongings organized on your travels, business trips or daily life.
+
+• Material: High-density water-resistant oxford fabric.
+• Compartments: 15.6 inch padded laptop compartment, wet/dry separation pocket and hidden passport pocket.`,
+      tags: 'travel bag, backpack, laptop bag, cabin size bag, waterproof bag, usb bag, luggage bag, black backpack, unisex bag, camping bag, travel gear, gift bag'
+    }
+  },
+  automotive: {
+    name: 'Automotive & Vehicles',
+    titles: [
+      'Sports Car Front Grille and Headlights in City Lights at Night',
+      'Off-Road Vehicle on a Dusty Road with Mud Detail',
+      'Classic Red Motorcycle and Leather Helmet Detail',
+      'Car Speeding on an Empty Highway at Sunset'
+    ],
+    descriptions: [
+      'The lens-style LED headlights of a luxury sports car with sharp lines reflecting neon lights at night.',
+      'Dynamic moment of a 4x4 off-road vehicle speeding through a muddy puddle on mountainous terrain.',
+      'Vintage motorcycle with shining chrome parts parked in a garage or by the seaside with a leather helmet on the handlebar.',
+      'A modern passenger car disappearing on a long highway under the orange light of the setting sun on the horizon.'
+    ],
+    keywords: [
+      'automotive, sports car, LED headlights, luxury car, off-road, terrain vehicle, 4x4, muddy road, classic motorcycle, vintage bike, leather helmet, highway, sunset drive, car design, speed passion, driving pleasure, car modification, vehicle maintenance, motorcycle accessories, road scenery'
+    ],
+    ecommerce: {
+      title: 'High-Resolution Night Vision Dashboard Camera | Full HD 1080P G-Sensor Auto Road Recording Device - 170 Degree Angle',
+      description: `🚗 Smart dash cam that maximizes your driving safety and automatically locks accident footage.
+
+• Resolution: Real 1080P Full HD recording quality captures plates and details clearly.
+• Night Vision: WDR technology records high-quality images at night and in low light.`,
+      tags: 'dash cam, car camera, road recorder, hd camera, night vision camera, car interior accessories, g-sensor camera, accident camera, auto electronics, safe driving'
+    }
+  },
+  portrait: {
+    name: 'People & Portrait',
+    titles: [
+      'Portrait Photo of a Young Smiling Woman Outdoors',
+      'Thoughtful Facial Expression of an Old Man Reading a Book',
+      'Happy Family and Children Laughing Together in the Park',
+      'Focused Hands of a Craftsman Working in Natural Light'
+    ],
+    descriptions: [
+      'Portrait of a young woman with blurred background (bokeh effect) looking at the camera with a sincere smile in daylight.',
+      'Portrait of a wise old man reading an old book with glasses at the tip of his nose in a library or at home.',
+      'A mother, father and child lying on the grass on a sunny day, hugging each other and laughing out loud.',
+      'Detailed hand movements and sweat on the brow of a craftsman shaping clay pottery or carving wood in his workshop.'
+    ],
+    keywords: [
+      'human portrait, smiling woman, outdoor shoot, bokeh background, elderly man, book reading, family happiness, children laugh, park picnic, craftsman hands, focus, sincere expression, human emotions, lifestyle, daily life, portrait photography, natural light, workshop, mother child, happy moments'
+    ],
+    ecommerce: {
+      title: 'Portable LED Ring Light with Tripod Set | TikTok and YouTube Live Streaming Lamp - 3 Color Modes 10 Brightness Levels',
+      description: `📸 Ideal ring light stand for professional portrait shoots, makeup videos and live streams.
+
+• Light Diameter: 10 inch (26cm) LED ring light.
+• Color Modes: 3 different color tones: Warm Yellow, Natural White, Cool White.`,
+      tags: 'ring light, tripod set, led ring, studio light, live stream light, tiktok light, youtube light, selfie light, portrait light, makeup light'
+    }
+  },
+  other: {
+    name: 'Other / General',
+    titles: [
+      'Minimalist Object Shoot in Studio Light',
+      'Colorful Abstract Pattern and Texture Detail',
+      'Professional Product Shoot on Modern Background',
+      'Creative Concept Photo with Depth'
+    ],
+    descriptions: [
+      'Professional product or concept photography taken in a minimalist and clean studio environment.',
+      'Abstract background texture with vivid colors and aesthetic transitions usable in design projects.',
+      'High-quality object photography in front of a modern and stylish background with details highlighted.',
+      'Concept studio shoot with creative ideas, artistic perspective and high sense of depth.'
+    ],
+    keywords: [
+      'minimalist shoot, studio photo, product photography, abstract pattern, colorful texture, professional photography, high quality, concept design, artistic view, modern background, aesthetic visual, object shoot, creative concept, design element, vivid colors, soft light, detail shot, stock image, commercial use, depth sense'
+    ],
+    ecommerce: {
+      title: 'Custom Design Product | Multi-Purpose Premium Design Object',
+      description: `✨ Special design product made with high-quality materials that will add aesthetics and functionality to your life.
+
+• Design: Unique look with modern, elegant and minimalist lines.
+• Material: First-class quality and long-lasting raw material usage.`,
+      tags: 'design product, premium quality, custom design, home accessory, office accessory, multi-purpose product, gift ideas, modern design, aesthetic objects, quality product'
+    }
+  }
+};
 
 const CATEGORY_TEMPLATES = {
   decor: {
@@ -435,7 +805,8 @@ export function getCategories() {
   }));
 }
 
-export function generateAIData(categoryKey, filename = '', userPlan = 'starter') {
+export function generateAIData(categoryKey, filename = '', userPlan = 'starter', language = 'tr') {
+  const TEMPLATES = language === 'en' ? CATEGORY_TEMPLATES_EN : CATEGORY_TEMPLATES;
   // If no category selected, try to infer from filename
   let selectedCategory = categoryKey;
   if (!selectedCategory && filename) {
@@ -475,7 +846,7 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter')
     selectedCategory = keys[Math.floor(Math.random() * keys.length)];
   }
 
-  const template = CATEGORY_TEMPLATES[selectedCategory];
+  const template = TEMPLATES[selectedCategory] || CATEGORY_TEMPLATES[selectedCategory];
   
   // Select a random index from template lists to make generations varied
   const randomIndex = Math.floor(Math.random() * template.titles.length);
@@ -638,7 +1009,7 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter')
   };
 }
 
-export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null, userPlan = 'starter') {
+export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null, userPlan = 'starter', language = 'tr') {
   // 1. Determine API Key
   const apiKey = customApiKey || import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey || apiKey === 'your_gemini_api_key_here') {
@@ -662,7 +1033,10 @@ export async function generateGeminiMetadata(base64DataUrl, categoryKey, customA
     portrait: 'İnsanlar & Portre',
     other: 'Diğer / Genel'
   };
-  const categoryName = cats[categoryKey] || 'Genel';
+  const categoryName = cats[categoryKey] || (language === 'en' ? 'General' : 'Genel');
+
+  // Determine output language
+  const isEnglish = language === 'en';
 
   // 3. Parse base64DataUrl
   const regex = /^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/;
@@ -679,28 +1053,92 @@ export async function generateGeminiMetadata(base64DataUrl, categoryKey, customA
     modelName = 'gemini-2.5-pro';
   }
 
-  // Construct plan instructions
+  // Construct plan instructions based on language
   let planInstructions = "";
-  if (userPlan === 'starter') {
-    planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
+  if (isEnglish) {
+    if (userPlan === 'starter') {
+      planInstructions = `Subscription Plan: Starter. Generate standard quality, short and clear titles/descriptions.
+- Title: A simple title of maximum 60 characters.
+- Description: A simple description of at most 2 sentences.
+- Keywords: Select between 20 and 30 standard keywords.`;
+    } else if (userPlan === 'pro') {
+      planInstructions = `Subscription Plan: Pro. Generate professional quality, high SEO and detailed content.
+- Title: An attention-grabbing title with high-search-volume keywords (maximum 75 characters).
+- Description: A professional 3-4 sentence text explaining the image's color palette, composition and commercial value.
+- Keywords: Between 30 and 40 popular tags aligned with search trends.`;
+    } else if (userPlan === 'studio') {
+      planInstructions = `Subscription Plan: Studio. Generate top-level VIP studio quality content with artistic angle, lighting, textures, feel and luxury marketing copy.
+- Title: Rich studio title optimized for maximum click-through rate and SEO-friendly (maximum 80 characters).
+- Description: At least 4-sentence detailed analysis describing the image's composition, light quality, textures and artistic angle.
+- Keywords: Exactly 45 to 50 niche and highest-volume stock/e-commerce tags.
+- E-Commerce Description: Rich marketing copy decorated with emojis, luxury and attractive, with bullet-pointed features, box contents and gift recommendations.`;
+    }
+  } else {
+    if (userPlan === 'starter') {
+      planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
 - Başlık: Maksimum 60 karakterlik sade bir başlık.
 - Açıklama: En fazla 2 cümlelik basit bir açıklama.
 - Anahtar kelimeler (keywords): 20 ila 30 adet arası standart anahtar kelime seç.`;
-  } else if (userPlan === 'pro') {
-    planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
+    } else if (userPlan === 'pro') {
+      planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
 - Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler içeren zengin başlık (maksimum 75 karakter).
 - Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
 - Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine uygun popüler etiketler.`;
-  } else if (userPlan === 'studio') {
-    planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
-- Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter, başına [STUDIO VIP] ekleme, sadece zengin başlık).
-- Açıklama: En az 4 cümlelik, görselin kompozisyonunu, ışık kalitesini (yumuşak stüdyo ışığı vb.), dokularını ve sanatsal açısını betimleyen detaylı bir analiz metni.
+    } else if (userPlan === 'studio') {
+      planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
+- Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter).
+- Açıklama: En az 4 cümlelik detaylı analiz metni.
 - Anahtar kelimeler (keywords): Tam olarak 45 ila 50 adet arası niş ve en yüksek hacimli stok/e-ticaret etiketleri.
-- E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler, kutu içeriği ve hediye tavsiyeleri içeren zengin bir pazarlama kopyası olmalıdır.`;
+- E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler içeren zengin bir pazarlama kopyası.`;
+    }
   }
 
-  // 4. Construct Prompt
-  const prompt = `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
+  // 4. Construct Prompt based on language
+  const prompt = isEnglish
+    ? `Analyze the image in detail and generate English stock photo metadata and e-commerce information according to the following JSON structure.
+Image Category: ${categoryName}
+
+Plan Rules:
+${planInstructions}
+
+JSON Structure and Rules:
+{
+  "category": "${categoryKey}",
+  "title": "SEO-optimized English title that best reflects the image content, following plan rules.",
+  "description": "English description following plan rules, explaining the image composition, colors, objects and atmosphere.",
+  "keywords": "The most relevant English keywords (tags) in the amount specified in the plan rules, written on a single line with commas and spaces between them (e.g.: mug, ceramic, coffee cup...). All lowercase.",
+  "tags": "13 product tags optimized for e-commerce, maximum 20 characters each, written on a single line with commas and spaces between them. All lowercase.",
+  
+  "adobe": {
+    "title": "Same or very similar to the stock title.",
+    "keywords": "The 30 most relevant keywords selected from the keywords list above, separated by commas."
+  },
+  
+  "shutterstock": {
+    "title": "The title with ' - Stock Photo' appended at the end.",
+    "keywords": "Up to 50 keywords selected and expanded from the keywords list, separated by commas."
+  },
+  
+  "freepik": {
+    "title": "The title written entirely in lowercase.",
+    "keywords": "Up to 25 keywords selected from the keywords list, written entirely in lowercase and separated by commas."
+  },
+  
+  "vecteezy": {
+    "title": "Same as the stock title.",
+    "description": "Same as the stock description.",
+    "keywords": "Up to 20 keywords selected from the keywords list, separated by commas."
+  },
+  
+  "ecommerce": {
+    "title": "Rich title optimized for e-commerce sites (Etsy, Amazon, etc.), containing keywords separated by pipe (|) (e.g.: 'Handmade Ceramic Coffee Mug | Custom Design Cup | Gift Mug - Minimalist Scandinavian Series').",
+    "description": "Premium e-commerce product description. Rich product description following plan rules and e-commerce format.",
+    "tags": "Exactly 13 lowercase tags separated by commas, compatible with Etsy/Amazon."
+  }
+}
+
+OUTPUT MUST ONLY BE A JSON MATCHING THE ABOVE JSON TEMPLATE. Do not include any other explanation or code block.`
+    : `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
 Görsel Kategorisi: ${categoryName}
 
 Plan Kuralları:
@@ -711,7 +1149,7 @@ JSON Yapısı ve Kurallar:
   "category": "${categoryKey}",
   "title": "Görselin içeriğini en iyi yansıtan, plan kurallarına uygun, SEO uyumlu Türkçe başlık.",
   "description": "Plan kurallarına uygun, görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan Türkçe açıklama.",
-  "keywords": "Plan kurallarında belirtilen miktarda en alakalı Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır (örn: kupa, seramik, kahve fincanı...). Tamamı küçük harf olmalıdır.",
+  "keywords": "Plan kurallarında belirtilen miktarda en alakalı Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
   "tags": "E-Ticaret için optimize edilmiş, en fazla 20 karakter uzunluğunda 13 adet ürün etiketi, aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
   
   "adobe": {
@@ -736,7 +1174,7 @@ JSON Yapısı ve Kurallar:
   },
   
   "ecommerce": {
-    "title": "E-ticaret siteleri (Etsy, Trendyol vs.) için optimize edilmiş, anahtar kelimeler içeren boru işareti (|) ile ayrılmış zengin başlık (örn: 'El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi').",
+    "title": "E-ticaret siteleri (Etsy, Trendyol vs.) için optimize edilmiş, anahtar kelimeler içeren boru işareti (|) ile ayrılmış zengin başlık.",
     "description": "Premium e-ticaret ürün açıklaması. Plan kurallarına ve e-ticaret formatına uygun zengin ürün açıklaması.",
     "tags": "Etsy/Trendyol uyumlu, aralarında virgülle ayrılmış tam olarak 13 adet küçük harfli etiket."
   }
