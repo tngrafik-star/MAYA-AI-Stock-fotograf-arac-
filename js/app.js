@@ -938,7 +938,7 @@ const initApp = async () => {
         if (plan === 'studio') {
           // Clone to strip existing event listeners and bind mailto action
           const newBtn = btn.cloneNode(true);
-          newBtn.textContent = '✉ 7/24 VIP Mail Desteği';
+          newBtn.textContent = t('billing.vipSupport');
           newBtn.disabled = false;
           newBtn.className = 'btn btn-primary vip-support-btn';
           newBtn.style.backgroundColor = '#10B981'; // Emerald Green for support
