@@ -840,7 +840,6 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
     }
   }
   
-  // Fallback to random if still not selected
   if (!selectedCategory || !CATEGORY_TEMPLATES[selectedCategory]) {
     const keys = Object.keys(CATEGORY_TEMPLATES);
     selectedCategory = keys[Math.floor(Math.random() * keys.length)];
@@ -848,81 +847,158 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
 
   const template = TEMPLATES[selectedCategory] || CATEGORY_TEMPLATES[selectedCategory];
   
-  // Select a random index from template lists to make generations varied
   const randomIndex = Math.floor(Math.random() * template.titles.length);
   const baseTitle = template.titles[randomIndex];
   const baseDesc = template.descriptions[randomIndex];
-  const baseKeywords = template.keywords[0]; // String of keywords
+  const baseKeywords = template.keywords[0]; 
   
-  // Keywords array
   const kwList = baseKeywords.split(', ').map(k => k.trim());
 
   let finalTitle = baseTitle;
   let finalDesc = baseDesc;
   let finalKeywords = kwList;
 
-  // Scale data quality based on userPlan
   if (userPlan === 'starter') {
     finalKeywords = kwList.slice(0, 20);
   } else if (userPlan === 'pro') {
-    finalDesc = `${baseDesc} Bu yüksek çözünürlüklü ve detaylı görsel, profesyonel projeleriniz için optimize edilmiştir.`;
-    finalKeywords = kwList.concat(['profesyonel çekim', 'seo uyumlu', 'estetik görsel']).slice(0, 35);
+    if (language === 'en') {
+      finalDesc = `${baseDesc} This high-resolution and detailed image is optimized for your professional projects.`;
+      finalKeywords = kwList.concat(['professional shot', 'seo compatible', 'aesthetic visual']).slice(0, 35);
+    } else {
+      finalDesc = `${baseDesc} Bu yüksek çözünürlüklü ve detaylı görsel, profesyonel projeleriniz için optimize edilmiştir.`;
+      finalKeywords = kwList.concat(['profesyonel çekim', 'seo uyumlu', 'estetik görsel']).slice(0, 35);
+    }
   } else if (userPlan === 'studio') {
     finalTitle = `[STUDIO VIP] ${baseTitle}`;
-    finalDesc = `${baseDesc} En üst düzey VIP stüdyo standartlarında; profesyonel stüdyo ışıklandırması, üstün odak netliği, zengin dokular ve derin kompozisyon kalitesiyle ticari projeleriniz için özel olarak üretilmiştir.`;
-    finalKeywords = kwList.concat(['premium kalite', 'stüdyo çekimi', 'vip tasarım', 'ultra yüksek çözünürlük', 'ticari kullanım', 'profesyonel ışıklandırma']).slice(0, 50);
+    if (language === 'en') {
+      finalDesc = `${baseDesc} Crafted at the highest VIP studio standards, with professional studio lighting, superior focus clarity, rich textures, and deep composition quality for your commercial projects.`;
+      finalKeywords = kwList.concat(['premium quality', 'studio shot', 'vip design', 'ultra high resolution', 'commercial use', 'professional lighting']).slice(0, 50);
+    } else {
+      finalDesc = `${baseDesc} En üst düzey VIP stüdyo standartlarında; profesyonel stüdyo ışıklandırması, üstün odak netliği, zengin dokular ve derin kompozisyon kalitesiyle ticari projeleriniz için özel olarak üretilmiştir.`;
+      finalKeywords = kwList.concat(['premium kalite', 'stüdyo çekimi', 'vip tasarım', 'ultra yüksek çözünürlük', 'ticari kullanım', 'profesyonel ışıklandırma']).slice(0, 50);
+    }
   }
 
-  // Align e-commerce details with the selected random index to fix mismatch bug
   let ecoTitle = "";
   let ecoDesc = "";
   let ecoTags = "";
 
   if (selectedCategory === 'decor') {
-    if (randomIndex === 0) {
-      ecoTitle = "El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi";
-      ecoDesc = `✨ Kahve saatlerinize estetik katacak tamamen el yapımı seramik kupa.
+    if (language === 'en') {
+      if (randomIndex === 0) {
+        ecoTitle = "Handmade Ceramic Coffee Mug | Custom Design Cup | Gift Mug - Minimalist Scandinavian Series";
+        ecoDesc = `✨ Fully handmade ceramic mug that will add aesthetics to your home and coffee times.
+      
+• Material: High-quality stoneware clay and food-safe matte glaze.
+• Volume: Approximately 320 ml.
+• Gift Option: Shipped in a stylish kraft box with protective packaging.`;
+        ecoTags = "ceramic mug, handmade mug, coffee cup, design mug, gift cup, kitchen decor";
+      } else if (randomIndex === 1) {
+        ecoTitle = "Bohemian Style Dried Flowers in Toprack Pot | Pampas Grass Arrangement | Home Decor";
+        ecoDesc = `✨ Dried flower arrangement in a handmade terracotta pot that will bring a warm atmosphere to your home.
+      
+• Material: Natural clay pot and dried pampas grasses.
+• Usage: Maintenance-free, long-lasting and aesthetic.
+• Style: Ideal for bohemian and minimalist interior designs.`;
+        ecoTags = "clay pot, dried flowers, pampas grass, bohemian decor, home decor, minimalist design";
+      } else if (randomIndex === 2) {
+        ecoTitle = "Natural Soy Candle Set | Luxury Marble Serving Tray | Aromatherapy Candle Gift Set";
+        ecoDesc = `✨ 100% natural soy candles with calming aromatherapy effect and a luxury marble tray.
+      
+• Material: Organic soy wax, natural essential oils and real marble tray.
+• Features: Lead-free cotton wick, clean burn.
+• Usage: Great for spa, meditation and decorative purposes.`;
+        ecoTags = "soy candle, marble tray, aromatherapy candle, gift set, natural candle, decorative candle";
+      } else {
+        ecoTitle = "Linen Textured Decorative Cushion Cover | Rustic Pillow Cover | Scandinavian Home Textile";
+        ecoDesc = `✨ Natural linen textured cushion cover that will create comfortable and stylish corners in your home.
+      
+• Material: Premium linen blend fabric.
+• Size: 45x45 cm (Hidden zipper).
+• Care: Suitable for delicate machine wash at 30 degrees.`;
+        ecoTags = "cushion cover, linen pillow, rustic decor, scandinavian style, home textile, pillow cover";
+      }
+    } else {
+      if (randomIndex === 0) {
+        ecoTitle = "El Yapımı Seramik Kahve Kupası | Özel Tasarım Kupa Bardak | Hediye Kupa Bardak - Minimalist İskandinav Serisi";
+        ecoDesc = `✨ Kahve saatlerinize estetik katacak tamamen el yapımı seramik kupa.
       
 • Malzeme: Yüksek kaliteli stoneware kil and gıdaya uygun mat sır.
 • Hacim: Yaklaşık 320 ml.
 • Hediye Seçeneği: Şık kraft kutusunda, korumalı ambalajıyla gönderilir.`;
-      ecoTags = "seramik kupa, el yapimi kupa, kahve kupasi, tasarim kupa, hediye bardak, mutfak dekoru";
-    } else if (randomIndex === 1) {
-      ecoTitle = "Bohem Tarzı Toprak Saksıda Kuru Çiçek | Pampas Otu Aranjmanı | Ev Dekorasyonu";
-      ecoDesc = `✨ Evinize sıcak bir atmosfer getirecek el yapımı toprak saksıda kurutulmuş çiçek aranjmanı.
+        ecoTags = "seramik kupa, el yapimi kupa, kahve kupasi, tasarim kupa, hediye bardak, mutfak dekoru";
+      } else if (randomIndex === 1) {
+        ecoTitle = "Bohem Tarzı Toprak Saksıda Kuru Çiçek | Pampas Otu Aranjmanı | Ev Dekorasyonu";
+        ecoDesc = `✨ Evinize sıcak bir atmosfer getirecek el yapımı toprak saksıda kurutulmuş çiçek aranjmanı.
       
-• Malzeme: Doğal toprak saksı ve kurutulmuş pampas otları.
+• Malzeme: Toprak saksı ve kurutulmuş pampas otları.
 • Kullanım: Bakım gerektirmez, uzun ömürlü ve estetiktir.
 • Stil: Bohem ve minimalist iç mekan tasarımları için idealdir.`;
-      ecoTags = "toprak saksi, kuru cicek, pampas otu, bohem dekorasyon, ev dekoru, minimalist tasarim";
-    } else if (randomIndex === 2) {
-      ecoTitle = "Doğal Soya Mumu Seti | Lüks Mermer Sunum Tepsisi | Aromaterapi Mum Hediye Seti";
-      ecoDesc = `✨ Sakinleştirici aromaterapi etkili, %100 doğal soya mumları ve lüks mermer tepsi.
+        ecoTags = "toprak saksi, kuru cicek, pampas otu, bohem dekorasyon, ev dekoru, minimalist tasarim";
+      } else if (randomIndex === 2) {
+        ecoTitle = "Doğal Soya Mumu Seti | Lüks Mermer Sunum Tepsisi | Aromaterapi Mum Hediye Seti";
+        ecoDesc = `✨ Sakinleştirici aromaterapi etkili, %100 doğal soya mumları ve lüks mermer tepsi.
       
 • Malzeme: Organik soya balmumu, doğal uçucu yağlar ve gerçek mermer tepsi.
 • Özellikler: Kurşunsuz pamuk fitil, temiz yanma.
 • Kullanım: Spa, meditasyon ve dekoratif amaçlı kullanım için harikadır.`;
-      ecoTags = "soya mumu, mermer tepsi, aromaterapi mum, hediye set, dogal mum, dekoratif mum";
-    } else {
-      ecoTitle = "Keten Dokulu Dekoratif Kırlent Kılıfı | Rustik Minder Kılıfı | İskandinav Ev Tekstili";
-      ecoDesc = `✨ Evinizde konforlu ve şık köşeler yaratacak doğal keten dokulu kırlent kılıfı.
+        ecoTags = "soya mumu, mermer tepsi, aromaterapi mum, hediye set, dogal mum, dekoratif mum";
+      } else {
+        ecoTitle = "Keten Dokulu Dekoratif Kırlent Kılıfı | Rustik Minder Kılıfı | İskandinav Ev Tekstili";
+        ecoDesc = `✨ Evinizde konforlu ve şık köşeler yaratacak doğal keten dokulu kırlent kılıfı.
       
 • Malzeme: Premium keten karışımlı kumaş.
 • Boyut: 45x45 cm (Gizli fermuarlı).
 • Yıkama: 30 derecede hassas yıkamaya uygundur.`;
-      ecoTags = "kirlent kilifi, keten minder, rustik dekorasyon, iskandinav tarzi, ev tekstili, yastik kilifi";
+        ecoTags = "kirlent kilifi, keten minder, rustik dekorasyon, iskandinav tarzi, ev tekstili, yastik kilifi";
+      }
     }
   } else if (selectedCategory === 'cosmetics') {
-    if (randomIndex === 0) {
-      ecoTitle = "Nemlendirici Cilt Bakım Serumu | %100 Doğal Hyalüronik Asit & Vegan Yüz Serumu - Anti-Aging Parıltı";
-      ecoDesc = `🌿 Cildinizin ihtiyacı olan yoğun nemi ve ışıltıyı doğal yollarla geri kazanın.
+    if (language === 'en') {
+      if (randomIndex === 0) {
+        ecoTitle = "Organic Moisturizing Skin Serum | 100% Natural Hyaluronic Acid & Vegan Face Serum - Anti-Aging Glow";
+        ecoDesc = `🌿 Naturally restore the intense moisture and radiance your skin needs.
+      
+• Ingredients: Hyaluronic Acid, Aloe Vera Extract, Organic Rose Water and Vitamin E.
+• Effect: Penetrates deeper skin layers, plumps fine lines, creates an intense moisture barrier.
+• Volume: 30ml amber glass bottle with dropper.`;
+        ecoTags = "face serum, skincare, organic serum, natural cosmetics, moisturizer, hyaluronic acid";
+      } else if (randomIndex === 1) {
+        ecoTitle = "Nourishing Organic Night Cream | Face Moisturizer Cream | Wooden Spatula Included";
+        ecoDesc = `🌿 100% organic night care cream that nourishes and regenerates your skin overnight.
+      
+• Ingredients: Organic plant extracts, Shea butter and natural vitamins.
+• Usage: Apply to clean skin before bed with the help of the spatula.
+• Features: Free from parabens and alcohol.`;
+        ecoTags = "night cream, moisturizer cream, organic cream, face moisturizer, natural beauty";
+      } else if (randomIndex === 2) {
+        ecoTitle = "Green Clay Mask Set | Purifying Detox Clay Mask | Bamboo Application Brush Included";
+        ecoDesc = `🌿 Pore-tightening natural green clay mask set that deeply cleanses your skin.
+      
+• Package Contents: Organic powdered clay, ceramic bowl and bamboo mask brush.
+• Effect: Regulates oil balance, purifies blackheads.
+• Application: Apply to clean skin 1-2 times a week and rinse.`;
+        ecoTags = "clay mask, purifying mask, pore tightening, bamboo brush, detox skin care";
+      } else {
+        ecoTitle = "Aromatherapy Massage Oil | Rose Petal Moisturizing Body Oil | Glass Dropper Bottle";
+        ecoDesc = `🌿 Aromatherapy oil enriched with fresh rose petals to relax your mind and body.
+      
+• Ingredients: Pure sweet almond oil, jojoba oil and natural rose oil.
+• Usage: Can be used as a massage oil or post-bath body moisturizer.
+• Volume: 50ml.`;
+        ecoTags = "massage oil, aromatherapy oil, rose oil, body moisturizer, natural cosmetics, spa oil";
+      }
+    } else {
+      if (randomIndex === 0) {
+        ecoTitle = "Nemlendirici Cilt Bakım Serumu | %100 Doğal Hyalüronik Asit & Vegan Yüz Serumu - Anti-Aging Parıltı";
+        ecoDesc = `🌿 Cildinizin ihtiyacı olan yoğun nemi ve ışıltıyı doğal yollarla geri kazanın.
       
 • İçerik: Hyalüronik Asit, Aloe Vera, Gül Suyu ve Vitamin E.
 • Etki: Yoğun nem bariyeri oluşturur, ince çizgileri dolgunlaştırır.
 • Hacim: 30ml damlalıklı cam şişe.`;
-      ecoTags = "yuz serumu, cilt bakimi, organik serum, nemlendirici, hyaluronik asit, vegan kozmetik";
-    } else if (randomIndex === 1) {
-      ecoTitle = "Besleyici Organik Gece Kremi | Yüz Nemlendirici Krem | Ahşap Spatula Hediyeli";
+        ecoTags = "yuz serumu, cilt bakimi, organik serum, nemlendirici, hyaluronik asit, vegan kozmetik";
+      } else if (randomIndex === 1) {
+        ecoTitle = "Besleyici Organik Gece Kremi | Yüz Nemlendirici Krem | Ahşap Spatula Hediyeli";
       ecoDesc = `🌿 Gece boyu cildinizi besleyen ve yenileyen %100 organik gece bakım kremi.
       
 • Malzeme: Organik bitki özleri, Shea yağı ve doğal vitaminler.
@@ -946,6 +1022,7 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
 • Hacim: 50ml.`;
       ecoTags = "masaj yagi, aromaterapi yag, gul yagi, vucut nemlendirici, dogal kozmetik, spa yagi";
     }
+  }
   } else {
     // Other categories: dynamically map to index
     ecoTitle = `${finalTitle} | Premium Özel Tasarım Ürün`;
@@ -959,10 +1036,18 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
 
   // Add plan specific touch to e-commerce descriptions
   if (userPlan === 'pro') {
-    ecoDesc += `\n\n🔥 [PRO Özel Kampanya] Bu ay yapacağınız ilk alışverişte geçerli %10 indirim kuponu paketle birlikte gönderilecektir!`;
+    if (language === 'en') {
+      ecoDesc += `\n\n🔥 [PRO Special Campaign] A 10% discount coupon valid on your first purchase this month will be sent with the package!`;
+    } else {
+      ecoDesc += `\n\n🔥 [PRO Özel Kampanya] Bu ay yapacağınız ilk alışverişte geçerli %10 indirim kuponu paketle birlikte gönderilecektir!`;
+    }
   } else if (userPlan === 'studio') {
     ecoTitle = `[STUDIO VIP] ${ecoTitle}`;
-    ecoDesc = `👑 **STUDIO VIP PREMIUM ÜRÜN** 👑\n\n${ecoDesc}\n\n✨ Bu ürün VIP Studio planı çerçevesinde yüksek çözünürlüklü profesyonel stüdyo çekimleriyle listelenmiştir. Koşulsuz iade ve 7/24 VIP müşteri desteği garantilidir.`;
+    if (language === 'en') {
+      ecoDesc = `👑 **STUDIO VIP PREMIUM PRODUCT** 👑\n\n${ecoDesc}\n\n✨ This product is listed with high-resolution professional studio shots under the VIP Studio plan. Unconditional return and 24/7 VIP customer support are guaranteed.`;
+    } else {
+      ecoDesc = `👑 **STUDIO VIP PREMIUM ÜRÜN** 👑\n\n${ecoDesc}\n\n✨ Bu ürün VIP Studio planı çerçevesinde yüksek çözünürlüklü profesyonel stüdyo çekimleriyle listelenmiştir. Koşulsuz iade ve 7/24 VIP müşteri desteği garantilidir.`;
+    }
   }
   
   // Generate specific platforms metadata
@@ -982,9 +1067,11 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
     
     // Shutterstock (Requires descriptive titles, detailed descriptions, up to 50 keywords)
     shutterstock: {
-      title: `${finalTitle} - Stok Fotoğrafı`,
-      description: `${finalDesc} Yüksek çözünürlüklü ticari kullanım için ideal görsel.`,
-      keywords: finalKeywords.concat(['stok görsel', 'shutterstock', 'yüksek çözünürlük', 'fotoğrafçılık']).slice(0, 50).join(', ')
+      title: language === 'en' ? `${finalTitle} - Stock Photo` : `${finalTitle} - Stok Fotoğrafı`,
+      description: language === 'en' ? `${finalDesc} High-resolution image ideal for commercial use.` : `${finalDesc} Yüksek çözünürlüklü ticari kullanım için ideal görsel.`,
+      keywords: language === 'en' 
+        ? finalKeywords.concat(['stock image', 'shutterstock', 'high resolution', 'photography']).slice(0, 50).join(', ')
+        : finalKeywords.concat(['stok görsel', 'shutterstock', 'yüksek çözünürlük', 'fotoğrafçılık']).slice(0, 50).join(', ')
     },
     
     // Freepik (Editorial title, lowercase tags)
@@ -1010,201 +1097,18 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
 }
 
 export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null, userPlan = 'starter', language = 'tr') {
-  // 1. Determine API Key
-  const apiKey = customApiKey || import.meta.env.VITE_GEMINI_API_KEY;
-  if (!apiKey || apiKey === 'your_gemini_api_key_here') {
-    throw new Error("Gemini API Anahtarı bulunamadı. Lütfen profilinizden bir anahtar ekleyin veya sunucu yöneticisiyle iletişime geçin.");
-  }
-
-  // 2. Map Category Name
-  const cats = {
-    decor: 'Yaşam & Dekorasyon',
-    cosmetics: 'Kozmetik & Güzellik',
-    tech: 'Teknoloji & Aksesuar',
-    food: 'Yiyecek & İçecek',
-    landscape: 'Doğa & Manzara',
-    fashion: 'Moda & Giyim',
-    fitness: 'Spor & Sağlıklı Yaşam',
-    business: 'İş Dünyası & Ofis',
-    architecture: 'Mimari & Yapı',
-    animals: 'Evcil Hayvanlar & Vahşi Yaşam',
-    travel: 'Seyahat & Kültür',
-    automotive: 'Otomotiv & Taşıtlar',
-    portrait: 'İnsanlar & Portre',
-    other: 'Diğer / Genel'
-  };
-  const categoryName = cats[categoryKey] || (language === 'en' ? 'General' : 'Genel');
-
-  // Determine output language
-  const isEnglish = language === 'en';
-
-  // 3. Parse base64DataUrl
-  const regex = /^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/;
-  const matches = base64DataUrl.match(regex);
-  if (!matches) {
-    throw new Error("Geçersiz resim formatı.");
-  }
-  const mimeType = matches[1];
-  const base64Data = matches[2];
-
-  // Choose model based on user plan
-  let modelName = 'gemini-2.5-flash';
-  if (userPlan === 'pro' || userPlan === 'studio') {
-    modelName = 'gemini-2.5-pro';
-  }
-
-  // Construct plan instructions based on language
-  let planInstructions = "";
-  if (isEnglish) {
-    if (userPlan === 'starter') {
-      planInstructions = `Subscription Plan: Starter. Generate standard quality, short and clear titles/descriptions.
-- Title: A simple title of maximum 60 characters.
-- Description: A simple description of at most 2 sentences.
-- Keywords: Select between 20 and 30 standard keywords.`;
-    } else if (userPlan === 'pro') {
-      planInstructions = `Subscription Plan: Pro. Generate professional quality, high SEO and detailed content.
-- Title: An attention-grabbing title with high-search-volume keywords (maximum 75 characters).
-- Description: A professional 3-4 sentence text explaining the image's color palette, composition and commercial value.
-- Keywords: Between 30 and 40 popular tags aligned with search trends.`;
-    } else if (userPlan === 'studio') {
-      planInstructions = `Subscription Plan: Studio. Generate top-level VIP studio quality content with artistic angle, lighting, textures, feel and luxury marketing copy.
-- Title: Rich studio title optimized for maximum click-through rate and SEO-friendly (maximum 80 characters).
-- Description: At least 4-sentence detailed analysis describing the image's composition, light quality, textures and artistic angle.
-- Keywords: Exactly 45 to 50 niche and highest-volume stock/e-commerce tags.
-- E-Commerce Description: Rich marketing copy decorated with emojis, luxury and attractive, with bullet-pointed features, box contents and gift recommendations.`;
-    }
-  } else {
-    if (userPlan === 'starter') {
-      planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
-- Başlık: Maksimum 60 karakterlik sade bir başlık.
-- Açıklama: En fazla 2 cümlelik basit bir açıklama.
-- Anahtar kelimeler (keywords): 20 ila 30 adet arası standart anahtar kelime seç.`;
-    } else if (userPlan === 'pro') {
-      planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
-- Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler içeren zengin başlık (maksimum 75 karakter).
-- Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
-- Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine uygun popüler etiketler.`;
-    } else if (userPlan === 'studio') {
-      planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
-- Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter).
-- Açıklama: En az 4 cümlelik detaylı analiz metni.
-- Anahtar kelimeler (keywords): Tam olarak 45 ila 50 adet arası niş ve en yüksek hacimli stok/e-ticaret etiketleri.
-- E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler içeren zengin bir pazarlama kopyası.`;
-    }
-  }
-
-  // 4. Construct Prompt based on language
-  const prompt = isEnglish
-    ? `Analyze the image in detail and generate English stock photo metadata and e-commerce information according to the following JSON structure.
-Image Category: ${categoryName}
-
-Plan Rules:
-${planInstructions}
-
-JSON Structure and Rules:
-{
-  "category": "${categoryKey}",
-  "title": "SEO-optimized English title that best reflects the image content, following plan rules.",
-  "description": "English description following plan rules, explaining the image composition, colors, objects and atmosphere.",
-  "keywords": "The most relevant English keywords (tags) in the amount specified in the plan rules, written on a single line with commas and spaces between them (e.g.: mug, ceramic, coffee cup...). All lowercase.",
-  "tags": "13 product tags optimized for e-commerce, maximum 20 characters each, written on a single line with commas and spaces between them. All lowercase.",
-  
-  "adobe": {
-    "title": "Same or very similar to the stock title.",
-    "keywords": "The 30 most relevant keywords selected from the keywords list above, separated by commas."
-  },
-  
-  "shutterstock": {
-    "title": "The title with ' - Stock Photo' appended at the end.",
-    "keywords": "Up to 50 keywords selected and expanded from the keywords list, separated by commas."
-  },
-  
-  "freepik": {
-    "title": "The title written entirely in lowercase.",
-    "keywords": "Up to 25 keywords selected from the keywords list, written entirely in lowercase and separated by commas."
-  },
-  
-  "vecteezy": {
-    "title": "Same as the stock title.",
-    "description": "Same as the stock description.",
-    "keywords": "Up to 20 keywords selected from the keywords list, separated by commas."
-  },
-  
-  "ecommerce": {
-    "title": "Rich title optimized for e-commerce sites (Etsy, Amazon, etc.), containing keywords separated by pipe (|) (e.g.: 'Handmade Ceramic Coffee Mug | Custom Design Cup | Gift Mug - Minimalist Scandinavian Series').",
-    "description": "Premium e-commerce product description. Rich product description following plan rules and e-commerce format.",
-    "tags": "Exactly 13 lowercase tags separated by commas, compatible with Etsy/Amazon."
-  }
-}
-
-OUTPUT MUST ONLY BE A JSON MATCHING THE ABOVE JSON TEMPLATE. Do not include any other explanation or code block.`
-    : `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
-Görsel Kategorisi: ${categoryName}
-
-Plan Kuralları:
-${planInstructions}
-
-JSON Yapısı ve Kurallar:
-{
-  "category": "${categoryKey}",
-  "title": "Görselin içeriğini en iyi yansıtan, plan kurallarına uygun, SEO uyumlu Türkçe başlık.",
-  "description": "Plan kurallarına uygun, görselin kompozisyonunu, renklerini, nesnelerini ve atmosferini açıklayan Türkçe açıklama.",
-  "keywords": "Plan kurallarında belirtilen miktarda en alakalı Türkçe anahtar kelime (etiket), aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
-  "tags": "E-Ticaret için optimize edilmiş, en fazla 20 karakter uzunluğunda 13 adet ürün etiketi, aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
-  
-  "adobe": {
-    "title": "Stok başlığı ile aynı veya çok benzer bir başlık.",
-    "keywords": "Yukarıdaki keywords listesinden seçilen en alakalı 30 anahtar kelime, aralarında virgülle ayrılmış şekilde."
-  },
-  
-  "shutterstock": {
-    "title": "Başlığın sonuna ' - Stok Fotoğrafı' eklenmiş hali.",
-    "keywords": "Keywords listesinden seçilen ve genişletilen en fazla 50 anahtar kelime, aralarında virgülle ayrılmış şekilde."
-  },
-  
-  "freepik": {
-    "title": "Başlığın tamamen küçük harflerle yazılmış hali.",
-    "keywords": "Keywords listesinden seçilen en fazla 25 anahtar kelime, tamamen küçük harflerle yazılmış ve aralarında virgülle ayrılmış şekilde."
-  },
-  
-  "vecteezy": {
-    "title": "Stok başlığı ile aynı.",
-    "description": "Stok açıklaması ile aynı.",
-    "keywords": "Keywords listesinden seçilen en fazla 20 anahtar kelime, aralarında virgülle ayrılmış şekilde."
-  },
-  
-  "ecommerce": {
-    "title": "E-ticaret siteleri (Etsy, Trendyol vs.) için optimize edilmiş, anahtar kelimeler içeren boru işareti (|) ile ayrılmış zengin başlık.",
-    "description": "Premium e-ticaret ürün açıklaması. Plan kurallarına ve e-ticaret formatına uygun zengin ürün açıklaması.",
-    "tags": "Etsy/Trendyol uyumlu, aralarında virgülle ayrılmış tam olarak 13 adet küçük harfli etiket."
-  }
-}
-
-ÇIKTI SADECE YUKARIDAKİ JSON ŞABLONUNA UYGUN BİR JSON OLMALIDIR. Başka açıklama veya kod bloğu içermemelidir.`;
-
-  // 5. Direct API request to Google Gemini
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
+  // Call the secure backend proxy endpoint
+  const response = await fetch('/api/generate', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      contents: [
-        {
-          parts: [
-            { text: prompt },
-            {
-              inlineData: {
-                mimeType: mimeType,
-                data: base64Data
-              }
-            }
-          ]
-        }
-      ],
-      generationConfig: {
-        responseMimeType: "application/json"
-      }
+      base64DataUrl,
+      categoryKey,
+      customApiKey, // Keep for backward compatibility if user provides their own key
+      plan: userPlan,
+      language
     })
   });
 
@@ -1219,11 +1123,6 @@ JSON Yapısı ve Kurallar:
   }
 
   const result = await response.json();
-  const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!rawText) {
-    throw new Error("API boş yanıt döndürdü.");
-  }
-
-  return JSON.parse(rawText.trim());
+  return result;
 }
 

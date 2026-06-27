@@ -194,5 +194,50 @@ function detectCurrentPage() {
   return 'landing';
 }
 
+/**
+ * Dynamically translate a database-stored activity log string based on the current language
+ */
+export function translateActivityLog(action) {
+  if (!action) return '';
+  
+  // 1. Account Created
+  if (action === 'Hesap Oluşturuldu ve Giriş Yapıldı' || action === 'Account Created and Signed In') {
+    return t('activity.accountCreated');
+  }
+  
+  // 2. Logged In
+  if (action === 'Giriş Yapıldı' || action === 'Signed In') {
+    return t('activity.loggedIn');
+  }
+  
+  // 3. Logged Out
+  if (action === 'Çıkış Yapıldı' || action === 'Signed Out') {
+    return t('activity.loggedOut');
+  }
+  
+  // 4. Profile Updated
+  if (action === 'Profil Bilgileri Güncellendi' || action === 'Profile Updated') {
+    return t('activity.profileUpdated');
+  }
+  
+  // 5. Subscription Updated
+  if (action.startsWith('Abonelik Güncellendi: ') || action.startsWith('Subscription Updated: ')) {
+    const plan = action.split(': ')[1] || '';
+    return t('activity.subscriptionUpdated', { plan: plan });
+  }
+  
+  // 6. Metadata Created
+  if (action.startsWith('Metadata Oluşturuldu: ') || action.startsWith('Metadata Generated: ')) {
+    let title = action.replace('Metadata Oluşturuldu: ', '').replace('Metadata Generated: ', '');
+    // Clean trailing ... if present
+    if (title.endsWith('...')) {
+      title = title.substring(0, title.length - 3);
+    }
+    return t('activity.metadataCreated', { title: title });
+  }
+  
+  return action;
+}
+
 // Export i18next instance for advanced usage
 export default i18next;

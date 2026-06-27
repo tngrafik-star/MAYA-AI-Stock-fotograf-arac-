@@ -83,8 +83,8 @@
     "buyNow": "Satın Al",
     "perMonth": "/ ay",
     "starter": {
-      "f1": "Aylık 100 Görsel Analizi",
-      "f2": "Adobe Stock ve Shutterstock Uyumlu",
+      "f1": "Aylık 300 Görsel Analizi",
+      "f2": "Etsy, Amazon, e-commerce, Stock Uyumlu",
       "f3": "Standart Anahtar Kelimeler",
       "f4": "Geçmiş Arşivine Erişim",
       "f5": "Bireysel Kullanıcı Lisansı"
@@ -317,7 +317,7 @@
     "switchToPlan": "{{plan}} Planına Geç",
     "vipSupport": "✉ 7/24 VIP Mail Desteği",
     "starterFeatures": {
-      "f1": "Aylık 100 Görsel Analizi",
+      "f1": "Aylık 300 Görsel Analizi",
       "f2": "Temel Metadata Setleri",
       "f3": "Geçmiş Arşivi"
     },
@@ -330,7 +330,9 @@
       "f1": "Sınırsız Görsel Analizi",
       "f2": "5 Kişilik Takım Erişimi",
       "f3": "7/24 Öncelikli Destek"
-    }
+    },
+    "vipMailtoSubject": "MayaSolutions - Studio VIP Destek Talebi",
+    "vipMailtoBody": "Merhaba, MayaSolutions Studio planı kullanıcısıyım. Destek istediğim konu:"
   },
   "toast": {
     "accountCreated": "Hesap başarıyla oluşturuldu! Yönlendiriliyorsunuz...",
@@ -373,7 +375,9 @@
     "noData": "Veri yok",
     "newUser": "Yeni Kullanıcı",
     "userName": "Kullanıcı Adı",
-    "general": "Genel"
+    "general": "Genel",
+    "playPause": "Oynat / Durdur",
+    "muteUnmute": "Sesi Aç / Kapat"
   },
   "categories": {
     "decor": "Yaşam & Dekorasyon",

@@ -42,7 +42,7 @@ const initMain = () => {
       if (user) {
         if (navAuthActions) {
           navAuthActions.innerHTML = `
-            <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--color-border); cursor: pointer; color: var(--color-text-primary); width: 38px; height: 38px; border-radius: var(--border-radius-sm);">
+            <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" data-i18n-title="nav.changeTheme" style="margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--color-border); cursor: pointer; color: var(--color-text-primary); width: 38px; height: 38px; border-radius: var(--border-radius-sm);">
               <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
               </svg>
@@ -72,7 +72,7 @@ const initMain = () => {
       } else {
         if (navAuthActions) {
           navAuthActions.innerHTML = `
-            <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 8px;">
+            <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" data-i18n-title="nav.changeTheme" style="margin-right: 8px;">
               <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
               </svg>
@@ -439,6 +439,14 @@ const initMain = () => {
     updateSEOMeta();
     updateHtmlLang();
     updateVideoSource();
+    if (currentSessionUser) {
+      const welcomeSpan = document.querySelector('[data-i18n-html="nav.welcomeBack"]');
+      if (welcomeSpan) {
+        const localUser = getCurrentUser();
+        const name = localUser?.name || currentSessionUser.user_metadata?.name || currentSessionUser.email.split('@')[0];
+        welcomeSpan.innerHTML = t('nav.welcomeBack', { name: name });
+      }
+    }
   });
 };
 

@@ -1,5 +1,6 @@
 import { supabase } from './supabase.js';
 import { getCurrentUser, setCurrentUser, logActivity } from './db.js';
+import { t } from './i18n/index.js';
 
 const DISPOSABLE_DOMAINS = [
   'mailinator.com', 'yopmail.com', 'tempmail.com', '10minutemail.com', 
@@ -21,24 +22,24 @@ const COMMON_TYPOS = {
 
 function validateEmail(email) {
   if (!email || typeof email !== 'string') {
-    throw new Error('Geçersiz e-posta adresi.');
+    throw new Error(t('validation.invalidEmail'));
   }
   
   const cleanEmail = email.trim().toLowerCase();
   const domain = cleanEmail.split('@')[1];
   
   if (!domain) {
-    throw new Error('Geçersiz e-posta formatı.');
+    throw new Error(t('validation.invalidEmailFormat'));
   }
 
   // 1. Check for disposable domains
   if (DISPOSABLE_DOMAINS.includes(domain)) {
-    throw new Error('Geçici veya tek kullanımlık e-posta adresleri ile kayıt olunamaz. Lütfen geçerli bir e-posta adresi girin.');
+    throw new Error(t('validation.disposableEmail'));
   }
 
   // 2. Check for common domain typos to prevent bounces
   if (COMMON_TYPOS[domain]) {
-    throw new Error(`E-posta adresinizde yazım hatası olabilir. '${COMMON_TYPOS[domain]}' mi demek istediniz?`);
+    throw new Error(t('validation.emailTypo', { suggested: COMMON_TYPOS[domain] }));
   }
 
   return true;
@@ -106,7 +107,7 @@ export async function resetPassword(email) {
 
 export async function updateProfile(name, email, password = null, geminiApiKey = null) {
   const user = getCurrentUser();
-  if (!user) throw new Error('Oturum bulunamadı.');
+  if (!user) throw new Error(t('validation.sessionNotFound'));
   
   const profileUpdates = {
     name: name,
@@ -148,9 +149,9 @@ export async function updateProfile(name, email, password = null, geminiApiKey =
 
 export async function updateSubscription(plan) {
   const user = getCurrentUser();
-  if (!user) throw new Error('Oturum bulunamadı.');
+  if (!user) throw new Error(t('validation.sessionNotFound'));
   
-  let limit = 100;
+  let limit = 300;
   if (plan === 'pro') limit = 1000;
   if (plan === 'studio') limit = 999999; // Unlimited
   

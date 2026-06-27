@@ -2,7 +2,7 @@ import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs
 import { logout, updateProfile, updateSubscription } from './auth.js';
 import { getCategories, generateAIData, generateGeminiMetadata } from './ai.js';
 import { supabase } from './supabase.js';
-import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage } from './i18n/index.js';
+import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage, translateActivityLog } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
 
 // Seed DB just in case
@@ -76,7 +76,7 @@ const initApp = async () => {
           name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
           email: session.user.email,
           plan: 'starter',
-          generations_limit: 100,
+          generations_limit: 300,
           generations_used: 0,
           created_at: session.user.created_at
         };
@@ -89,7 +89,7 @@ const initApp = async () => {
         name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
         email: session.user.email,
         plan: 'starter',
-        generations_limit: 100,
+        generations_limit: 300,
         generations_used: 0,
         created_at: session.user.created_at
       };
@@ -256,7 +256,7 @@ const initApp = async () => {
     document.getElementById('stats-credits-change').textContent = `${user.generations_used} / ${limitVal} limit`;
     document.getElementById('stats-plan').textContent = user.plan;
 
-    const lastLog = logs.length > 0 ? logs[0].action : t('common.noData');
+    const lastLog = logs.length > 0 ? translateActivityLog(logs[0].action) : t('common.noData');
     document.getElementById('stats-activity').textContent = lastLog;
 
     // Load recent table (limit to 5)
@@ -441,7 +441,7 @@ const initApp = async () => {
             
             showToast(t('toast.analysisComplete'), 'success');
           }).catch(dbErr => {
-            showToast(`Veritabanına kaydedilemedi: ${dbErr.message}`, 'error');
+            showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
             loading.style.display = 'none';
             dropzone.style.display = 'flex';
           });
@@ -475,7 +475,7 @@ const initApp = async () => {
               
               showToast(t('toast.simulationComplete'), 'success');
             }).catch(dbErr => {
-              showToast(`Veritabanına kaydedilemedi: ${dbErr.message}`, 'error');
+              showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
               loading.style.display = 'none';
               dropzone.style.display = 'flex';
             });
@@ -848,7 +848,7 @@ const initApp = async () => {
         // Ecommerce / Online product sales format: Title,Description,Tags,Price,SKU
         csvContent += "Title,Description,Tags,Price,SKU\r\n";
         itemsToExport.forEach(item => {
-          const rowTitle = `"${(item.title + ' | E-Ticaret Ürünü').replace(/"/g, '""')}"`;
+          const rowTitle = `"${(item.title + ' | ' + t('results.ecommerceProductSuffix')).replace(/"/g, '""')}"`;
           const rowDesc = `"${item.description.replace(/"/g, '""')}"`;
           const rowTags = `"${item.tags.replace(/"/g, '""')}"`;
           csvContent += `${rowTitle},${rowDesc},${rowTags},299.90,SKU_${item.id}\r\n`;
@@ -946,7 +946,9 @@ const initApp = async () => {
           newBtn.style.color = '#FFFFFF';
           newBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            window.location.href = `mailto:support@mayasolutions.com?subject=MayaSolutions%20-%20Studio%20VIP%20Destek%20Talebi&body=Merhaba,%20MayaSolutions%20Studio%20planı%20kullanıcısıyım.%20Destek%20istediğim%20konu:`;
+            const subject = encodeURIComponent(t('billing.vipMailtoSubject'));
+            const body = encodeURIComponent(t('billing.vipMailtoBody'));
+            window.location.href = `mailto:support@mayasolutions.com?subject=${subject}&body=${body}`;
           });
           btn.replaceWith(newBtn);
         } else {

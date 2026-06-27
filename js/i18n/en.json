@@ -83,8 +83,8 @@
     "buyNow": "Buy Now",
     "perMonth": "/ mo",
     "starter": {
-      "f1": "100 Image Analyses / Month",
-      "f2": "Adobe Stock & Shutterstock Compatible",
+      "f1": "300 Image Analyses / Month",
+      "f2": "Etsy, Amazon, e-commerce, Stock Compatible",
       "f3": "Standard Keywords",
       "f4": "Access to History Archive",
       "f5": "Individual User License"
@@ -317,7 +317,7 @@
     "switchToPlan": "Switch to {{plan}}",
     "vipSupport": "✉ 24/7 VIP Email Support",
     "starterFeatures": {
-      "f1": "100 Image Analyses / Month",
+      "f1": "300 Image Analyses / Month",
       "f2": "Basic Metadata Sets",
       "f3": "History Archive"
     },
@@ -330,7 +330,9 @@
       "f1": "Unlimited Image Analyses",
       "f2": "5-Member Team Access",
       "f3": "24/7 Priority Support"
-    }
+    },
+    "vipMailtoSubject": "MayaSolutions - Studio VIP Support Request",
+    "vipMailtoBody": "Hello, I am a MayaSolutions Studio plan user. The support topic I need help with is:"
   },
   "toast": {
     "accountCreated": "Account created successfully! Redirecting...",
@@ -373,7 +375,9 @@
     "noData": "No data",
     "newUser": "New User",
     "userName": "User Name",
-    "general": "General"
+    "general": "General",
+    "playPause": "Play / Pause",
+    "muteUnmute": "Mute / Unmute"
   },
   "categories": {
     "decor": "Lifestyle & Decor",

@@ -7,8 +7,12 @@ import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
+import WebSocket from 'ws';
 
-
+// Polyfill WebSocket for Supabase Realtime in older Node versions
+if (typeof globalThis.WebSocket === 'undefined') {
+  globalThis.WebSocket = WebSocket;
+}
 
 // Load environment variables
 dotenv.config();
@@ -95,7 +99,7 @@ app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), asyn
     const session = event.data.object;
     const userId = session.metadata?.userId;
     const plan = session.metadata?.plan;
-    const limit = parseInt(session.metadata?.limit || '100', 10);
+    const limit = parseInt(session.metadata?.limit || '300', 10);
 
     if (userId && plan) {
       console.log(`✅ Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
@@ -171,12 +175,12 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
     const plan = customData?.plan;
 
     const planLimits = {
-      starter: 100,
+      starter: 300,
       pro: 1000,
       studio: 999999
     };
 
-    const limit = planLimits[plan] || 100;
+    const limit = planLimits[plan] || 300;
 
     if (userId && plan) {
       console.log(`✅ Lemon Squeezy Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
@@ -213,7 +217,7 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 // Endpoint for metadata generation
 app.post('/api/generate', async (req, res) => {
   try {
-    const { base64DataUrl, categoryKey, customApiKey, plan } = req.body;
+    const { base64DataUrl, categoryKey, customApiKey, plan, language } = req.body;
 
     if (!base64DataUrl) {
       return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
@@ -227,9 +231,25 @@ app.post('/api/generate', async (req, res) => {
     }
 
     const userPlan = plan || 'starter';
+    const isEnglish = language === 'en';
 
     // 1. Get Category Name
-    const cats = {
+    const cats = isEnglish ? {
+      decor: 'Lifestyle & Decor',
+      cosmetics: 'Cosmetics & Beauty',
+      tech: 'Technology & Accessories',
+      food: 'Food & Beverage',
+      landscape: 'Nature & Landscape',
+      fashion: 'Fashion & Apparel',
+      fitness: 'Sports & Wellness',
+      business: 'Business & Office',
+      architecture: 'Architecture & Building',
+      animals: 'Pets & Wildlife',
+      travel: 'Travel & Culture',
+      automotive: 'Automotive & Vehicles',
+      portrait: 'People & Portrait',
+      other: 'Other / General'
+    } : {
       decor: 'Yaşam & Dekorasyon',
       cosmetics: 'Kozmetik & Güzellik',
       tech: 'Teknoloji & Aksesuar',
@@ -245,7 +265,7 @@ app.post('/api/generate', async (req, res) => {
       portrait: 'İnsanlar & Portre',
       other: 'Diğer / Genel'
     };
-    const categoryName = cats[categoryKey] || 'Genel';
+    const categoryName = cats[categoryKey] || (isEnglish ? 'General' : 'Genel');
 
     // 2. Parse base64DataUrl
     const regex = /^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/;
@@ -264,26 +284,90 @@ app.post('/api/generate', async (req, res) => {
 
     // Construct plan instructions
     let planInstructions = "";
-    if (userPlan === 'starter') {
-      planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
+    if (isEnglish) {
+      if (userPlan === 'starter') {
+        planInstructions = `Subscription Plan: Starter. Generate standard quality, short and clear titles/descriptions.
+- Title: A simple title of maximum 60 characters.
+- Description: A simple description of at most 2 sentences.
+- Keywords: Select between 20 and 30 standard keywords.`;
+      } else if (userPlan === 'pro') {
+        planInstructions = `Subscription Plan: Pro. Generate professional quality, high SEO and detailed content.
+- Title: An attention-grabbing title with high-search-volume keywords (maximum 75 characters).
+- Description: A professional 3-4 sentence text explaining the image's color palette, composition and commercial value.
+- Keywords: Between 30 and 40 popular tags aligned with search trends.`;
+      } else if (userPlan === 'studio') {
+        planInstructions = `Subscription Plan: Studio. Generate top-level VIP studio quality content with artistic angle, lighting, textures, feel and luxury marketing copy.
+- Title: Rich studio title optimized for maximum click-through rate and SEO-friendly (maximum 80 characters).
+- Description: At least 4-sentence detailed analysis describing the image's composition, light quality, textures and artistic angle.
+- Keywords: Exactly 45 to 50 niche and highest-volume stock/e-commerce tags.
+- E-Commerce Description: Rich marketing copy decorated with emojis, luxury and attractive, with bullet-pointed features, box contents and gift recommendations.`;
+      }
+    } else {
+      if (userPlan === 'starter') {
+        planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
 - Başlık: Maksimum 60 karakterlik sade bir başlık.
 - Açıklama: En fazla 2 cümlelik basit bir açıklama.
 - Anahtar kelimeler (keywords): 20 ila 30 adet arası standart anahtar kelime seç.`;
-    } else if (userPlan === 'pro') {
-      planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
+      } else if (userPlan === 'pro') {
+        planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
 - Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler içeren zengin başlık (maksimum 75 karakter).
 - Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
 - Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine uygun popüler etiketler.`;
-    } else if (userPlan === 'studio') {
-      planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
+      } else if (userPlan === 'studio') {
+        planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
 - Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter, başına [STUDIO VIP] ekleme, sadece zengin başlık).
 - Açıklama: En az 4 cümlelik, görselin kompozisyonunu, ışık kalitesini (yumuşak stüdyo ışığı vb.), dokularını ve sanatsal açısını betimleyen detaylı bir analiz metni.
 - Anahtar kelimeler (keywords): Tam olarak 45 ila 50 adet arası niş ve en yüksek hacimli stok/e-ticaret etiketleri.
 - E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler, kutu içeriği ve hediye tavsiyeleri içeren zengin bir pazarlama kopyası olmalıdır.`;
+      }
     }
 
     // 3. Prompt Construction
-    const prompt = `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
+    const prompt = isEnglish
+      ? `Analyze the image in detail and generate English stock photo metadata and e-commerce information according to the following JSON structure.
+Image Category: ${categoryName}
+
+Plan Rules:
+${planInstructions}
+
+JSON Structure and Rules:
+{
+  "category": "${categoryKey}",
+  "title": "SEO-optimized English title that best reflects the image content, following plan rules.",
+  "description": "English description following plan rules, explaining the image composition, colors, objects and atmosphere.",
+  "keywords": "The most relevant English keywords (tags) in the amount specified in the plan rules, written on a single line with commas and spaces between them (e.g.: mug, ceramic, coffee cup...). All lowercase.",
+  "tags": "13 product tags optimized for e-commerce, maximum 20 characters each, written on a single line with commas and spaces between them. All lowercase.",
+  
+  "adobe": {
+    "title": "Same or very similar to the stock title.",
+    "keywords": "The 30 most relevant keywords selected from the keywords list above, separated by commas."
+  },
+  
+  "shutterstock": {
+    "title": "The title with ' - Stock Photo' appended at the end.",
+    "keywords": "Up to 50 keywords selected and expanded from the keywords list, separated by commas."
+  },
+  
+  "freepik": {
+    "title": "The title written entirely in lowercase.",
+    "keywords": "Up to 25 keywords selected from the keywords list, written entirely in lowercase and separated by commas."
+  },
+  
+  "vecteezy": {
+    "title": "Same as the stock title.",
+    "description": "Same as the stock description.",
+    "keywords": "Up to 20 keywords selected from the keywords list, separated by commas."
+  },
+  
+  "ecommerce": {
+    "title": "Rich title optimized for e-commerce sites (Etsy, Amazon, etc.), containing keywords separated by pipe (|) (e.g.: 'Handmade Ceramic Coffee Mug | Custom Design Cup | Gift Mug - Minimalist Scandinavian Series').",
+    "description": "Premium e-commerce product description. Rich product description following plan rules and e-commerce format.",
+    "tags": "Exactly 13 lowercase tags separated by commas, compatible with Etsy/Amazon."
+  }
+}
+
+OUTPUT MUST ONLY BE A JSON MATCHING THE ABOVE JSON TEMPLATE. Do not include any other explanation or code block.`
+      : `Görseli detaylı bir şekilde analiz et ve aşağıdaki JSON yapısına uygun olarak Türkçe stok fotoğraf metadata ve e-ticaret bilgilerini üret.
 Görsel Kategorisi: ${categoryName}
 
 Plan Kuralları:
@@ -394,7 +478,7 @@ app.post('/api/payment/create-checkout-session', async (req, res) => {
     }
 
     const planDetails = {
-      starter: { name: 'Starter Planı', price: 999, currency: 'usd', limit: 100 },
+      starter: { name: 'Starter Planı', price: 999, currency: 'usd', limit: 300 },
       pro: { name: 'Pro Planı', price: 2999, currency: 'usd', limit: 1000 },
       studio: { name: 'Studio Planı', price: 4999, currency: 'usd', limit: 999999 }
     };
@@ -562,21 +646,28 @@ app.post('/api/email/inbound', async (req, res) => {
     console.log(`📧 Gelen Mail: [Kimden: ${from}] [Konu: ${subject}]`);
 
     // Prepare Gemini system prompt
-    const systemPrompt = `Sen MayaSolutions Yapay Zeka Destekli Stok Fotoğraf Asistanı platformunun otomatik müşteri temsilcisisin.
-Gelen müşteri destek e-postasına profesyonel, yardımsever, çözüm odaklı ve kibar bir dille Türkçe yanıt yazmalısın.
+    const systemPrompt = `You are the automated customer support representative for the MayaSolutions platform (an AI-powered stock photography and e-commerce metadata assistant).
+Analyze the language of the incoming customer support email (either Turkish or English). You must write the response in the same language as the incoming email (Turkish for Turkish emails, English for English emails).
 
-Gelen Mail Bilgileri:
-Gönderen: ${from}
-Konu: ${subject}
-Mesaj İçeriği:
+Incoming Email Details:
+From: ${from}
+Subject: ${subject}
+Message Content:
 ${text}
 
-Yanıt Kuralları:
+Response Rules (Turkish / Türkçe):
 1. Yanıtın başında mutlaka gönderen kişiye kibar bir şekilde hitap et (örn: "Merhaba," veya isim varsa "Merhaba Ali Bey,").
-2. MayaSolutions'ın özelliklerini bil: Görselleri analiz edip SEO uyumlu Türkçe başlık, açıklama ve anahtar kelimeler üreten yapay zeka asistanıdır. Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol gibi platformları destekler. Starter (100 limit, 9.99$), Pro (1000 limit, 29.99$) ve Studio (Sınırsız limit, 49.99$) abonelik planları sunar.
+2. MayaSolutions'ın özelliklerini bil: Görselleri analiz edip SEO uyumlu Türkçe başlık, açıklama ve anahtar kelimeler üreten yapay zeka asistanıdır. Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol gibi platformları destekler. Starter (300 limit, 9.99$), Pro (1000 limit, 29.99$) ve Studio (Sınırsız limit, 49.99$) abonelik planları sunar.
 3. Soruyu veya sorunu net bir şekilde anladığını hissettir. Eğer teknik bir sorun veya iade/fatura talebi varsa, konunun ayrıca teknik destek ekibine iletildiğini ve en kısa sürede inceleneceğini söyle.
 4. Müşteriye doğrudan yardımcı olabileceğin genel konularda (üyelik limitleri, platform özellikleri vb.) net ve açıklayıcı bilgi ver.
-5. Yazdığın yanıt doğrudan e-posta olarak gönderilecektir, bu yüzden sadece e-posta metnini döndür. E-postanın sonuna "Saygılarımızla,\nMayaSolutions Destek Ekibi" imzasını ekle. HTML tagları kullanma, sadece düz metin (plain text) üret.`;
+5. Yazdığın yanıt doğrudan e-posta olarak gönderilecektir, bu yüzden sadece e-posta metnini döndür. E-postanın sonuna "Saygılarımızla,\nMayaSolutions Destek Ekibi" imzasını ekle. HTML tagları kullanma, sadece düz metin (plain text) üret.
+
+Response Rules (English):
+1. Address the sender politely at the beginning (e.g., "Hello," or "Hello [Name]," or "Dear [Name],").
+2. Know MayaSolutions' features: It is an AI-powered assistant that analyzes photos to generate platform-specific SEO-friendly titles, descriptions, and keywords. It supports platforms like Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol, and Amazon. It offers three plans: Starter (300 image limit, $9.99/mo), Pro (1000 image limit, $29.99/mo), and Studio (Unlimited images, $49.99/mo).
+3. Make the customer feel that you clearly understood their issue. If there is a technical problem, refund request, or billing inquiry, state that the issue has been forwarded to the technical support team and will be reviewed as soon as possible.
+4. Provide clear and descriptive information for general questions where you can directly help (membership limits, platform features, etc.).
+5. Your response will be sent directly as an email, so only return the email body text. Add the signature "Best regards,\nMayaSolutions Support Team" at the end of the email. Do not use HTML tags, generate only plain text.`;
 
     const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
     let replyText = "";
@@ -612,7 +703,12 @@ Yanıt Kuralları:
 
     if (!replyText) {
       // Fallback response if Gemini fails or is unconfigured
-      replyText = `Merhaba,\n\nMayaSolutions destek birimine gönderdiğiniz e-posta tarafımıza ulaşmıştır.\n\nTalebiniz başarıyla destek ekibimize iletilmiş olup en kısa sürede sizinle iletişime geçilecektir.\n\nSaygılarımızla,\nMayaSolutions Destek Ekibi`;
+      const isEnglish = /hello|hi|support|help|account|issue|error|subscription|plan/i.test(subject + ' ' + text);
+      if (isEnglish) {
+        replyText = `Hello,\n\nThank you for contacting MayaSolutions support. Your email has been received.\n\nYour request has been successfully forwarded to our support team and we will get back to you as soon as possible.\n\nBest regards,\nMayaSolutions Support Team`;
+      } else {
+        replyText = `Merhaba,\n\nMayaSolutions destek birimine gönderdiğiniz e-posta tarafımıza ulaşmıştır.\n\nTalebiniz başarıyla destek ekibimize iletilmiş olup en kısa sürede sizinle iletişime geçilecektir.\n\nSaygılarımızla,\nMayaSolutions Destek Ekibi`;
+      }
     }
 
     // Send email response via nodemailer if configured
@@ -620,16 +716,24 @@ Yanıt Kuralları:
       // Parse clean sender email from the "from" header (e.g. "Name <email@domain.com>" -> "email@domain.com")
       const toEmail = from.includes('<') ? from.substring(from.indexOf('<') + 1, from.indexOf('>')) : from.trim();
 
+      const isResponseEnglish = /best regards|support team|hello|dear/i.test(replyText);
+      const senderName = isResponseEnglish ? "MayaSolutions Support" : "MayaSolutions Destek";
+
       const mailOptions = {
-        from: `"MayaSolutions Destek" <${process.env.EMAIL_SMTP_USER}>`,
+        from: `"${senderName}" <${process.env.EMAIL_SMTP_USER}>`,
         to: toEmail,
         subject: subject.toLowerCase().startsWith('re:') ? subject : `Re: ${subject}`,
         text: replyText
       };
 
-      await emailTransporter.sendMail(mailOptions);
-      console.log(`✉ Otomatik yanıt başarıyla gönderildi: ${toEmail}`);
-      return res.json({ success: true, message: "Otomatik yanıt gönderildi.", reply: replyText });
+      try {
+        await emailTransporter.sendMail(mailOptions);
+        console.log(`✉ Otomatik yanıt başarıyla gönderildi: ${toEmail}`);
+        return res.json({ success: true, message: "Otomatik yanıt gönderildi.", reply: replyText });
+      } catch (smtpErr) {
+        console.error("❌ SMTP sendMail error in auto-responder:", smtpErr.message);
+        return res.json({ success: false, message: "SMTP hatası. E-posta gönderilemedi.", reply: replyText, error: smtpErr.message });
+      }
     } else {
       console.warn("⚠️ SMTP Transporter is not configured. AI response generated but not sent via email.");
       return res.json({ success: false, message: "SMTP tanımlı değil. E-posta gönderilemedi.", reply: replyText });
