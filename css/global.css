@@ -745,7 +745,7 @@ header.scrolled {
   letter-spacing: -0.03em;
 }
 
-.pricing-price span {
+.pricing-price span:not(.price-val) {
   font-family: var(--font-body);
   font-size: 15px;
   color: var(--color-text-muted);

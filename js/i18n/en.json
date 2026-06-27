@@ -124,14 +124,17 @@
     "title": "Trusted by Creators",
     "description": "What creators managing world-class stock portfolios say about MayaSolutions.",
     "t1Quote": "\"Thanks to MayaSolutions, the tagging time for the 200+ stock photos I upload weekly dropped from 4 hours to 15 minutes. Plus, I've seen a noticeable increase in my sales.\"",
-    "t1Name": "Emre Yıldız",
+    "t1Name": "Ethan Vance",
+    "t1Initials": "EV",
     "t1Role": "Independent Stock Photographer",
-    "t2Quote": "\"We use MayaSolutions for tagging and SEO descriptions of our handmade wood products sold on Etsy and Amazon. The accuracy and quality of results in both Turkish and English is outstanding.\"",
-    "t2Name": "Selin Çelik",
+    "t2Quote": "\"We use MayaSolutions for tagging and SEO descriptions of our handmade wood products sold on Etsy and Amazon. The accuracy and quality of results is absolutely outstanding.\"",
+    "t2Name": "Sarah Campbell",
+    "t2Initials": "SC",
     "t2Role": "E-Commerce Brand Owner",
     "t3Quote": "\"As a visual agency, we archive and catalog product images for hundreds of clients. MayaSolutions' CSV bulk export and history panel is exactly the professional solution we were looking for.\"",
-    "t3Name": "Barış Arslan",
-    "t3Role": "Creative Director, Studio Piks"
+    "t3Name": "Benjamin Adams",
+    "t3Initials": "BA",
+    "t3Role": "Creative Director, Pixel Studio"
   },
   "faq": {
     "microLabel": "Questions",
