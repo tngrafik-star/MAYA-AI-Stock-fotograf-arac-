@@ -928,8 +928,9 @@ const initApp = async () => {
     }
 
     // Set highlights on selected card
-    ['starter', 'pro', 'studio'].forEach(plan => {
+    ['free', 'starter', 'pro', 'studio'].forEach(plan => {
       const card = document.getElementById(`billing-card-${plan}`);
+      if (!card) return;
       let btn = card.querySelector('.change-plan-btn') || card.querySelector('.vip-support-btn');
       
       if (user.plan === plan) {
@@ -997,6 +998,20 @@ const initApp = async () => {
     const user = getCurrentUser();
     if (!user) {
       showToast(t('toast.loginRequired'), 'error');
+      return;
+    }
+
+    if (plan === 'free') {
+      try {
+        const { updateSubscription } = await import('./auth.js');
+        await updateSubscription('free');
+        showToast(t('toast.planUpdatedSuccess') || 'Planınız başarıyla güncellendi.', 'success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
       return;
     }
 
