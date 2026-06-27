@@ -160,11 +160,31 @@ const initApp = async () => {
     });
   }
 
-  // Handle URL Query Params on Load
+  // Handle URL Query Params or SessionStorage fallback on Load
   const urlParams = new URLSearchParams(window.location.search);
   const tabParam = urlParams.get('tab');
-  const selectPlanParam = urlParams.get('selectPlan');
   const paymentParam = urlParams.get('payment');
+  
+  let selectPlanParam = urlParams.get('selectPlan');
+  let cycleParam = urlParams.get('cycle');
+
+  // Check sessionStorage fallback if redirecting without parameters (e.g. after login/signup)
+  if (!selectPlanParam) {
+    selectPlanParam = sessionStorage.getItem('pending_plan');
+    cycleParam = sessionStorage.getItem('pending_cycle');
+    
+    // Clear sessionStorage so it doesn't trigger repeatedly
+    sessionStorage.removeItem('pending_plan');
+    sessionStorage.removeItem('pending_cycle');
+  } else {
+    // Clear sessionStorage just in case it was set
+    sessionStorage.removeItem('pending_plan');
+    sessionStorage.removeItem('pending_cycle');
+  }
+
+  if (!cycleParam) {
+    cycleParam = 'monthly';
+  }
 
   if (paymentParam === 'success') {
     showToast(t('toast.paymentSuccess'), 'success');
@@ -211,8 +231,12 @@ const initApp = async () => {
   if (tabParam) {
     switchView(tabParam);
     if (tabParam === 'billing' && selectPlanParam) {
-      handlePlanUpgrade(selectPlanParam);
+      handlePlanUpgrade(selectPlanParam, cycleParam);
     }
+  } else if (selectPlanParam) {
+    // Switch to billing view and start checkout
+    switchView('billing');
+    handlePlanUpgrade(selectPlanParam, cycleParam);
   } else {
     // Default view
     switchView('dashboard');
@@ -994,7 +1018,7 @@ const initApp = async () => {
   }
 
   // Handle plan upgrade action
-  async function handlePlanUpgrade(plan) {
+  async function handlePlanUpgrade(plan, billingCycle = 'monthly') {
     const user = getCurrentUser();
     if (!user) {
       showToast(t('toast.loginRequired'), 'error');
@@ -1026,6 +1050,7 @@ const initApp = async () => {
         body: JSON.stringify({
           plan: plan,
           userId: user.id,
+          billingCycle: billingCycle,
           successUrl: window.location.origin + '/app/?payment=success',
           cancelUrl: window.location.origin + '/app/?payment=cancel'
         })

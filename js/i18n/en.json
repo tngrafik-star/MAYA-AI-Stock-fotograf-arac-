@@ -93,7 +93,7 @@
     "startFree": "Start Free",
     "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Unused analysis credits roll over month to month as long as your subscription stays active.",
     "free": {
-      "f1": "Adobe Stock Compatible",
+      "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Compatible",
       "f2": "Standard Keywords",
       "f3": "No Credit Card Required"
     },
@@ -341,7 +341,7 @@
     },
     "freeFeatures": {
       "f1": "5 Image Analyses / Month",
-      "f2": "Adobe Stock Compatible",
+      "f2": "Trendyol, Hepsiburada, n11, Amazon, Stock Compatible",
       "f3": "Standard Keywords"
     },
     "proFeatures": {

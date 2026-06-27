@@ -321,9 +321,15 @@ const initMain = () => {
   document.querySelectorAll('.pricing-cta-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const plan = btn.getAttribute('data-plan');
+      const billingCycle = yearly ? 'yearly' : 'monthly';
+      
+      // Save to sessionStorage to persist after signup/login redirects
+      sessionStorage.setItem('pending_plan', plan);
+      sessionStorage.setItem('pending_cycle', billingCycle);
+      
       if (currentSessionUser) {
         // Logged in user: redirect to billing dashboard directly
-        window.location.href = `/app/?tab=billing&selectPlan=${plan}`;
+        window.location.href = `/app/?tab=billing&selectPlan=${plan}&cycle=${billingCycle}`;
       } else {
         // Not logged in: open signup modal
         openModal('signup-modal');
@@ -450,11 +456,11 @@ const initMain = () => {
   });
 
   // Pricing toggle monthly / yearly
+  let yearly = false;
   const pricingSwitch = document.getElementById('pricing-switch');
   if (pricingSwitch) {
     const lblM = document.getElementById('lbl-monthly');
     const lblY = document.getElementById('lbl-yearly');
-    let yearly = false;
 
     pricingSwitch.addEventListener('click', () => {
       yearly = !yearly;

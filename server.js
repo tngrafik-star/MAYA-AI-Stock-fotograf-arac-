@@ -528,7 +528,7 @@ app.post('/api/payment/create-checkout-session', async (req, res) => {
 // Endpoint to create a Lemon Squeezy Checkout Session
 app.post('/api/payment/lemon/create-checkout-session', async (req, res) => {
   try {
-    const { plan, userId, successUrl, cancelUrl } = req.body;
+    const { plan, userId, billingCycle, successUrl, cancelUrl } = req.body;
 
     if (!plan || !userId) {
       return res.status(400).json({ error: { message: "Plan ve Kullanıcı ID gereklidir." } });
@@ -543,16 +543,31 @@ app.post('/api/payment/lemon/create-checkout-session', async (req, res) => {
       });
     }
 
-    // Map plans to variant IDs
+    const cycle = billingCycle === 'yearly' ? 'yearly' : 'monthly';
+
+    // Map plans and cycles to variant IDs
     const variantIds = {
-      starter: process.env.LEMON_SQUEEZY_VARIANT_STARTER,
-      pro: process.env.LEMON_SQUEEZY_VARIANT_PRO,
-      studio: process.env.LEMON_SQUEEZY_VARIANT_STUDIO
+      monthly: {
+        starter: process.env.LEMON_SQUEEZY_VARIANT_STARTER,
+        pro: process.env.LEMON_SQUEEZY_VARIANT_PRO,
+        studio: process.env.LEMON_SQUEEZY_VARIANT_STUDIO
+      },
+      yearly: {
+        starter: process.env.LEMON_SQUEEZY_VARIANT_STARTER_YEARLY || process.env.LEMON_SQUEEZY_VARIANT_STARTER,
+        pro: process.env.LEMON_SQUEEZY_VARIANT_PRO_YEARLY || process.env.LEMON_SQUEEZY_VARIANT_PRO,
+        studio: process.env.LEMON_SQUEEZY_VARIANT_STUDIO_YEARLY || process.env.LEMON_SQUEEZY_VARIANT_STUDIO
+      }
     };
 
-    const variantId = variantIds[plan];
-    if (!variantId || variantId === 'your_starter_variant_id_here' || variantId === 'your_pro_variant_id_here' || variantId === 'your_studio_variant_id_here') {
-      return res.status(400).json({ error: { message: `Geçersiz plan veya varyasyon ID tanımlanmamış: ${plan}` } });
+    const variantId = variantIds[cycle][plan];
+    if (!variantId || 
+        variantId === 'your_starter_variant_id_here' || 
+        variantId === 'your_pro_variant_id_here' || 
+        variantId === 'your_studio_variant_id_here' ||
+        variantId === 'your_starter_yearly_variant_id_here' || 
+        variantId === 'your_pro_yearly_variant_id_here' || 
+        variantId === 'your_studio_yearly_variant_id_here') {
+      return res.status(400).json({ error: { message: `Geçersiz plan veya varyasyon ID tanımlanmamış: ${plan} (${cycle})` } });
     }
 
     // Prepare redirect URL
