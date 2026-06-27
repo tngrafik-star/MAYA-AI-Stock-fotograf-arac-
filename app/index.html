@@ -245,14 +245,14 @@
           </div>
 
           <!-- Simulation Mode Warning Banner -->
-          <div id="simulation-warning-banner" style="display: none; background-color: rgba(239, 68, 68, 0.1); border-left: 4px solid #EF4444; padding: 16px; margin-bottom: 24px; font-size: 13px; color: var(--color-text-primary); border-radius: 4px; line-height: 1.5;">
+          <div id="simulation-warning-banner" style="display: none; background-color: rgba(239, 68, 68, 0.1); border-left: 4px solid #EF4444; padding: 16px; margin-bottom: 24px; font-size: 13px; color: var(--color-text-primary); border-radius: 4px; line-height: 1.5;" data-i18n-html="results.simulationWarning">
             ⚠️ <strong>Simülasyon Modu Aktif:</strong> Google Gemini API Anahtarınız eksik veya geçersiz olduğu için örnek veriler gösterilmektedir. Gerçek yapay zeka analizi yapmak için lütfen sol menüdeki <strong>Hesap Bilgileri</strong> sekmesine gidin ve geçerli bir <strong>Gemini API Key</strong> tanımlayın.
           </div>
 
           <div class="results-grid">
             <!-- Left preview -->
             <div class="result-image-preview">
-              <img id="result-preview-img" src="" alt="Yüklenen Görsel">
+              <img id="result-preview-img" src="" alt="Yüklenen Görsel" data-i18n-alt="results.uploadedImageAlt">
               <div style="padding: 16px; background-color: var(--color-secondary-bg); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; font-weight: 600;" id="result-category-label">
                 KATEGORİ: YAŞAM & DEKORASYON
               </div>
@@ -278,7 +278,7 @@
                       <span class="metadata-label" data-i18n="results.ecommerceTitle">E-Ticaret SEO Uyumlu Ürün Başlığı</span>
                       <button class="copy-btn" data-target="ecommerce-title">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                        Kopyala
+                        <span data-i18n="common.copy">Kopyala</span>
                       </button>
                     </div>
                     <div class="metadata-content-box" id="ecommerce-title">--</div>
@@ -288,7 +288,7 @@
                       <span class="metadata-label" data-i18n="results.ecommerceDesc">SEO Arama Açıklaması (Description)</span>
                       <button class="copy-btn" data-target="ecommerce-desc">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                        Kopyala
+                        <span data-i18n="common.copy">Kopyala</span>
                       </button>
                     </div>
                     <div class="metadata-content-box" id="ecommerce-desc" style="font-family: monospace; font-size: 13px; min-height: 120px;">--</div>
@@ -298,7 +298,7 @@
                       <span class="metadata-label" data-i18n="results.ecommerceTags">13 Adet Ürün Etiketi (Tags - Etsy / Trendyol Uyumlu)</span>
                       <button class="copy-btn" data-target="ecommerce-keywords">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                        Kopyala
+                        <span data-i18n="common.copy">Kopyala</span>
                       </button>
                     </div>
                     <div class="keyword-tags-container" id="ecommerce-keywords-tags"></div>
@@ -317,7 +317,7 @@
                           <span class="metadata-label" data-i18n="results.adobeTitle">Başlık (Title)</span>
                           <button class="copy-btn" data-target="adobe-title">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="metadata-content-box" id="adobe-title">--</div>
@@ -327,7 +327,7 @@
                           <span class="metadata-label" data-i18n="results.adobeKeywords">Anahtar Kelimeler (Keywords)</span>
                           <button class="copy-btn" data-target="adobe-keywords">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="keyword-tags-container" id="adobe-keywords-tags"></div>
@@ -343,7 +343,7 @@
                           <span class="metadata-label" data-i18n="results.shutterstockTitle">Başlık (Title)</span>
                           <button class="copy-btn" data-target="shutterstock-title">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="metadata-content-box" id="shutterstock-title">--</div>
@@ -353,7 +353,7 @@
                           <span class="metadata-label" data-i18n="results.shutterstockDesc">Açıklama (Description)</span>
                           <button class="copy-btn" data-target="shutterstock-desc">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="metadata-content-box" id="shutterstock-desc">--</div>
@@ -363,7 +363,7 @@
                           <span class="metadata-label" data-i18n="results.shutterstockKeywords">Anahtar Kelimeler (Keywords)</span>
                           <button class="copy-btn" data-target="shutterstock-keywords">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="keyword-tags-container" id="shutterstock-keywords-tags"></div>
@@ -379,7 +379,7 @@
                           <span class="metadata-label" data-i18n="results.freepikTitle">Başlık (Title)</span>
                           <button class="copy-btn" data-target="freepik-title">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="metadata-content-box" id="freepik-title">--</div>
@@ -389,7 +389,7 @@
                           <span class="metadata-label" data-i18n="results.freepikKeywords">Anahtar Kelimeler (Keywords)</span>
                           <button class="copy-btn" data-target="freepik-keywords">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="keyword-tags-container" id="freepik-keywords-tags"></div>
@@ -405,7 +405,7 @@
                           <span class="metadata-label" data-i18n="results.vecteezyTitle">Başlık (Title)</span>
                           <button class="copy-btn" data-target="vecteezy-title">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="metadata-content-box" id="vecteezy-title">--</div>
@@ -415,7 +415,7 @@
                           <span class="metadata-label" data-i18n="results.vecteezyDesc">Açıklama (Description)</span>
                           <button class="copy-btn" data-target="vecteezy-desc">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="metadata-content-box" id="vecteezy-desc">--</div>
@@ -425,7 +425,7 @@
                           <span class="metadata-label" data-i18n="results.vecteezyKeywords">Anahtar Kelimeler (Keywords)</span>
                           <button class="copy-btn" data-target="vecteezy-keywords">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                            Kopyala
+                            <span data-i18n="common.copy">Kopyala</span>
                           </button>
                         </div>
                         <div class="keyword-tags-container" id="vecteezy-keywords-tags"></div>
@@ -442,7 +442,7 @@
                       <span class="metadata-label" data-i18n="results.generalTitle">Genel Başlık (Title)</span>
                       <button class="copy-btn" data-target="general-title">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                        Kopyala
+                        <span data-i18n="common.copy">Kopyala</span>
                       </button>
                     </div>
                     <div class="metadata-content-box" id="general-title">--</div>
@@ -452,7 +452,7 @@
                       <span class="metadata-label" data-i18n="results.generalDesc">Genel Açıklama (Description)</span>
                       <button class="copy-btn" data-target="general-desc">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                        Kopyala
+                        <span data-i18n="common.copy">Kopyala</span>
                       </button>
                     </div>
                     <div class="metadata-content-box" id="general-desc" style="font-family: monospace; font-size: 13px; min-height: 80px;">--</div>
@@ -462,7 +462,7 @@
                       <span class="metadata-label" data-i18n="results.generalKeywords">Genel Anahtar Kelimeler (Keywords)</span>
                       <button class="copy-btn" data-target="general-keywords">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                        Kopyala
+                        <span data-i18n="common.copy">Kopyala</span>
                       </button>
                     </div>
                     <div class="keyword-tags-container" id="general-keywords-tags"></div>
@@ -535,7 +535,7 @@
             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
               <h3 style="font-size: 20px;" data-i18n="export.imageList">Görsel Listesi</h3>
               <div style="font-size: 13px; color: var(--color-text-secondary);">
-                <span id="export-selected-count">0</span> görsel seçildi
+                <span id="export-selected-count">0</span> <span data-i18n="export.selectedSuffix">görsel seçildi</span>
               </div>
             </div>
             
@@ -664,7 +664,7 @@
               <div>
                 <span class="micro-label" data-i18n="billing.currentPlan">Mevcut Plan</span>
                 <h2 style="font-size: 32px; font-weight: 300;" id="billing-plan-title">PRO PLAN</h2>
-                <p style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;">Bir sonraki yenileme: 19 Temmuz 2026</p>
+                <p style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;" data-i18n="billing.nextRenewal">Bir sonraki yenileme: 19 Temmuz 2026</p>
               </div>
               <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 16px; font-weight: 600; border-radius: 4px;" id="billing-status-badge">AKTİF</div>
             </div>
@@ -683,7 +683,7 @@
           <div class="stats-card" style="justify-content: center; background-color: var(--color-secondary-bg); border-color: var(--color-border-dark);">
             <span class="stats-card-label" data-i18n="billing.registeredCard">Kayıtlı Kart</span>
             <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">•••• •••• •••• 4242</div>
-            <div style="font-size: 11px; color: var(--color-text-secondary);">Visa • Son Kullanma: 12/28</div>
+            <div style="font-size: 11px; color: var(--color-text-secondary);">Visa • <span data-i18n="billing.cardExpiry">Son Kullanma</span>: 12/28</div>
           </div>
         </div>
 

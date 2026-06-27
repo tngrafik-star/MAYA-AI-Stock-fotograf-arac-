@@ -280,6 +280,7 @@
     "description": "Seçtiğiniz analiz sonuçlarını stok sitelerine veya e-ticaret sitelerine uygun CSV formatında topluca indirin.",
     "imageList": "Görsel Listesi",
     "selectedCount": "{{count}} görsel seçildi",
+    "selectedSuffix": "görsel seçildi",
     "formatTitle": "Format Seçimi",
     "formatDesc": "Hangi mecraya yükleme yapacaksanız ona özel CSV formatını tercih edin.",
     "ecommerceCSV": "E-Ticaret / Ürün Satış CSV",

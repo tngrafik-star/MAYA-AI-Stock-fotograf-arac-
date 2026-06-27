@@ -280,6 +280,7 @@
     "description": "Download your selected analysis results in CSV format compatible with stock sites or e-commerce platforms.",
     "imageList": "Image List",
     "selectedCount": "{{count}} images selected",
+    "selectedSuffix": "images selected",
     "formatTitle": "Format Selection",
     "formatDesc": "Choose the CSV format specific to the platform you'll be uploading to.",
     "ecommerceCSV": "E-Commerce / Product Sales CSV",
