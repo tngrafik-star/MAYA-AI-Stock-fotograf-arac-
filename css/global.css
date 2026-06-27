@@ -736,13 +736,14 @@ header.scrolled {
 
 .pricing-price {
   font-family: var(--font-heading);
-  font-size: 40px;
+  font-size: 36px;
   color: var(--color-text-primary);
   margin-bottom: 24px;
   font-weight: 700;
   display: flex;
   align-items: baseline;
   letter-spacing: -0.03em;
+  white-space: nowrap;
 }
 
 .pricing-price span:not(.price-val) {

@@ -75,7 +75,16 @@ export function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (key) {
-      const translated = i18next.t(key);
+      let options = {};
+      const optionsAttr = el.getAttribute('data-i18n-options');
+      if (optionsAttr) {
+        try {
+          options = JSON.parse(optionsAttr);
+        } catch (e) {
+          console.warn(`[i18n] Failed to parse options for key: ${key}`, e);
+        }
+      }
+      const translated = i18next.t(key, options);
       if (translated && translated !== key) {
         el.textContent = translated;
       }
@@ -86,7 +95,16 @@ export function applyTranslations() {
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (key) {
-      const translated = i18next.t(key);
+      let options = {};
+      const optionsAttr = el.getAttribute('data-i18n-options');
+      if (optionsAttr) {
+        try {
+          options = JSON.parse(optionsAttr);
+        } catch (e) {
+          console.warn(`[i18n] Failed to parse options for key: ${key}`, e);
+        }
+      }
+      const translated = i18next.t(key, options);
       if (translated && translated !== key) {
         el.innerHTML = translated;
       }
