@@ -1,6 +1,6 @@
 import { initDB, getCurrentUser } from './db.js';
 import { login, signup, loginWithGoogle, resetPassword } from './auth.js';
-import { t, applyTranslations, updateSEOMeta, updateHtmlLang } from './i18n/index.js';
+import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getCurrentLanguage } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
 import { supabase } from './supabase.js';
 
@@ -407,8 +407,25 @@ const initMain = () => {
     if (videoMuteBtn) videoMuteBtn.addEventListener('click', toggleMute);
   }
 
+  const updateVideoSource = () => {
+    const promoVideo = document.getElementById('promo-video');
+    if (promoVideo) {
+      const currentLang = getCurrentLanguage();
+      const targetSrc = currentLang === 'en' ? '/MayaSolutions_Sunum_EN.mp4' : '/MayaSolutions_Sunum.mp4';
+      if (promoVideo.getAttribute('src') !== targetSrc) {
+        promoVideo.setAttribute('src', targetSrc);
+        const wasPaused = promoVideo.paused;
+        promoVideo.load();
+        if (!wasPaused) {
+          promoVideo.play().catch(e => console.log('Video play error on source switch:', e));
+        }
+      }
+    }
+  };
+
   // Apply i18n translations to the DOM after everything is set up
   applyTranslations();
+  updateVideoSource();
 
   // Create language switcher in nav-actions (initial setup before auth state fires)
   const navActionsInitial = document.getElementById('nav-auth-actions');
@@ -421,6 +438,7 @@ const initMain = () => {
     applyTranslations();
     updateSEOMeta();
     updateHtmlLang();
+    updateVideoSource();
   });
 };
 
