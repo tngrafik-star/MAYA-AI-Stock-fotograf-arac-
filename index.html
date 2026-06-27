@@ -325,15 +325,37 @@
         <p data-i18n="pricing.description">Bireysel üreticilerden büyük ajanslara kadar her ölçeğe uygun üyelik paketleri.</p>
       </div>
 
+      <div class="toggle-row">
+        <span class="toggle-label active" id="lbl-monthly" data-i18n="pricing.monthly">Aylık</span>
+        <button class="pricing-switch" id="pricing-switch" aria-label="Toggle yearly billing"><span class="knob"></span></button>
+        <span class="toggle-label" id="lbl-yearly" data-i18n="pricing.yearly">Yıllık</span>
+        <span class="save-badge" data-i18n="pricing.save2months">2 ay ücretsiz</span>
+      </div>
+
       <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 data-i18n="pricing.freePlan">Ücretsiz</h3>
+            <div class="pricing-price">0 $</div>
+          </div>
+          <div class="pricing-quota" data-i18n="pricing.freePlanLimitNote">Aylık 5 Görsel Analizi</div>
+          <ul class="pricing-features">
+            <li data-i18n="pricing.free.f1">Adobe Stock Uyumlu</li>
+            <li data-i18n="pricing.free.f2">Standart Anahtar Kelimeler</li>
+            <li data-i18n="pricing.free.f3">Kredi Kartı Gerekmez</li>
+          </ul>
+          <button class="btn btn-secondary pricing-cta-btn" data-plan="free" data-i18n="pricing.startFree">Ücretsiz Başla</button>
+        </div>
+
         <!-- Starter Plan -->
         <div class="pricing-card">
           <div class="pricing-header">
             <h3>Starter</h3>
-            <div class="pricing-price">9.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
+            <div class="pricing-price"><span class="price-val" data-m="9.99" data-y="7.99">9.99</span> $<span data-i18n="pricing.perMonth">/ ay</span></div>
           </div>
+          <div class="pricing-quota"><span class="quota-val" data-m="300" data-y="300">300</span> <span data-i18n="pricing.analysesPerMonth">Görsel Analizi / Ay</span></div>
           <ul class="pricing-features">
-            <li data-i18n="pricing.starter.f1">Aylık 300 Görsel Analizi</li>
             <li data-i18n="pricing.starter.f2">Etsy, Amazon, e-commerce, Stock Uyumlu</li>
             <li data-i18n="pricing.starter.f3">Standart Anahtar Kelimeler</li>
             <li data-i18n="pricing.starter.f4">Geçmiş Arşivine Erişim</li>
@@ -347,10 +369,10 @@
           <span class="pricing-badge" data-i18n="pricing.mostPopular">En Popüler</span>
           <div class="pricing-header">
             <h3>Pro</h3>
-            <div class="pricing-price">29.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
+            <div class="pricing-price"><span class="price-val" data-m="29.99" data-y="24.99">29.99</span> $<span data-i18n="pricing.perMonth">/ ay</span></div>
           </div>
+          <div class="pricing-quota"><span class="quota-val" data-m="1,000" data-y="1,000">1,000</span> <span data-i18n="pricing.analysesPerMonth">Görsel Analizi / Ay</span></div>
           <ul class="pricing-features">
-            <li data-i18n="pricing.pro.f1">Aylık 1.000 Görsel Analizi</li>
             <li data-i18n="pricing.pro.f2">Çoklu Platform & E-Ticaret Uyumluluğu</li>
             <li data-i18n="pricing.pro.f3">Toplu İşlem (Batch Processing)</li>
             <li data-i18n="pricing.pro.f4">CSV formatında Dışa Aktarma</li>
@@ -363,17 +385,23 @@
         <div class="pricing-card">
           <div class="pricing-header">
             <h3>Studio</h3>
-            <div class="pricing-price">49.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
+            <div class="pricing-price"><span class="price-val" data-m="49.99" data-y="41.99">49.99</span> $<span data-i18n="pricing.perMonth">/ ay</span></div>
           </div>
+          <div class="pricing-quota" data-i18n="pricing.unlimitedAnalyses">Sınırsız Görsel Analizi</div>
           <ul class="pricing-features">
-            <li data-i18n="pricing.studio.f1">Sınırsız Görsel Analizi</li>
             <li data-i18n="pricing.studio.f2">Gelişmiş Takım Erişimi (5 Kullanıcı)</li>
             <li data-i18n="pricing.studio.f3">Gelişmiş Dışa Aktarma & Entegrasyon</li>
             <li data-i18n="pricing.studio.f4">7/24 Özel Destek Hattı</li>
             <li data-i18n="pricing.studio.f5">Özel API Erişimi Lisansı</li>
           </ul>
+          <div class="pricing-extra-note" data-i18n="pricing.extraUserNote">+ Ek kullanıcı başına 9.99 $ / ay</div>
           <button class="btn btn-secondary pricing-cta-btn" data-plan="studio" data-i18n="pricing.buyNow">Satın Al</button>
         </div>
+      </div>
+
+      <div class="pricing-footnote">
+        <span class="ic">ℹ</span>
+        <p data-i18n="pricing.pricingFootnote">Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Kullanılmayan analiz kredileri, aboneliğiniz aktif kaldığı sürece aydan aya devreder.</p>
       </div>
     </div>
   </section>

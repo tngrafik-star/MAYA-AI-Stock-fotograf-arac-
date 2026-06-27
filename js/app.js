@@ -75,8 +75,8 @@ const initApp = async () => {
           id: session.user.id,
           name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
           email: session.user.email,
-          plan: 'starter',
-          generations_limit: 300,
+          plan: 'free',
+          generations_limit: 5,
           generations_used: 0,
           created_at: session.user.created_at
         };
@@ -88,8 +88,8 @@ const initApp = async () => {
         id: session.user.id,
         name: session.user.user_metadata?.name || 'Yeni Kullanıcı',
         email: session.user.email,
-        plan: 'starter',
-        generations_limit: 300,
+        plan: 'free',
+        generations_limit: 5,
         generations_used: 0,
         created_at: session.user.created_at
       };

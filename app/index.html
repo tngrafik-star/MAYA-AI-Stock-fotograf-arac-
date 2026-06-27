@@ -689,7 +689,21 @@
 
         <!-- Plan selection grids -->
         <h3 class="profile-section-title" style="margin-bottom: 32px;" data-i18n="billing.changePlan">Abonelik Planını Değiştir</h3>
-        <div class="pricing-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="pricing-grid">
+          <!-- Free -->
+          <div class="pricing-card" id="billing-card-free">
+            <div class="pricing-header">
+              <h3 data-i18n="pricing.freePlan">Ücretsiz</h3>
+              <div class="pricing-price">0 $</div>
+            </div>
+            <ul class="pricing-features">
+              <li data-i18n="billing.freeFeatures.f1">Aylık 5 Görsel Analizi</li>
+              <li data-i18n="billing.freeFeatures.f2">Adobe Stock Uyumlu</li>
+              <li data-i18n="billing.freeFeatures.f3">Standart Kelimeler</li>
+            </ul>
+            <button class="btn btn-secondary change-plan-btn" data-plan="free" data-i18n="billing.switchToPlan" data-i18n-options='{"plan": "Free"}'>Free Planına Geç</button>
+          </div>
+
           <!-- Starter -->
           <div class="pricing-card" id="billing-card-starter">
             <div class="pricing-header">
@@ -697,7 +711,7 @@
               <div class="pricing-price">9.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
             </div>
             <ul class="pricing-features">
-              <li data-i18n="billing.starterFeatures.f1">Aylık 100 Görsel Analizi</li>
+              <li data-i18n="billing.starterFeatures.f1">Aylık 300 Görsel Analizi</li>
               <li data-i18n="billing.starterFeatures.f2">Temel Metadata Setleri</li>
               <li data-i18n="billing.starterFeatures.f3">Geçmiş Arşivi</li>
             </ul>

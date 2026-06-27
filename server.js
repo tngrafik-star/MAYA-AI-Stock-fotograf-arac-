@@ -175,12 +175,13 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
     const plan = customData?.plan;
 
     const planLimits = {
+      free: 5,
       starter: 300,
       pro: 1000,
       studio: 999999
     };
 
-    const limit = planLimits[plan] || 300;
+    const limit = planLimits[plan] || 5;
 
     if (userId && plan) {
       console.log(`✅ Lemon Squeezy Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
@@ -478,6 +479,7 @@ app.post('/api/payment/create-checkout-session', async (req, res) => {
     }
 
     const planDetails = {
+      free: { name: 'Free Planı', price: 0, currency: 'usd', limit: 5 },
       starter: { name: 'Starter Planı', price: 999, currency: 'usd', limit: 300 },
       pro: { name: 'Pro Planı', price: 2999, currency: 'usd', limit: 1000 },
       studio: { name: 'Studio Planı', price: 4999, currency: 'usd', limit: 999999 }
@@ -657,14 +659,14 @@ ${text}
 
 Response Rules (Turkish / Türkçe):
 1. Yanıtın başında mutlaka gönderen kişiye kibar bir şekilde hitap et (örn: "Merhaba," veya isim varsa "Merhaba Ali Bey,").
-2. MayaSolutions'ın özelliklerini bil: Görselleri analiz edip SEO uyumlu Türkçe başlık, açıklama ve anahtar kelimeler üreten yapay zeka asistanıdır. Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol gibi platformları destekler. Starter (300 limit, 9.99$), Pro (1000 limit, 29.99$) ve Studio (Sınırsız limit, 49.99$) abonelik planları sunar.
+2. MayaSolutions'ın özelliklerini bil: Görselleri analiz edip SEO uyumlu Türkçe başlık, açıklama ve anahtar kelimeler üreten yapay zeka asistanıdır. Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol gibi platformları destekler. Ücretsiz (5 limit, Ücretsiz), Starter (300 limit, 9.99$), Pro (1000 limit, 29.99$) ve Studio (Sınırsız limit, 49.99$) abonelik planları sunar.
 3. Soruyu veya sorunu net bir şekilde anladığını hissettir. Eğer teknik bir sorun veya iade/fatura talebi varsa, konunun ayrıca teknik destek ekibine iletildiğini ve en kısa sürede inceleneceğini söyle.
 4. Müşteriye doğrudan yardımcı olabileceğin genel konularda (üyelik limitleri, platform özellikleri vb.) net ve açıklayıcı bilgi ver.
 5. Yazdığın yanıt doğrudan e-posta olarak gönderilecektir, bu yüzden sadece e-posta metnini döndür. E-postanın sonuna "Saygılarımızla,\nMayaSolutions Destek Ekibi" imzasını ekle. HTML tagları kullanma, sadece düz metin (plain text) üret.
 
 Response Rules (English):
 1. Address the sender politely at the beginning (e.g., "Hello," or "Hello [Name]," or "Dear [Name],").
-2. Know MayaSolutions' features: It is an AI-powered assistant that analyzes photos to generate platform-specific SEO-friendly titles, descriptions, and keywords. It supports platforms like Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol, and Amazon. It offers three plans: Starter (300 image limit, $9.99/mo), Pro (1000 image limit, $29.99/mo), and Studio (Unlimited images, $49.99/mo).
+2. Know MayaSolutions' features: It is an AI-powered assistant that analyzes photos to generate platform-specific SEO-friendly titles, descriptions, and keywords. It supports platforms like Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol, and Amazon. It offers four plans: Free (5 image limit, Free), Starter (300 image limit, $9.99/mo), Pro (1000 image limit, $29.99/mo), and Studio (Unlimited images, $49.99/mo).
 3. Make the customer feel that you clearly understood their issue. If there is a technical problem, refund request, or billing inquiry, state that the issue has been forwarded to the technical support team and will be reviewed as soon as possible.
 4. Provide clear and descriptive information for general questions where you can directly help (membership limits, platform features, etc.).
 5. Your response will be sent directly as an email, so only return the email body text. Add the signature "Best regards,\nMayaSolutions Support Team" at the end of the email. Do not use HTML tags, generate only plain text.`;

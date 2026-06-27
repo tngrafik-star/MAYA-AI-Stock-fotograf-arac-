@@ -82,6 +82,21 @@
     "activePlan": "Active Plan",
     "buyNow": "Buy Now",
     "perMonth": "/ mo",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save2months": "2 months free",
+    "freePlan": "Free",
+    "freePlanLimitNote": "5 Image Analyses / Month",
+    "analysesPerMonth": "Image Analyses / Month",
+    "unlimitedAnalyses": "Unlimited Image Analyses",
+    "extraUserNote": "+ 9.99 $ / month per additional user",
+    "startFree": "Start Free",
+    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Unused analysis credits roll over month to month as long as your subscription stays active.",
+    "free": {
+      "f1": "Adobe Stock Compatible",
+      "f2": "Standard Keywords",
+      "f3": "No Credit Card Required"
+    },
     "starter": {
       "f1": "300 Image Analyses / Month",
       "f2": "Etsy, Amazon, e-commerce, Stock Compatible",
@@ -320,6 +335,11 @@
       "f1": "300 Image Analyses / Month",
       "f2": "Basic Metadata Sets",
       "f3": "History Archive"
+    },
+    "freeFeatures": {
+      "f1": "5 Image Analyses / Month",
+      "f2": "Adobe Stock Compatible",
+      "f3": "Standard Keywords"
     },
     "proFeatures": {
       "f1": "1,000 Image Analyses / Month",

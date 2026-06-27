@@ -152,6 +152,7 @@ export async function updateSubscription(plan) {
   if (!user) throw new Error(t('validation.sessionNotFound'));
   
   let limit = 300;
+  if (plan === 'free') limit = 5;
   if (plan === 'pro') limit = 1000;
   if (plan === 'studio') limit = 999999; // Unlimited
   

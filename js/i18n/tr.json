@@ -82,6 +82,21 @@
     "activePlan": "Aktif Plan",
     "buyNow": "Satın Al",
     "perMonth": "/ ay",
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "save2months": "2 ay ücretsiz",
+    "freePlan": "Ücretsiz",
+    "freePlanLimitNote": "Aylık 5 Görsel Analizi",
+    "analysesPerMonth": "Görsel Analizi / Ay",
+    "unlimitedAnalyses": "Sınırsız Görsel Analizi",
+    "extraUserNote": "+ Ek kullanıcı başına 9.99 $ / ay",
+    "startFree": "Ücretsiz Başla",
+    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Kullanılmayan analiz kredileri, aboneliğiniz aktif kaldığı sürece aydan aya devreder.",
+    "free": {
+      "f1": "Adobe Stock Uyumlu",
+      "f2": "Standart Anahtar Kelimeler",
+      "f3": "Kredi Kartı Gerekmez"
+    },
     "starter": {
       "f1": "Aylık 300 Görsel Analizi",
       "f2": "Etsy, Amazon, e-commerce, Stock Uyumlu",
@@ -320,6 +335,11 @@
       "f1": "Aylık 300 Görsel Analizi",
       "f2": "Temel Metadata Setleri",
       "f3": "Geçmiş Arşivi"
+    },
+    "freeFeatures": {
+      "f1": "Aylık 5 Görsel Analizi",
+      "f2": "Adobe Stock Uyumlu",
+      "f3": "Standart Kelimeler"
     },
     "proFeatures": {
       "f1": "Aylık 1.000 Görsel Analizi",

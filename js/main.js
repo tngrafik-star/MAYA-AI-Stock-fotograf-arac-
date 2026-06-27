@@ -448,6 +448,29 @@ const initMain = () => {
       }
     }
   });
+
+  // Pricing toggle monthly / yearly
+  const pricingSwitch = document.getElementById('pricing-switch');
+  if (pricingSwitch) {
+    const lblM = document.getElementById('lbl-monthly');
+    const lblY = document.getElementById('lbl-yearly');
+    let yearly = false;
+
+    pricingSwitch.addEventListener('click', () => {
+      yearly = !yearly;
+      pricingSwitch.classList.toggle('on', yearly);
+      lblM.classList.toggle('active', !yearly);
+      lblY.classList.toggle('active', yearly);
+
+      document.querySelectorAll('.price-val[data-m]').forEach(el => {
+        el.textContent = yearly ? el.getAttribute('data-y') : el.getAttribute('data-m');
+      });
+
+      document.querySelectorAll('.quota-val[data-m]').forEach(el => {
+        el.textContent = yearly ? el.getAttribute('data-y') : el.getAttribute('data-m');
+      });
+    });
+  }
 };
 
 if (document.readyState === 'loading') {
