@@ -53,10 +53,10 @@
     <div class="nav-container">
       <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-solutions">SOLUTIONS</span></a>
       <ul class="nav-links">
-        <li><a href="#features">Özellikler</a></li>
-        <li><a href="#how-it-works">Çalışma Şekli</a></li>
-        <li><a href="#pricing">Fiyatlandırma</a></li>
-        <li><a href="#faq">SSS</a></li>
+        <li><a href="#features" data-i18n="nav.features">Özellikler</a></li>
+        <li><a href="#how-it-works" data-i18n="nav.howItWorks">Çalışma Şekli</a></li>
+        <li><a href="#pricing" data-i18n="nav.pricing">Fiyatlandırma</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">SSS</a></li>
       </ul>
       <div class="nav-actions" id="nav-auth-actions">
         <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" style="margin-right: 8px;">
@@ -69,8 +69,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v2.25m0 13.5V21M4.22 4.22l1.59 1.59m12.38 12.38l1.59 1.59M3 12h2.25m13.5 0H21M5.81 18.19l1.59-1.59m12.38-12.38l1.59-1.59M12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9z" />
           </svg>
         </button>
-        <button class="btn-text" id="open-login-btn">Giriş Yap</button>
-        <button class="btn btn-primary" id="open-signup-btn">Ücretsiz Dene</button>
+        <button class="btn-text" id="open-login-btn" data-i18n="nav.login">Giriş Yap</button>
+        <button class="btn btn-primary" id="open-signup-btn" data-i18n="nav.tryFree">Ücretsiz Dene</button>
       </div>
     </div>
   </header>
@@ -80,15 +80,15 @@
     <div class="container">
       <div class="hero-badge">
         <span class="hero-badge-line"></span>
-        <span class="hero-badge-text">Yapay Zeka Destekli Stok Metadata Platformu</span>
+        <span class="hero-badge-text" data-i18n="hero.badge">Yapay Zeka Destekli Stok Metadata Platformu</span>
         <span class="hero-badge-line"></span>
       </div>
-      <h1>Ürünleri Satışa Hazır Hale Getiren Yapay Zeka</h1>
-      <p>MayaSolutions, fotoğraflarınızı analiz eder ve saniyeler içinde Trendyol, Hepsiburada, n11, Amazon, Stock, Shutterstock, Freepik ve e-ticaret siteleri için yüksek dönüşümlü başlık, açıklama ve anahtar kelimeler oluşturur.</p>
+      <h1 data-i18n="hero.title">Ürünleri Satışa Hazır Hale Getiren Yapay Zeka</h1>
+      <p data-i18n="hero.description">MayaSolutions, fotoğraflarınızı analiz eder ve saniyeler içinde Trendyol, Hepsiburada, n11, Amazon, Stock, Shutterstock, Freepik ve e-ticaret siteleri için yüksek dönüşümlü başlık, açıklama ve anahtar kelimeler oluşturur.</p>
       
       <div class="hero-actions">
-        <button class="btn btn-primary" id="hero-primary-cta">Ücretsiz Dene</button>
-        <a href="#how-it-works" class="btn btn-secondary">Nasıl Çalışır</a>
+        <button class="btn btn-primary" id="hero-primary-cta" data-i18n="hero.ctaTryFree">Ücretsiz Dene</button>
+        <a href="#how-it-works" class="btn btn-secondary" data-i18n="hero.ctaHowItWorks">Nasıl Çalışır</a>
       </div>
 
       <!-- Mockup Area -->
@@ -98,33 +98,33 @@
           <div style="width: 200px; border-right: 1px solid var(--color-border-dark); background-color: var(--color-card-bg); padding: 20px; text-align: left; display: flex; flex-direction: column; gap: 30px;">
             <div class="logo" style="font-size: 16px;"><span class="logo-maya">MAYA</span><span class="logo-solutions">SOLUTIONS</span></div>
             <div style="display: flex; flex-direction: column; gap: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary);">
-              <div style="color: var(--color-accent); font-weight: 600;">• GÖSTERGE PANELİ</div>
-              <div>• YENİ YÜKLEME</div>
-              <div>• GEÇMİŞ</div>
-              <div>• DIŞA AKTAR</div>
-              <div>• HESAP</div>
+              <div style="color: var(--color-accent); font-weight: 600;" data-i18n="mockup.dashboard">• GÖSTERGE PANELİ</div>
+              <div data-i18n="mockup.newUpload">• YENİ YÜKLEME</div>
+              <div data-i18n="mockup.history">• GEÇMİŞ</div>
+              <div data-i18n="mockup.export">• DIŞA AKTAR</div>
+              <div data-i18n="mockup.account">• HESAP</div>
             </div>
           </div>
           <div style="flex: 1; padding: 30px; text-align: left; display: flex; flex-direction: column; gap: 24px;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
               <div>
-                <h4 style="font-family: var(--font-heading); font-size: 24px;">Hoş Geldiniz</h4>
-                <p style="font-size: 12px; color: var(--color-text-secondary);">Portföyünüzü ölçeklendirmeye bugün devam edin.</p>
+                <h4 style="font-family: var(--font-heading); font-size: 24px;" data-i18n="mockup.welcome">Hoş Geldiniz</h4>
+                <p style="font-size: 12px; color: var(--color-text-secondary);" data-i18n="mockup.welcomeDesc">Portföyünüzü ölçeklendirmeye bugün devam edin.</p>
               </div>
-              <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 12px; font-weight: 600;">PRO HESAP</div>
+              <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 12px; font-weight: 600;" data-i18n="mockup.proAccount">PRO HESAP</div>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
               <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
-                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">Toplam Analiz</div>
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;" data-i18n="mockup.totalAnalysis">Toplam Analiz</div>
                 <div style="font-family: var(--font-heading); font-size: 28px;">124</div>
               </div>
               <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
-                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">Kalan Kredi</div>
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;" data-i18n="mockup.remainingCredits">Kalan Kredi</div>
                 <div style="font-family: var(--font-heading); font-size: 28px;">876</div>
               </div>
               <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
-                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;">Platform Entegrasyonu</div>
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;" data-i18n="mockup.platformIntegration">Platform Entegrasyonu</div>
                 <div style="font-family: var(--font-heading); font-size: 28px;">5+</div>
               </div>
             </div>
@@ -132,7 +132,7 @@
             <div style="flex: 1; border: 1px dashed var(--color-border-dark); border-radius: var(--border-radius-sm); display: flex; align-items: center; justify-content: center; background-color: var(--color-card-bg);">
               <div style="text-align: center;">
                 <span style="font-size: 28px; display: block; color: var(--color-text-muted);">📷</span>
-                <span style="font-size: 12px; color: var(--color-text-secondary);">Görselinizi buraya sürükleyin veya göz atın</span>
+                <span style="font-size: 12px; color: var(--color-text-secondary);" data-i18n="mockup.dropzoneText">Görselinizi buraya sürükleyin veya göz atın</span>
               </div>
             </div>
           </div>
@@ -146,31 +146,31 @@
   <section class="section" id="how-it-works">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label">Adım Adım</span>
-        <h2>Nasıl Çalışır?</h2>
-        <p>Görsellerinizi pazaryerlerine ulaştırmanın en hızlı ve akıllıca yolu.</p>
+        <span class="micro-label" data-i18n="howItWorks.microLabel">Adım Adım</span>
+        <h2 data-i18n="howItWorks.title">Nasıl Çalışır?</h2>
+        <p data-i18n="howItWorks.description">Görsellerinizi pazaryerlerine ulaştırmanın en hızlı ve akıllıca yolu.</p>
       </div>
 
       <div class="steps-grid">
         <div class="step-card">
           <div class="step-number">01</div>
-          <h3>Fotoğrafı Yükle</h3>
-          <p>Yüksek çözünürlüklü stok fotoğrafınızı veya ürün görselinizi sürükleyip platforma bırakın.</p>
+          <h3 data-i18n="howItWorks.step1Title">Fotoğrafı Yükle</h3>
+          <p data-i18n="howItWorks.step1Desc">Yüksek çözünürlüklü stok fotoğrafınızı veya ürün görselinizi sürükleyip platforma bırakın.</p>
         </div>
         <div class="step-card">
           <div class="step-number">02</div>
-          <h3>Yapay Zeka Analiz Etsin</h3>
-          <p>Gelişmiş görsel işleme modelimiz renkleri, kompozisyonu, nesneleri ve potansiyel SEO değerlerini çözsün.</p>
+          <h3 data-i18n="howItWorks.step2Title">Yapay Zeka Analiz Etsin</h3>
+          <p data-i18n="howItWorks.step2Desc">Gelişmiş görsel işleme modelimiz renkleri, kompozisyonu, nesneleri ve potansiyel SEO değerlerini çözsün.</p>
         </div>
         <div class="step-card">
           <div class="step-number">03</div>
-          <h3>Metadata Oluştur</h3>
-          <p>Saniyeler içinde E-ticaret ve Stock platformlarına özel Türkçe metadata setleri üretilsin.</p>
+          <h3 data-i18n="howItWorks.step3Title">Metadata Oluştur</h3>
+          <p data-i18n="howItWorks.step3Desc">Saniyeler içinde E-ticaret ve Stock platformlarına özel Türkçe metadata setleri üretilsin.</p>
         </div>
         <div class="step-card">
           <div class="step-number">04</div>
-          <h3>Platformlara Yükle</h3>
-          <p>Dışa aktarılan CSV dosyaları veya hızlı kopyalama araçlarıyla saniyeler içinde yüklemenizi tamamlayın.</p>
+          <h3 data-i18n="howItWorks.step4Title">Platformlara Yükle</h3>
+          <p data-i18n="howItWorks.step4Desc">Dışa aktarılan CSV dosyaları veya hızlı kopyalama araçlarıyla saniyeler içinde yüklemenizi tamamlayın.</p>
         </div>
       </div>
     </div>
@@ -180,9 +180,9 @@
   <section class="section" id="features">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label">Özellikler</span>
-        <h2>Profesyonel Çözümler</h2>
-        <p>Stok üreticileri ve ticari markalar için özel olarak tasarlanmış gelişmiş araçlar.</p>
+        <span class="micro-label" data-i18n="features.microLabel">Özellikler</span>
+        <h2 data-i18n="features.title">Profesyonel Çözümler</h2>
+        <p data-i18n="features.description">Stok üreticileri ve ticari markalar için özel olarak tasarlanmış gelişmiş araçlar.</p>
       </div>
 
       <div class="features-grid">
@@ -193,8 +193,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-8.982m-8.982 0L15 3v8.196M9.813 15.904L4.5 10.5m5.313 5.404L15 11.25" />
             </svg>
           </div>
-          <h3>Yapay Zeka Metadata Üretici</h3>
-          <p>Yüklenen fotoğrafa uygun, arama hacmi yüksek Türkçe başlık ve pazaryeri uyumlu açıklamalar oluşturur.</p>
+          <h3 data-i18n="features.f1Title">Yapay Zeka Metadata Üretici</h3>
+          <p data-i18n="features.f1Desc">Yüklenen fotoğrafa uygun, arama hacmi yüksek Türkçe başlık ve pazaryeri uyumlu açıklamalar oluşturur.</p>
         </div>
         <!-- Feature 2 -->
         <div class="feature-card">
@@ -204,8 +204,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
             </svg>
           </div>
-          <h3>Akıllı Anahtar Kelime Motoru</h3>
-          <p>Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ kelimelik etiket havuzları üretir.</p>
+          <h3 data-i18n="features.f2Title">Akıllı Anahtar Kelime Motoru</h3>
+          <p data-i18n="features.f2Desc">Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ kelimelik etiket havuzları üretir.</p>
         </div>
         <!-- Feature 3 -->
         <div class="feature-card">
@@ -214,8 +214,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
             </svg>
           </div>
-          <h3>Toplu İşlem (Batch Processing)</h3>
-          <p>Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.</p>
+          <h3 data-i18n="features.f3Title">Toplu İşlem (Batch Processing)</h3>
+          <p data-i18n="features.f3Desc">Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.</p>
         </div>
         <!-- Feature 4 -->
         <div class="feature-card">
@@ -224,8 +224,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>
           </div>
-          <h3>Gelişmiş Dışa Aktarım</h3>
-          <p>Adobe Stock, Shutterstock, Freepik veya Etsy gibi online satış kanallarına özel CSV formatlarında çıktı alın.</p>
+          <h3 data-i18n="features.f4Title">Gelişmiş Dışa Aktarım</h3>
+          <p data-i18n="features.f4Desc">Adobe Stock, Shutterstock, Freepik veya Etsy gibi online satış kanallarına özel CSV formatlarında çıktı alın.</p>
         </div>
         <!-- Feature 5 -->
         <div class="feature-card">
@@ -234,8 +234,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
             </svg>
           </div>
-          <h3>Geçmiş ve Arşiv Yönetimi</h3>
-          <p>Daha önce yaptığınız tüm analiz ve üretimleri güvenle saklayın, dilediğiniz an tekrar arayın ve kopyalayın.</p>
+          <h3 data-i18n="features.f5Title">Geçmiş ve Arşiv Yönetimi</h3>
+          <p data-i18n="features.f5Desc">Daha önce yaptığınız tüm analiz ve üretimleri güvenle saklayın, dilediğiniz an tekrar arayın ve kopyalayın.</p>
         </div>
         <!-- Feature 6 -->
         <div class="feature-card">
@@ -244,8 +244,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110 21a3.745 3.745 0 01-3.068-1.593 3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0114 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
             </svg>
           </div>
-          <h3>Çoklu Platform Uyumluluğu</h3>
-          <p>Tek bir tıklamayla hem popüler stok siteleri hem de online satış kanalları (Etsy, Trendyol vs.) için etiket oluşturun.</p>
+          <h3 data-i18n="features.f6Title">Çoklu Platform Uyumluluğu</h3>
+          <p data-i18n="features.f6Desc">Tek bir tıklamayla hem popüler stok siteleri hem de online satış kanalları (Etsy, Trendyol vs.) için etiket oluşturun.</p>
         </div>
       </div>
     </div>
@@ -256,26 +256,26 @@
     <div class="container">
       <div class="benefits-split">
         <div class="benefits-content">
-          <span class="micro-label">Avantajlar</span>
-          <h2>Daha Fazla Üretin,<br>Daha Hızlı Satın.</h2>
-          <p>MayaSolutions, yaratıcı iş akışınızdaki en sıkıcı ve zaman alan süreci tamamen otomatikleştirerek asıl işinize odaklanmanızı sağlar.</p>
+          <span class="micro-label" data-i18n="benefits.microLabel">Avantajlar</span>
+          <h2 data-i18n-html="benefits.title">Daha Fazla Üretin,<br>Daha Hızlı Satın.</h2>
+          <p data-i18n="benefits.description">MayaSolutions, yaratıcı iş akışınızdaki en sıkıcı ve zaman alan süreci tamamen otomatikleştirerek asıl işinize odaklanmanızı sağlar.</p>
           
           <div class="benefits-list">
             <div class="benefit-item">
-              <h4>Zaman Tasarrufu</h4>
-              <p>Her görsel için tek tek anahtar kelime girmeyi bırakın. Zamandan %90 tasarruf edin.</p>
+              <h4 data-i18n="benefits.b1Title">Zaman Tasarrufu</h4>
+              <p data-i18n="benefits.b1Desc">Her görsel için tek tek anahtar kelime girmeyi bırakın. Zamandan %90 tasarruf edin.</p>
             </div>
             <div class="benefit-item">
-              <h4>Maksimum Keşif</h4>
-              <p>SEO uyumlu algoritmalar sayesinde görsellerinizin pazaryerlerindeki görünürlüğünü katlayın.</p>
+              <h4 data-i18n="benefits.b2Title">Maksimum Keşif</h4>
+              <p data-i18n="benefits.b2Desc">SEO uyumlu algoritmalar sayesinde görsellerinizin pazaryerlerindeki görünürlüğünü katlayın.</p>
             </div>
             <div class="benefit-item">
-              <h4>Metadata Kalitesi</h4>
-              <p>Hatalı ve alakasız etiketlerden kurtulun, arama sonuçlarıyla birebir örtüşen veriler sunun.</p>
+              <h4 data-i18n="benefits.b3Title">Metadata Kalitesi</h4>
+              <p data-i18n="benefits.b3Desc">Hatalı ve alakasız etiketlerden kurtulun, arama sonuçlarıyla birebir örtüşen veriler sunun.</p>
             </div>
             <div class="benefit-item">
-              <h4>Portföy Büyüme Hızı</h4>
-              <p>Toplu dışa aktarım sayesinde yeni stok ürünlerinizi günler yerine saatler içinde satışa açın.</p>
+              <h4 data-i18n="benefits.b4Title">Portföy Büyüme Hızı</h4>
+              <p data-i18n="benefits.b4Desc">Toplu dışa aktarım sayesinde yeni stok ürünlerinizi günler yerine saatler içinde satışa açın.</p>
             </div>
           </div>
         </div>
@@ -320,9 +320,9 @@
   <section class="section" id="pricing">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label">Fiyatlandırma</span>
-        <h2>Esnek ve Şeffaf Planlar</h2>
-        <p>Bireysel üreticilerden büyük ajanslara kadar her ölçeğe uygun üyelik paketleri.</p>
+        <span class="micro-label" data-i18n="pricing.microLabel">Fiyatlandırma</span>
+        <h2 data-i18n="pricing.title">Esnek ve Şeffaf Planlar</h2>
+        <p data-i18n="pricing.description">Bireysel üreticilerden büyük ajanslara kadar her ölçeğe uygun üyelik paketleri.</p>
       </div>
 
       <div class="pricing-grid">
@@ -330,16 +330,16 @@
         <div class="pricing-card">
           <div class="pricing-header">
             <h3>Starter</h3>
-            <div class="pricing-price">9.99 $<span>/ ay</span></div>
+            <div class="pricing-price">9.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
           </div>
           <ul class="pricing-features">
-            <li>Aylık 100 Görsel Analizi</li>
-            <li>Adobe Stock ve Shutterstock Uyumlu</li>
-            <li>Standart Anahtar Kelimeler</li>
-            <li>Geçmiş Arşivine Erişim</li>
-            <li>Bireysel Kullanıcı Lisansı</li>
+            <li data-i18n="pricing.starter.f1">Aylık 100 Görsel Analizi</li>
+            <li data-i18n="pricing.starter.f2">Adobe Stock ve Shutterstock Uyumlu</li>
+            <li data-i18n="pricing.starter.f3">Standart Anahtar Kelimeler</li>
+            <li data-i18n="pricing.starter.f4">Geçmiş Arşivine Erişim</li>
+            <li data-i18n="pricing.starter.f5">Bireysel Kullanıcı Lisansı</li>
           </ul>
-          <button class="btn btn-secondary pricing-cta-btn" data-plan="starter">Satın Al</button>
+          <button class="btn btn-secondary pricing-cta-btn" data-plan="starter" data-i18n="pricing.buyNow">Satın Al</button>
         </div>
 
         <!-- Pro Plan -->
@@ -382,44 +382,44 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label">Görüşler</span>
-        <h2>Yaratıcıların Tercihi</h2>
-        <p>Dünya standartlarında stok portföyü yöneten Türk yaratıcıların MayaSolutions hakkındaki yorumları.</p>
+        <span class="micro-label" data-i18n="testimonials.microLabel">Görüşler</span>
+        <h2 data-i18n="testimonials.title">Yaratıcıların Tercihi</h2>
+        <p data-i18n="testimonials.description">Dünya standartlarında stok portföyü yöneten Türk yaratıcıların MayaSolutions hakkındaki yorumları.</p>
       </div>
 
       <div class="testimonials-grid">
         <!-- Testimonial 1 -->
         <div class="testimonial-card">
-          <p class="testimonial-quote">"MayaSolutions sayesinde her hafta sisteme yüklediğim 200'den fazla stok fotoğrafının etiketleme süresi 4 saatten 15 dakikaya düştü. Üstelik satışlarımda gözle görülür bir artış var."</p>
+          <p class="testimonial-quote" data-i18n="testimonials.t1Quote">"MayaSolutions sayesinde her hafta sisteme yüklediğim 200'den fazla stok fotoğrafının etiketleme süresi 4 saatten 15 dakikaya düştü. Üstelik satışlarımda gözle görülür bir artış var."</p>
           <div class="testimonial-author">
             <div class="author-avatar">EY</div>
             <div class="author-info">
-              <h4>Emre Yıldız</h4>
-              <p>Bağımsız Stok Fotoğrafçısı</p>
+              <h4 data-i18n="testimonials.t1Name">Emre Yıldız</h4>
+              <p data-i18n="testimonials.t1Role">Bağımsız Stok Fotoğrafçısı</p>
             </div>
           </div>
         </div>
         
         <!-- Testimonial 2 -->
         <div class="testimonial-card">
-          <p class="testimonial-quote">"Etsy ve Amazon üzerinden sattığımız el yapımı ahşap ürünlerin etiketleme ve SEO açıklamalarını MayaSolutions ile yapıyoruz. Türkçe ve İngilizce sonuçlardaki doğruluk ve şıklık mükemmel."</p>
+          <p class="testimonial-quote" data-i18n="testimonials.t2Quote">"Etsy ve Amazon üzerinden sattığımız el yapımı ahşap ürünlerin etiketleme ve SEO açıklamalarını MayaSolutions ile yapıyoruz. Türkçe ve İngilizce sonuçlardaki doğruluk ve şıklık mükemmel."</p>
           <div class="testimonial-author">
             <div class="author-avatar">SC</div>
             <div class="author-info">
-              <h4>Selin Çelik</h4>
-              <p>E-Ticaret Marka Sahibi</p>
+              <h4 data-i18n="testimonials.t2Name">Selin Çelik</h4>
+              <p data-i18n="testimonials.t2Role">E-Ticaret Marka Sahibi</p>
             </div>
           </div>
         </div>
 
         <!-- Testimonial 3 -->
         <div class="testimonial-card">
-          <p class="testimonial-quote">"Bir görsel ajans olarak yüzlerce müşterimizin ürün görsellerini arşivliyor ve katalogluyoruz. MayaSolutions'ın sunduğu CSV toplu dışa aktarma ve geçmiş paneli tam aradığımız profesyonel çözüm."</p>
+          <p class="testimonial-quote" data-i18n="testimonials.t3Quote">"Bir görsel ajans olarak yüzlerce müşterimizin ürün görsellerini arşivliyor ve katalogluyoruz. MayaSolutions'ın sunduğu CSV toplu dışa aktarma ve geçmiş paneli tam aradığımız profesyonel çözüm."</p>
           <div class="testimonial-author">
             <div class="author-avatar">BA</div>
             <div class="author-info">
-              <h4>Barış Arslan</h4>
-              <p>Kreatif Direktör, Studio Piks</p>
+              <h4 data-i18n="testimonials.t3Name">Barış Arslan</h4>
+              <p data-i18n="testimonials.t3Role">Kreatif Direktör, Studio Piks</p>
             </div>
           </div>
         </div>
@@ -431,37 +431,37 @@
   <section class="section" id="faq">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label">Sorular</span>
-        <h2>Sıkça Sorulan Sorular</h2>
-        <p>MayaSolutions hakkında merak ettiğiniz temel konular ve yanıtları.</p>
+        <span class="micro-label" data-i18n="faq.microLabel">Sorular</span>
+        <h2 data-i18n="faq.title">Sıkça Sorulan Sorular</h2>
+        <p data-i18n="faq.description">MayaSolutions hakkında merak ettiğiniz temel konular ve yanıtları.</p>
       </div>
 
       <div class="faq-list">
         <div class="faq-item">
-          <button class="faq-question">Yapay zeka metadata üretim doğruluğu nedir?</button>
+          <button class="faq-question" data-i18n="faq.q1">Yapay zeka metadata üretim doğruluğu nedir?</button>
           <div class="faq-answer">
-            <p>MayaSolutions, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir.</p>
+            <p data-i18n="faq.a1">MayaSolutions, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Hangi platformları destekliyorsunuz?</button>
+          <button class="faq-question" data-i18n="faq.q2">Hangi platformları destekliyorsunuz?</button>
           <div class="faq-answer">
-            <p>Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz.</p>
+            <p data-i18n="faq.a2">Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">Yüklediğim görsellerin gizliliği nasıl korunuyor?</button>
+          <button class="faq-question" data-i18n="faq.q3">Yüklediğim görsellerin gizliliği nasıl korunuyor?</button>
           <div class="faq-answer">
-            <p>Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz.</p>
+            <p data-i18n="faq.a3">Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question">İstediğim zaman aboneliğimi iptal edebilir miyim?</button>
+          <button class="faq-question" data-i18n="faq.q4">İstediğim zaman aboneliğimi iptal edebilir miyim?</button>
           <div class="faq-answer">
-            <p>Evet, dilediğiniz an taahhüt olmadan aboneliğinizi panelinizdeki faturalandırma sayfasından iptal edebilir veya planlar arasında geçiş yapabilirsiniz. İptal durumunda haklarınız fatura kesim tarihine kadar devam eder.</p>
+            <p data-i18n="faq.a4">Evet, dilediğiniz an taahhüt olmadan aboneliğinizi panelinizdeki faturalandırma sayfasından iptal edebilir veya planlar arasında geçiş yapabilirsiniz. İptal durumunda haklarınız fatura kesim tarihine kadar devam eder.</p>
           </div>
         </div>
       </div>
@@ -471,9 +471,9 @@
   <!-- Final CTA -->
   <section class="final-cta">
     <div class="container">
-      <h2>Portföyünüzü Büyütmeye Bugün Başlayın</h2>
-      <p>Hemen ücretsiz hesabınızı oluşturun ve ilk 10 görselinizi saniyeler içinde analiz edin.</p>
-      <button class="btn" id="final-cta-btn">Ücretsiz Hesap Oluştur</button>
+      <h2 data-i18n="cta.title">Portföyünüzü Büyütmeye Bugün Başlayın</h2>
+      <p data-i18n="cta.description">Hemen ücretsiz hesabınızı oluşturun ve ilk 10 görselinizi saniyeler içinde analiz edin.</p>
+      <button class="btn" id="final-cta-btn" data-i18n="cta.button">Ücretsiz Hesap Oluştur</button>
     </div>
   </section>
 
@@ -483,37 +483,37 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-solutions">SOLUTIONS</span></a>
-          <p>Yaratıcıların iş akışlarını yapay zeka ile optimize eden, lüks ve işlevsel metadata platformu.</p>
+          <p data-i18n="footer.brandDesc">Yaratıcıların iş akışlarını yapay zeka ile optimize eden, lüks ve işlevsel metadata platformu.</p>
         </div>
         <div class="footer-col">
-          <h4>Ürün</h4>
+          <h4 data-i18n="footer.product">Ürün</h4>
           <ul>
-            <li><a href="#features">Özellikler</a></li>
-            <li><a href="#pricing">Fiyatlandırma</a></li>
-            <li><a href="#how-it-works">Çalışma Şekli</a></li>
+            <li><a href="#features" data-i18n="nav.features">Özellikler</a></li>
+            <li><a href="#pricing" data-i18n="nav.pricing">Fiyatlandırma</a></li>
+            <li><a href="#how-it-works" data-i18n="nav.howItWorks">Çalışma Şekli</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Şirket</h4>
+          <h4 data-i18n="footer.company">Şirket</h4>
           <ul>
-            <li><a href="#">Hakkımızda</a></li>
-            <li><a href="#">Kariyer</a></li>
-            <li><a href="#">İletişim</a></li>
+            <li><a href="#" data-i18n="footer.aboutUs">Hakkımızda</a></li>
+            <li><a href="#" data-i18n="footer.careers">Kariyer</a></li>
+            <li><a href="#" data-i18n="footer.contact">İletişim</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Yasal</h4>
+          <h4 data-i18n="footer.legal">Yasal</h4>
           <ul>
-            <li><a href="#" id="open-terms-btn">Kullanım Koşulları</a></li>
-            <li><a href="#" id="open-privacy-btn">Gizlilik Politikası</a></li>
-            <li><a href="#" id="open-kvkk-btn">KVKK Aydınlatma</a></li>
+            <li><a href="#" id="open-terms-btn" data-i18n="footer.terms">Kullanım Koşulları</a></li>
+            <li><a href="#" id="open-privacy-btn" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
+            <li><a href="#" id="open-kvkk-btn" data-i18n="footer.kvkk">KVKK Aydınlatma</a></li>
           </ul>
         </div>
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; 2026 MayaSolutions. Tüm Hakları Saklıdır.</p>
-        <p>İstanbul, Türkiye</p>
+        <p data-i18n="footer.copyright">&copy; 2026 MayaSolutions. Tüm Hakları Saklıdır.</p>
+        <p data-i18n="footer.location">İstanbul, Türkiye</p>
       </div>
     </div>
   </footer>
@@ -525,23 +525,23 @@
     <div class="modal-backdrop"></div>
     <div class="modal-content">
       <button class="modal-close" id="close-login-btn"></button>
-      <h3>Giriş Yap</h3>
-      <p class="modal-subtitle">Hesabınıza erişerek çalışmalarınıza devam edin.</p>
+      <h3 data-i18n="auth.loginTitle">Giriş Yap</h3>
+      <p class="modal-subtitle" data-i18n="auth.loginSubtitle">Hesabınıza erişerek çalışmalarınıza devam edin.</p>
       
       <form id="login-form">
         <div class="form-group">
-          <label class="form-label" for="login-email">E-POSTA ADRESİ</label>
-          <input class="form-input" type="email" id="login-email" required placeholder="ornek@mayasolutions.com">
+          <label class="form-label" for="login-email" data-i18n="auth.email">E-POSTA ADRESİ</label>
+          <input class="form-input" type="email" id="login-email" required placeholder="ornek@mayasolutions.com" data-i18n-placeholder="auth.emailPlaceholder">
         </div>
         <div class="form-group">
-          <label class="form-label" for="login-password">ŞİFRE</label>
+          <label class="form-label" for="login-password" data-i18n="auth.password">ŞİFRE</label>
           <input class="form-input" type="password" id="login-password" required placeholder="••••••••">
-          <a href="#" class="form-link" id="open-forgot-btn">Şifremi Unuttum</a>
+          <a href="#" class="form-link" id="open-forgot-btn" data-i18n="auth.forgotPassword">Şifremi Unuttum</a>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Giriş Yap</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" data-i18n="auth.loginButton">Giriş Yap</button>
       </form>
       
-      <div class="divider">veya</div>
+      <div class="divider" data-i18n="auth.or">veya</div>
       
       <button class="google-btn" id="google-login-btn-1">
         <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
@@ -550,11 +550,11 @@
           <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
         </svg>
-        Google ile Giriş Yap
+        <span data-i18n="auth.googleLogin">Google ile Giriş Yap</span>
       </button>
       
       <div class="modal-footer">
-        Hesabınız yok mu? <a href="#" id="link-to-signup">Hesap Oluştur</a>
+        <span data-i18n="auth.noAccount">Hesabınız yok mu?</span> <a href="#" id="link-to-signup" data-i18n="auth.createAccount">Hesap Oluştur</a>
       </div>
     </div>
   </div>
@@ -564,26 +564,26 @@
     <div class="modal-backdrop"></div>
     <div class="modal-content">
       <button class="modal-close" id="close-signup-btn"></button>
-      <h3>Hesap Oluştur</h3>
-      <p class="modal-subtitle">Hemen kaydolun ve portföyünüzü optimize etmeye başlayın.</p>
+      <h3 data-i18n="auth.signupTitle">Hesap Oluştur</h3>
+      <p class="modal-subtitle" data-i18n="auth.signupSubtitle">Hemen kaydolun ve portföyünüzü optimize etmeye başlayın.</p>
       
       <form id="signup-form">
         <div class="form-group">
-          <label class="form-label" for="signup-name">ADINIZ SOYADINIZ</label>
-          <input class="form-input" type="text" id="signup-name" required placeholder="Ali Çoban">
+          <label class="form-label" for="signup-name" data-i18n="auth.fullName">ADINIZ SOYADINIZ</label>
+          <input class="form-input" type="text" id="signup-name" required placeholder="Ali Çoban" data-i18n-placeholder="auth.namePlaceholder">
         </div>
         <div class="form-group">
-          <label class="form-label" for="signup-email">E-POSTA ADRESİ</label>
-          <input class="form-input" type="email" id="signup-email" required placeholder="ornek@mayasolutions.com">
+          <label class="form-label" for="signup-email" data-i18n="auth.email">E-POSTA ADRESİ</label>
+          <input class="form-input" type="email" id="signup-email" required placeholder="ornek@mayasolutions.com" data-i18n-placeholder="auth.emailPlaceholder">
         </div>
         <div class="form-group">
-          <label class="form-label" for="signup-password">ŞİFRE</label>
+          <label class="form-label" for="signup-password" data-i18n="auth.password">ŞİFRE</label>
           <input class="form-input" type="password" id="signup-password" required placeholder="••••••••">
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Kayıt Ol</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" data-i18n="auth.signupButton">Kayıt Ol</button>
       </form>
       
-      <div class="divider">veya</div>
+      <div class="divider" data-i18n="auth.or">veya</div>
       
       <button class="google-btn" id="google-login-btn-2">
         <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
@@ -592,11 +592,11 @@
           <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
         </svg>
-        Google ile Kaydol
+        <span data-i18n="auth.googleSignup">Google ile Kaydol</span>
       </button>
       
       <div class="modal-footer">
-        Hesabınız var mı? <a href="#" id="link-to-login">Giriş Yap</a>
+        <span data-i18n="auth.hasAccount">Hesabınız var mı?</span> <a href="#" id="link-to-login" data-i18n="auth.loginTitle">Giriş Yap</a>
       </div>
     </div>
   </div>
@@ -606,19 +606,19 @@
     <div class="modal-backdrop"></div>
     <div class="modal-content">
       <button class="modal-close" id="close-forgot-btn-x"></button>
-      <h3>Şifremi Unuttum</h3>
-      <p class="modal-subtitle">E-posta adresinizi girin, size sıfırlama bağlantısı gönderelim.</p>
+      <h3 data-i18n="auth.forgotTitle">Şifremi Unuttum</h3>
+      <p class="modal-subtitle" data-i18n="auth.forgotSubtitle">E-posta adresinizi girin, size sıfırlama bağlantısı gönderelim.</p>
       
       <form id="forgot-form">
         <div class="form-group">
-          <label class="form-label" for="forgot-email">E-POSTA ADRESİ</label>
-          <input class="form-input" type="email" id="forgot-email" required placeholder="ornek@mayasolutions.com">
+          <label class="form-label" for="forgot-email" data-i18n="auth.email">E-POSTA ADRESİ</label>
+          <input class="form-input" type="email" id="forgot-email" required placeholder="ornek@mayasolutions.com" data-i18n-placeholder="auth.emailPlaceholder">
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Sıfırlama Bağlantısı Gönder</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;" data-i18n="auth.resetButton">Sıfırlama Bağlantısı Gönder</button>
       </form>
       
       <div class="modal-footer">
-        Şifrenizi hatırladınız mı? <a href="#" id="link-back-to-login">Giriş Yap'a Dön</a>
+        <span data-i18n="auth.rememberPassword">Şifrenizi hatırladınız mı?</span> <a href="#" id="link-back-to-login" data-i18n="auth.backToLogin">Giriş Yap'a Dön</a>
       </div>
     </div>
   </div>
@@ -628,8 +628,8 @@
     <div class="modal-backdrop"></div>
     <div class="modal-content modal-legal">
       <button class="modal-close" id="close-terms-btn"></button>
-      <h3>Kullanım Koşulları</h3>
-      <p class="modal-subtitle">Son Güncelleme: 23 Haziran 2026</p>
+      <h3 data-i18n="legal.termsTitle">Kullanım Koşulları</h3>
+      <p class="modal-subtitle" data-i18n="legal.lastUpdate">Son Güncelleme: 23 Haziran 2026</p>
       
       <div class="legal-text-content">
         <h4>1. Taraflar ve Tanımlar</h4>
@@ -655,8 +655,8 @@
     <div class="modal-backdrop"></div>
     <div class="modal-content modal-legal">
       <button class="modal-close" id="close-privacy-btn"></button>
-      <h3>Gizlilik Politikası</h3>
-      <p class="modal-subtitle">Son Güncelleme: 23 Haziran 2026</p>
+      <h3 data-i18n="legal.privacyTitle">Gizlilik Politikası</h3>
+      <p class="modal-subtitle" data-i18n="legal.lastUpdate">Son Güncelleme: 23 Haziran 2026</p>
       
       <div class="legal-text-content">
         <h4>1. Toplanan Veriler</h4>
@@ -682,8 +682,8 @@
     <div class="modal-backdrop"></div>
     <div class="modal-content modal-legal">
       <button class="modal-close" id="close-kvkk-btn"></button>
-      <h3>KVKK Aydınlatma Metni</h3>
-      <p class="modal-subtitle">Son Güncelleme: 23 Haziran 2026</p>
+      <h3 data-i18n="legal.kvkkTitle">KVKK Aydınlatma Metni</h3>
+      <p class="modal-subtitle" data-i18n="legal.lastUpdate">Son Güncelleme: 23 Haziran 2026</p>
       
       <div class="legal-text-content">
         <p>İşbu Aydınlatma Metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, MayaSolutions olarak veri sorumlusu sıfatıyla, kullanıcılardan elde edilen kişisel verilerin işlenme amaçları, hukuki sebepleri ve hakları hakkında bilgilendirme amacıyla hazırlanmıştır.</p>

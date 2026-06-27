@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MayaSolutions - Oturum Doğrulanıyor...</title>
+  <title data-i18n="seo.callbackTitle">MayaSolutions - Oturum Doğrulanıyor...</title>
   
   <!-- Theme Initializer (Avoid white flash on dark theme load) -->
   <script>
@@ -87,10 +87,17 @@
 
   <div class="callback-card">
     <div class="spinner-ring"></div>
-    <h3>Oturum Doğrulanıyor</h3>
-    <p>Lütfen bekleyin, MayaSolutions'a yönlendiriliyorsunuz...</p>
+    <h3 data-i18n="callback.title">Oturum Doğrulanıyor</h3>
+    <p data-i18n="callback.description">Lütfen bekleyin, MayaSolutions'a yönlendiriliyorsunuz...</p>
   </div>
 
   <script type="module" src="/js/callback.js"></script>
+  <script type="module">
+    import { applyTranslations, updateSEOMeta, updateHtmlLang } from '/js/i18n/index.js';
+    // Apply translations immediately
+    updateHtmlLang();
+    updateSEOMeta();
+    applyTranslations();
+  </script>
 </body>
 </html>

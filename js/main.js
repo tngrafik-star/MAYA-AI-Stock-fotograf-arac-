@@ -1,10 +1,15 @@
 import { initDB, getCurrentUser } from './db.js';
 import { login, signup, loginWithGoogle, resetPassword } from './auth.js';
-
+import { t, applyTranslations, updateSEOMeta, updateHtmlLang } from './i18n/index.js';
+import { createLanguageSwitcher } from './languageSwitcher.js';
 import { supabase } from './supabase.js';
 
 // Initialize Database on load
 initDB();
+
+// Apply initial i18n translations and SEO
+updateHtmlLang();
+updateSEOMeta();
 
 const initMain = () => {
   const navAuthActions = document.getElementById('nav-auth-actions');
@@ -42,13 +47,13 @@ const initMain = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
               </svg>
             </button>
-            <span style="font-size: 13px; color: var(--color-text-secondary); font-weight: 500; margin-right: 12px;">Hoş Geldin, <strong>${name}</strong></span>
-            <a href="/app/" class="btn btn-primary">Panele Git</a>
+            <span style="font-size: 13px; color: var(--color-text-secondary); font-weight: 500; margin-right: 12px;" data-i18n-html="nav.welcomeBack">${t('nav.welcomeBack', { name: name })}</span>
+            <a href="/app/" class="btn btn-primary" data-i18n="nav.goToPanel">${t('nav.goToPanel')}</a>
           `;
         }
         const currentHeroCta = document.getElementById('hero-primary-cta');
         if (currentHeroCta) {
-          currentHeroCta.textContent = 'Panele Git';
+          currentHeroCta.textContent = t('nav.goToPanel');
           const newBtn = currentHeroCta.cloneNode(true);
           currentHeroCta.replaceWith(newBtn);
           newBtn.addEventListener('click', () => {
@@ -57,7 +62,7 @@ const initMain = () => {
         }
         const currentFinalCta = document.getElementById('final-cta-btn');
         if (currentFinalCta) {
-          currentFinalCta.textContent = 'Panele Git';
+          currentFinalCta.textContent = t('nav.goToPanel');
           const newBtn = currentFinalCta.cloneNode(true);
           currentFinalCta.replaceWith(newBtn);
           newBtn.addEventListener('click', () => {
@@ -72,28 +77,33 @@ const initMain = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
               </svg>
             </button>
-            <button class="btn-text" id="open-login-btn">Giriş Yap</button>
-            <button class="btn btn-primary" id="open-signup-btn">Ücretsiz Dene</button>
+            <button class="btn-text" id="open-login-btn" data-i18n="nav.login">${t('nav.login')}</button>
+            <button class="btn btn-primary" id="open-signup-btn" data-i18n="nav.tryFree">${t('nav.tryFree')}</button>
           `;
           document.getElementById('open-login-btn')?.addEventListener('click', () => openModal('login-modal'));
           document.getElementById('open-signup-btn')?.addEventListener('click', () => openModal('signup-modal'));
         }
         const currentHeroCta = document.getElementById('hero-primary-cta');
         if (currentHeroCta) {
-          currentHeroCta.textContent = 'Ücretsiz Dene';
+          currentHeroCta.textContent = t('hero.ctaTryFree');
           const newBtn = currentHeroCta.cloneNode(true);
           currentHeroCta.replaceWith(newBtn);
           newBtn.addEventListener('click', () => openModal('signup-modal'));
         }
         const currentFinalCta = document.getElementById('final-cta-btn');
         if (currentFinalCta) {
-          currentFinalCta.textContent = 'Ücretsiz Hesap Oluştur';
+          currentFinalCta.textContent = t('cta.button');
           const newBtn = currentFinalCta.cloneNode(true);
           currentFinalCta.replaceWith(newBtn);
           newBtn.addEventListener('click', () => openModal('signup-modal'));
         }
       }
       setupThemeToggleListener();
+      // Re-create language switcher on nav rebuild
+      const navActionsEl = document.getElementById('nav-auth-actions');
+      if (navActionsEl) {
+        createLanguageSwitcher(navActionsEl, 'prepend');
+      }
     };
 
     if (user) {
@@ -244,12 +254,12 @@ const initMain = () => {
         // Wait and check if session is active immediately
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          showToast('Hesap başarıyla oluşturuldu! Yönlendiriliyorsunuz...', 'success');
+          showToast(t('toast.accountCreated'), 'success');
           setTimeout(() => {
             window.location.href = '/app/';
           }, 1500);
         } else {
-          showToast('Kayıt başarılı! Lütfen e-posta adresinize gönderilen aktivasyon bağlantısını onaylayın.', 'warning');
+          showToast(t('toast.signupVerify'), 'warning');
           closeModal('signup-modal');
         }
       } catch (err) {
@@ -266,7 +276,7 @@ const initMain = () => {
 
       try {
         await login(email, password);
-        showToast('Başarıyla giriş yapıldı! Yönlendiriliyorsunuz...', 'success');
+        showToast(t('toast.loginSuccess'), 'success');
         setTimeout(() => {
           window.location.href = '/app/';
         }, 1500);
@@ -283,7 +293,7 @@ const initMain = () => {
 
       try {
         await resetPassword(email);
-        showToast('Şifre sıfırlama bağlantısı e-postanıza gönderildi.', 'success');
+        showToast(t('toast.resetSent'), 'success');
         closeModal('forgot-modal');
       } catch (err) {
         showToast(err.message, 'error');
@@ -297,7 +307,7 @@ const initMain = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      showToast('Google ile giriş sayfasına yönlendiriliyorsunuz...', 'success');
+      showToast(t('toast.googleRedirect'), 'success');
       await loginWithGoogle();
     } catch (err) {
       showToast(err.message, 'error');
@@ -396,6 +406,22 @@ const initMain = () => {
     });
     if (videoMuteBtn) videoMuteBtn.addEventListener('click', toggleMute);
   }
+
+  // Apply i18n translations to the DOM after everything is set up
+  applyTranslations();
+
+  // Create language switcher in nav-actions (initial setup before auth state fires)
+  const navActionsInitial = document.getElementById('nav-auth-actions');
+  if (navActionsInitial && !navActionsInitial.querySelector('.lang-switcher')) {
+    createLanguageSwitcher(navActionsInitial, 'prepend');
+  }
+
+  // Listen for language changes to re-apply DOM translations
+  window.addEventListener('languageChanged', () => {
+    applyTranslations();
+    updateSEOMeta();
+    updateHtmlLang();
+  });
 };
 
 if (document.readyState === 'loading') {

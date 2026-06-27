@@ -2,9 +2,15 @@ import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs
 import { logout, updateProfile, updateSubscription } from './auth.js';
 import { getCategories, generateAIData, generateGeminiMetadata } from './ai.js';
 import { supabase } from './supabase.js';
+import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale } from './i18n/index.js';
+import { createLanguageSwitcher } from './languageSwitcher.js';
 
 // Seed DB just in case
 initDB();
+
+// Apply initial i18n
+updateHtmlLang();
+updateSEOMeta();
 
 const initApp = async () => {
   console.log('📂 [Debug] initApp starting...');
@@ -139,7 +145,7 @@ const initApp = async () => {
   if (logoutButton) {
     logoutButton.addEventListener('click', () => {
       logout();
-      showToast('Çıkış yapıldı. Yönlendiriliyorsunuz...', 'success');
+      showToast(t('toast.logoutSuccess'), 'success');
       setTimeout(() => {
         window.location.href = '/index.html';
       }, 1000);
@@ -161,7 +167,7 @@ const initApp = async () => {
   const paymentParam = urlParams.get('payment');
 
   if (paymentParam === 'success') {
-    showToast('Ödemeniz başarıyla alındı! Profiliniz güncelleniyor...', 'success');
+    showToast(t('toast.paymentSuccess'), 'success');
     window.history.replaceState({}, document.title, window.location.pathname);
     
     // Periodically check Supabase profiles table for plan update (webhook lag handler)
@@ -191,14 +197,14 @@ const initApp = async () => {
           updateSidebarProfile();
           loadDashboardHome();
           loadBillingSettings();
-          showToast('Hesabınız başarıyla güncellendi!', 'success');
+          showToast(t('toast.accountUpdated'), 'success');
         }
       } catch (e) {
         console.error('Failed to sync profile after payment:', e);
       }
     }, 1000);
   } else if (paymentParam === 'cancel') {
-    showToast('Ödeme işlemi iptal edildi.', 'warning');
+    showToast(t('toast.paymentCancelled'), 'warning');
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
@@ -228,7 +234,7 @@ const initApp = async () => {
     const nameEl = document.getElementById('sidebar-user-name');
     const planEl = document.getElementById('sidebar-user-plan');
     if (nameEl) nameEl.textContent = user.name;
-    if (planEl) planEl.textContent = `${user.plan} Hesabı`;
+    if (planEl) planEl.textContent = `${user.plan.charAt(0).toUpperCase() + user.plan.slice(1)} ${t('dashboard.sidebar.accountSuffix')}`;
   }
   
   updateSidebarProfile();
@@ -245,12 +251,12 @@ const initApp = async () => {
     // Update stats cards
     document.getElementById('stats-total-gen').textContent = history.length;
     
-    const limitVal = user.generations_limit === 999999 ? 'Sınırsız' : user.generations_limit;
-    document.getElementById('stats-credits').textContent = user.generations_limit === 999999 ? 'Sınırsız' : user.generations_limit - user.generations_used;
+    const limitVal = user.generations_limit === 999999 ? t('dashboard.home.unlimited') : user.generations_limit;
+    document.getElementById('stats-credits').textContent = user.generations_limit === 999999 ? t('dashboard.home.unlimited') : user.generations_limit - user.generations_used;
     document.getElementById('stats-credits-change').textContent = `${user.generations_used} / ${limitVal} limit`;
     document.getElementById('stats-plan').textContent = user.plan;
 
-    const lastLog = logs.length > 0 ? logs[0].action : 'Veri yok';
+    const lastLog = logs.length > 0 ? logs[0].action : t('common.noData');
     document.getElementById('stats-activity').textContent = lastLog;
 
     // Load recent table (limit to 5)
@@ -258,13 +264,13 @@ const initApp = async () => {
     recentTbody.innerHTML = '';
     
     if (history.length === 0) {
-      recentTbody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 40px; color: var(--color-text-muted);">Henüz analiz edilmiş görsel bulunmuyor.</td></tr>`;
+      recentTbody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 40px; color: var(--color-text-muted);">${t('dashboard.home.noHistory')}</td></tr>`;
       return;
     }
 
     history.slice(0, 5).forEach(row => {
       const tr = document.createElement('tr');
-      const formattedDate = new Date(row.upload_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const formattedDate = new Date(row.upload_date).toLocaleDateString(getDateLocale(), { day: 'numeric', month: 'long', year: 'numeric' });
       
       tr.innerHTML = `
         <td class="thumbnail-cell">
@@ -277,7 +283,7 @@ const initApp = async () => {
         <td>${formattedDate}</td>
         <td><span class="table-badge">${getCategoryName(row.category)}</span></td>
         <td class="table-actions">
-          <button class="btn btn-secondary btn-review" data-id="${row.id}" style="padding: 6px 12px; font-size: 11px;">İncele</button>
+          <button class="btn btn-secondary btn-review" data-id="${row.id}" style="padding: 6px 12px; font-size: 11px;">${t('dashboard.table.review')}</button>
         </td>
       `;
       recentTbody.appendChild(tr);
@@ -294,33 +300,19 @@ const initApp = async () => {
 
   // Help translate category key to display name
   function getCategoryName(key) {
-    const cats = {
-      decor: 'Yaşam & Dekorasyon',
-      cosmetics: 'Kozmetik & Güzellik',
-      tech: 'Teknoloji & Aksesuar',
-      food: 'Yiyecek & İçecek',
-      landscape: 'Doğa & Manzara',
-      fashion: 'Moda & Giyim',
-      fitness: 'Spor & Sağlıklı Yaşam',
-      business: 'İş Dünyası & Ofis',
-      architecture: 'Mimari & Yapı',
-      animals: 'Evcil Hayvanlar & Vahşi Yaşam',
-      travel: 'Seyahat & Kültür',
-      automotive: 'Otomotiv & Taşıtlar',
-      portrait: 'İnsanlar & Portre',
-      other: 'Diğer / Genel'
-    };
-    return cats[key] || 'Genel';
+    return t(`categories.${key}`) || key;
   }
 
   // 4. CATEGORIES DROPDOWN INITIALIZATION
   const categorySelector = document.getElementById('generator-category');
   if (categorySelector) {
     categorySelector.innerHTML = '';
+    const allCategoriesMap = {};
+    getCategories().forEach(c => { allCategoriesMap[c.key] = t(`categories.${c.key}`) || c.name; });
     getCategories().forEach(cat => {
       const option = document.createElement('option');
       option.value = cat.key;
-      option.textContent = cat.name;
+      option.textContent = allCategoriesMap[cat.key];
       categorySelector.appendChild(option);
     });
   }
@@ -382,7 +374,7 @@ const initApp = async () => {
   function handleSelectedFile(file) {
     console.log('📂 [Debug] handleSelectedFile called for file:', file ? file.name : 'null', 'Type:', file ? file.type : 'unknown');
     if (!file.type.startsWith('image/')) {
-      showToast('Lütfen sadece resim dosyası yükleyin.', 'error');
+      showToast(t('toast.onlyImages'), 'warning');
       return;
     }
     
@@ -402,13 +394,13 @@ const initApp = async () => {
 
     if (!user) {
       console.error('📂 [Debug] User object is null! Checking session...');
-      showToast('Oturum bulunamadı. Lütfen tekrar giriş yapın.', 'error');
+      showToast(t('toast.sessionNotFound'), 'error');
       return;
     }
 
     // Check credits
     if (user.generations_used >= user.generations_limit) {
-      showToast('Kullanım limitinize ulaştınız! Lütfen aboneliğinizi yükseltin.', 'warning');
+      showToast(t('toast.limitReached'), 'warning');
       switchView('billing');
       return;
     }
@@ -447,7 +439,7 @@ const initApp = async () => {
             loading.style.display = 'none';
             results.style.display = 'block';
             
-            showToast('Yapay zeka metadata analizi tamamlandı!', 'success');
+            showToast(t('toast.analysisComplete'), 'success');
           }).catch(dbErr => {
             showToast(`Veritabanına kaydedilemedi: ${dbErr.message}`, 'error');
             loading.style.display = 'none';
@@ -457,14 +449,12 @@ const initApp = async () => {
         .catch(err => {
           console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
           
-          let warnMsg = 'Kişisel Gemini API Anahtarınız bulunamadı. Simülasyon modunda çalışılıyor.';
+          showToast(t('toast.noApiKey'), 'warning');
           if (err.message && (err.message.includes('API key not valid') || err.message.includes('invalid') || err.message.includes('API_KEY_INVALID') || err.message.includes('API key'))) {
-            warnMsg = 'Gemini API Anahtarı geçersiz! Lütfen Hesap Ayarlarından kontrol edin. Simülasyon modunda çalışılıyor.';
+            showToast(t('toast.invalidApiKey'), 'warning');
           } else if (err.message && err.message.includes('quota')) {
-            warnMsg = 'Gemini API kotası doldu! Simülasyon modunda çalışılıyor.';
+            showToast(t('toast.quotaExceeded'), 'warning');
           }
-          
-          showToast(warnMsg, 'warning');
           
           setTimeout(() => {
             const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan);
@@ -483,7 +473,7 @@ const initApp = async () => {
               loading.style.display = 'none';
               results.style.display = 'block';
               
-              showToast('Simüle edilmiş örnek metadata üretildi!', 'success');
+              showToast(t('toast.simulationComplete'), 'success');
             }).catch(dbErr => {
               showToast(`Veritabanına kaydedilemedi: ${dbErr.message}`, 'error');
               loading.style.display = 'none';
@@ -498,7 +488,7 @@ const initApp = async () => {
   // Fill in the metadata boxes on results page
   function populateResultsView(data) {
     // Category label
-    document.getElementById('result-category-label').textContent = `KATEGORİ: ${getCategoryName(data.category)}`;
+    document.getElementById('result-category-label').textContent = `${t('results.categoryPrefix')}: ${getCategoryName(data.category)}`;
 
     // Adobe Stock
     document.getElementById('adobe-title').textContent = data.adobe.title;
@@ -590,15 +580,15 @@ const initApp = async () => {
         const originalText = btn.innerHTML;
         btn.innerHTML = `
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-          Kopyalandı
+          ${t('common.copied')}
         `;
-        showToast('Panoya kopyalandı!', 'success');
+        showToast(t('toast.copiedToClipboard'), 'success');
         
         setTimeout(() => {
           btn.innerHTML = originalText;
         }, 2000);
       }).catch(err => {
-        showToast('Kopyalama başarısız oldu.', 'error');
+        showToast(t('toast.copyFailed'), 'error');
       });
     });
   });
@@ -628,9 +618,9 @@ const initApp = async () => {
         keywords: item.keywords.split(', ').slice(0, 30).join(', ')
       },
       shutterstock: {
-        title: `${item.title} - Stok Fotoğrafı`,
-        description: `${item.description} Yüksek çözünürlüklü ticari kullanım için ideal görsel.`,
-        keywords: item.keywords.split(', ').concat(['stok görsel', 'shutterstock', 'yüksek çözünürlük']).slice(0, 50).join(', ')
+        title: `${item.title} - ${t('results.stockPhotoSuffix')}`,
+        description: `${item.description} ${t('results.highResCommercial')}`,
+        keywords: item.keywords.split(', ').concat([t('results.stockKeyword'), 'shutterstock', t('results.highRes')]).slice(0, 50).join(', ')
       },
       freepik: {
         title: item.title.toLowerCase(),
@@ -642,7 +632,7 @@ const initApp = async () => {
         keywords: item.keywords.split(', ').slice(0, 20).join(', ')
       },
       ecommerce: {
-        title: item.title + ' | E-Ticaret Ürünü',
+        title: `${item.title} | ${t('results.ecommerceProductSuffix')}`,
         description: item.description,
         tags: item.tags.split(', ').slice(0, 13).join(', ')
       }
@@ -663,7 +653,7 @@ const initApp = async () => {
 
   // Load options inside filters
   if (historyFilterCategory) {
-    historyFilterCategory.innerHTML = '<option value="">Tüm Kategoriler</option>';
+    historyFilterCategory.innerHTML = `<option value="">${t('history.allCategories')}</option>`;
     getCategories().forEach(cat => {
       const option = document.createElement('option');
       option.value = cat.key;
@@ -690,13 +680,13 @@ const initApp = async () => {
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 40px; color: var(--color-text-muted);">Arama kriterlerine uygun geçmiş kaydı bulunamadı.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 40px; color: var(--color-text-muted);">${t('history.noResults')}</td></tr>`;
       return;
     }
 
     filtered.forEach(row => {
       const tr = document.createElement('tr');
-      const formattedDate = new Date(row.upload_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const formattedDate = new Date(row.upload_date).toLocaleDateString(getDateLocale(), { day: 'numeric', month: 'long', year: 'numeric' });
       
       tr.innerHTML = `
         <td class="thumbnail-cell">
@@ -709,7 +699,7 @@ const initApp = async () => {
         <td>${formattedDate}</td>
         <td><span class="table-badge">${getCategoryName(row.category)}</span></td>
         <td class="table-actions">
-          <button class="btn btn-secondary btn-review" data-id="${row.id}" style="padding: 6px 12px; font-size: 11px;">İncele</button>
+          <button class="btn btn-secondary btn-review" data-id="${row.id}" style="padding: 6px 12px; font-size: 11px;"><span>${t('dashboard.table.review')}</span></button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -742,13 +732,13 @@ const initApp = async () => {
     updateSelectedExportCount();
 
     if (history.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 40px; color: var(--color-text-muted);">Dışa aktarılacak geçmiş kaydı bulunmuyor.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center" style="padding: 40px; color: var(--color-text-muted);">${t('export.noExportData')}</td></tr>`;
       return;
     }
 
     history.forEach(row => {
       const tr = document.createElement('tr');
-      const formattedDate = new Date(row.upload_date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const formattedDate = new Date(row.upload_date).toLocaleDateString(getDateLocale(), { day: 'numeric', month: 'long', year: 'numeric' });
       
       tr.innerHTML = `
         <td class="checkbox-cell">
@@ -805,7 +795,7 @@ const initApp = async () => {
   if (downloadCsvBtn) {
     downloadCsvBtn.addEventListener('click', async () => {
       if (selectedExportIds.length === 0) {
-        showToast('Lütfen dışa aktarılacak en az bir görsel seçin.', 'warning');
+        showToast(t('toast.selectExportItems'), 'warning');
         return;
       }
 
@@ -875,7 +865,7 @@ const initApp = async () => {
       link.click();
       document.body.removeChild(link);
       
-      showToast('CSV Dosyası başarıyla oluşturuldu ve indirildi.', 'success');
+      showToast(t('toast.csvSuccess'), 'success');
     });
   }
 
@@ -907,13 +897,13 @@ const initApp = async () => {
       const geminiApiKey = document.getElementById('profile-gemini-key').value;
 
       if (pwd !== '' && pwd !== pwdConfirm) {
-        showToast('Girdiğiniz şifreler eşleşmiyor.', 'error');
+        showToast(t('toast.passwordMismatch'), 'error');
         return;
       }
 
       try {
         await updateProfile(name, email, pwd, geminiApiKey);
-        showToast('Profiliniz başarıyla güncellendi.', 'success');
+        showToast(t('toast.profileUpdated'), 'success');
         updateSidebarProfile();
       } catch (err) {
         showToast(err.message, 'error');
@@ -926,9 +916,9 @@ const initApp = async () => {
     const user = getCurrentUser();
     if (!user) return;
 
-    const limitVal = user.generations_limit === 999999 ? 'Sınırsız' : user.generations_limit;
+    const limitVal = user.generations_limit === 999999 ? t('dashboard.home.unlimited') : user.generations_limit;
     document.getElementById('billing-plan-title').textContent = `${user.plan.toUpperCase()} PLAN`;
-    document.getElementById('billing-limit-text').textContent = `${user.generations_used} / ${limitVal} Görsel`;
+    document.getElementById('billing-limit-text').textContent = `${user.generations_used} / ${limitVal} ${t('billing.imagesUnit')}`;
     
     // Update progress bar
     const progressFill = document.getElementById('billing-limit-progress');
@@ -960,7 +950,7 @@ const initApp = async () => {
           });
           btn.replaceWith(newBtn);
         } else {
-          btn.textContent = 'Mevcut Planınız';
+          btn.textContent = t('billing.currentPlanBtn');
           btn.disabled = true;
           btn.className = 'btn btn-primary change-plan-btn';
         }
@@ -969,7 +959,7 @@ const initApp = async () => {
         if (!card.querySelector('.pricing-badge')) {
           const badge = document.createElement('span');
           badge.className = 'pricing-badge';
-          badge.textContent = 'Aktif Plan';
+          badge.textContent = t('pricing.activePlan');
           card.appendChild(badge);
         }
       } else {
@@ -978,7 +968,7 @@ const initApp = async () => {
         // If it was a VIP button, clone it back to make it a normal button
         if (btn.classList.contains('vip-support-btn')) {
           const newBtn = btn.cloneNode(true);
-          newBtn.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Planına Geç`;
+          newBtn.textContent = t('billing.switchToPlan', { plan: plan.charAt(0).toUpperCase() + plan.slice(1) });
           newBtn.disabled = false;
           newBtn.className = 'btn btn-secondary change-plan-btn';
           newBtn.style.backgroundColor = '';
@@ -989,7 +979,7 @@ const initApp = async () => {
           });
           btn.replaceWith(newBtn);
         } else {
-          btn.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Planına Geç`;
+          btn.textContent = t('billing.switchToPlan', { plan: plan.charAt(0).toUpperCase() + plan.slice(1) });
           btn.disabled = false;
           btn.className = 'btn btn-secondary change-plan-btn';
         }
@@ -1004,12 +994,12 @@ const initApp = async () => {
   async function handlePlanUpgrade(plan) {
     const user = getCurrentUser();
     if (!user) {
-      showToast('Oturum bulunamadı. Lütfen giriş yapın.', 'error');
+      showToast(t('toast.loginRequired'), 'error');
       return;
     }
 
     try {
-      showToast('Ödeme sayfasına yönlendiriliyorsunuz...', 'success');
+      showToast(t('toast.paymentRedirect'), 'success');
       
       const response = await fetch('/api/payment/lemon/create-checkout-session', {
         method: 'POST',
@@ -1026,13 +1016,13 @@ const initApp = async () => {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error?.message || 'Ödeme oturumu oluşturulamadı.');
+        throw new Error(data.error?.message || t('toast.paymentSessionError'));
       }
 
       if (data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error('Geçersiz ödeme yönlendirme URL\'i.');
+        throw new Error(t('toast.invalidPaymentUrl'));
       }
     } catch (err) {
       showToast(err.message, 'error');
@@ -1085,6 +1075,56 @@ const initApp = async () => {
       localStorage.setItem('maya-theme', newTheme);
     });
   }
+
+  // Apply i18n translations to dashboard DOM
+  applyTranslations();
+
+  // Create language switcher in sidebar footer
+  const sidebarFooterActions = document.querySelector('.sidebar .footer-actions');
+  if (sidebarFooterActions && !sidebarFooterActions.querySelector('.lang-switcher')) {
+    createLanguageSwitcher(sidebarFooterActions, 'prepend');
+  }
+
+  // Listen for language changes
+  window.addEventListener('languageChanged', () => {
+    applyTranslations();
+    updateSEOMeta();
+    updateHtmlLang();
+    // Update sidebar plan label
+    const sidebarPlanEl = document.getElementById('sidebar-user-plan');
+    const user = getCurrentUser();
+    if (user && sidebarPlanEl) {
+      sidebarPlanEl.textContent = `${user.plan.charAt(0).toUpperCase() + user.plan.slice(1)} ${t('dashboard.sidebar.accountSuffix')}`;
+    }
+    // Refresh category select options
+    const catSelect = document.getElementById('generator-category');
+    if (catSelect) {
+      const categories = getCategories();
+      Array.from(catSelect.options).forEach((option, i) => {
+        const cat = categories.find(c => c.key === option.value);
+        if (cat) option.textContent = t(`categories.${cat.key}`) || cat.name;
+      });
+    }
+    // Refresh history filter category options
+    const historyFilter = document.getElementById('history-filter-category');
+    if (historyFilter) {
+      const firstOpt = historyFilter.querySelector('option[value=""]');
+      if (firstOpt) firstOpt.textContent = t('history.allCategories');
+      getCategories().forEach(cat => {
+        const opt = historyFilter.querySelector(`option[value="${cat.key}"]`);
+        if (opt) opt.textContent = t(`categories.${cat.key}`) || cat.name;
+      });
+    }
+    // Refresh current view tables
+    const activeView = document.querySelector('.dashboard-view.active');
+    if (activeView) {
+      const viewId = activeView.id.replace('view-', '');
+      if (viewId === 'dashboard') loadDashboardHome();
+      else if (viewId === 'history') loadHistoryTable();
+      else if (viewId === 'export') loadExportTable();
+      else if (viewId === 'billing') loadBillingSettings();
+    }
+  });
 };
 
 if (document.readyState === 'loading') {
