@@ -42,6 +42,12 @@ export default defineConfig(({ mode }) => {
         main: resolve(__dirname, 'index.html'),
         app: resolve(__dirname, 'app/index.html'),
         authCallback: resolve(__dirname, 'auth/callback/index.html')
+      },
+      output: {
+        manualChunks: {
+          supabase: ['@supabase/supabase-js'],
+          i18n: ['i18next', 'i18next-browser-languagedetector']
+        }
       }
     }
   },

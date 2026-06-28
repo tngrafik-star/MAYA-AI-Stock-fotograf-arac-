@@ -70,8 +70,54 @@ if (smtpHost && smtpUser && smtpPass && smtpHost !== 'your_smtp_host_here') {
   console.warn('⚠️ SMTP Configuration is missing or using placeholder values. AI email auto-responder is disabled.');
 }
 
+// Simple in-memory rate limiter for sensitive API endpoints
+const rateLimits = new Map();
+const rateLimiter = (limitCount, windowMs) => {
+  return (req, res, next) => {
+    // Identify by IP
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const now = Date.now();
+    
+    if (!rateLimits.has(ip)) {
+      rateLimits.set(ip, { count: 1, resetTime: now + windowMs });
+      return next();
+    }
+    
+    const limitInfo = rateLimits.get(ip);
+    if (now > limitInfo.resetTime) {
+      // Window expired, reset limit
+      limitInfo.count = 1;
+      limitInfo.resetTime = now + windowMs;
+      return next();
+    }
+    
+    limitInfo.count++;
+    if (limitInfo.count > limitCount) {
+      return res.status(429).json({
+        error: { message: "Çok fazla istek gönderdiniz. Lütfen 15 dakika sonra tekrar deneyin." }
+      });
+    }
+    
+    next();
+  };
+};
+
 // Middlewares
-app.use(cors());
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:3000', 'https://mayalisting.com', 'https://www.mayalisting.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS Policy: Request origin is not allowed.'));
+    }
+  }
+}));
 
 // Stripe Webhook Endpoint (needs raw body parser, must be defined before express.json)
 app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -81,6 +127,12 @@ app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), asyn
   let event;
 
   try {
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+    
+    if (isProduction && (!stripe || !endpointSecret || !sig)) {
+      throw new Error("Stripe webhook signature verification is mandatory in production.");
+    }
+
     if (stripe && endpointSecret && sig) {
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } else {
@@ -140,7 +192,13 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
   const rawBody = req.body;
 
   try {
-    if (secret) {
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+
+    if (isProduction && (!secret || !signature)) {
+      throw new Error("Lemon Squeezy webhook signature verification is mandatory in production.");
+    }
+
+    if (secret && signature) {
       const hmac = crypto.createHmac('sha256', secret);
       const digest = hmac.update(rawBody).digest('hex');
       if (digest !== signature) {
@@ -215,8 +273,8 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
-// Endpoint for metadata generation
-app.post('/api/generate', async (req, res) => {
+// Endpoint for metadata generation (Rate limited: max 30 per 15 minutes)
+app.post('/api/generate', rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
   try {
     const { base64DataUrl, categoryKey, customApiKey, plan, language } = req.body;
 
@@ -648,6 +706,12 @@ app.post('/api/email/inbound', async (req, res) => {
   try {
     const clientSecret = req.query.secret || req.headers['x-inbound-secret'];
     const expectedSecret = process.env.EMAIL_INBOUND_SECRET;
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+
+    if (isProduction && (!expectedSecret || expectedSecret === 'your_inbound_webhook_secret_here')) {
+      console.error("❌ Inbound Email Webhook: Secret not configured or using default in production.");
+      return res.status(500).json({ error: { message: "Internal Server Error: Secure token configuration missing." } });
+    }
 
     if (expectedSecret && expectedSecret !== 'your_inbound_webhook_secret_here' && clientSecret !== expectedSecret) {
       console.warn("⚠️ Inbound Email Webhook: Unauthorized webhook request.");
@@ -771,8 +835,20 @@ app.use((req, res, next) => {
 
 // Serve static files and handle SPA fallback only when not running on Vercel
 if (!process.env.VERCEL) {
-  // Serve static files from the 'dist' directory
-  app.use(express.static(path.join(__dirname, 'dist')));
+  // Serve static files from the 'dist' directory with cache headers
+  app.use(express.static(path.join(__dirname, 'dist'), {
+    maxAge: '1d',
+    etag: true,
+    setHeaders: (res, path) => {
+      // If it is a hashed asset generated by Vite (or other static media assets), cache it aggressively
+      if (/[.-][a-zA-Z0-9-_]{8,}\.(js|css|woff2?|png|jpg|jpeg|gif|svg|webp|mp4)$/.test(path) || path.endsWith('.mp4')) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else {
+        // Otherwise cache for 1 hour (e.g. index.html)
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+      }
+    }
+  }));
 
   // Fallback for SPA routing
   app.get(/.*/, (req, res) => {
