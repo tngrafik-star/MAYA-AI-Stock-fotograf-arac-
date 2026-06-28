@@ -1052,7 +1052,20 @@ const initApp = async () => {
         })
       });
 
-      const data = await response.json();
+      let data;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.error("Non-JSON response received:", text);
+        throw new Error(
+          getCurrentLanguage() === 'en'
+            ? "Server returned an invalid response (HTML). Please check if the backend server (port 3001) is running."
+            : "Sunucu geçersiz bir yanıt döndürdü (HTML). Lütfen arka plan sunucusunun (port 3001) çalıştığından emin olun."
+        );
+      }
+
       if (!response.ok) {
         throw new Error(data.error?.message || t('toast.paymentSessionError'));
       }

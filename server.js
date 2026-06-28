@@ -119,6 +119,12 @@ app.use(cors({
   }
 }));
 
+// Request Logger Middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
 // Stripe Webhook Endpoint (needs raw body parser, must be defined before express.json)
 app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -861,6 +867,14 @@ if (!process.env.VERCEL) {
     }
   });
 }
+
+// Global Error Handler Middleware (prevents HTML rendering of errors)
+app.use((err, req, res, next) => {
+  console.error("❌ Sunucu Hatası:", err.stack || err.message);
+  res.status(err.status || 500).json({
+    error: { message: err.message || "Bilinmeyen bir sunucu hatası oluştu." }
+  });
+});
 
 // Start Server
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
