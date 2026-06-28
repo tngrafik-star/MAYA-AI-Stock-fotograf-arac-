@@ -25,7 +25,7 @@
 
 .sidebar-logo {
   font-family: 'Neue Haas Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 25px;
+  font-size: 29px;
   color: var(--color-text-primary);
   margin-bottom: 40px;
   padding-left: 12px;
@@ -809,7 +809,7 @@
 
 @media (max-width: 900px) {
   .sidebar { width: 80px; padding: 24px 10px; align-items: center; }
-  .sidebar-logo { text-align: center; font-size: 18px; margin-bottom: 32px; padding: 0; justify-content: center; }
+  .sidebar-logo { text-align: center; font-size: 21px; margin-bottom: 32px; padding: 0; justify-content: center; }
   .sidebar-logo .logo-listing { display: none; }
   .sidebar-item a { justify-content: center; padding: 12px; }
   .sidebar-item a span { display: none; }
