@@ -17,6 +17,27 @@ const initMain = () => {
   const finalCtaBtn = document.getElementById('final-cta-btn');
   let currentSessionUser = null;
 
+  // Check for auth errors in URL (e.g. from OAuth callback redirects)
+  const urlParams = new URLSearchParams(window.location.search);
+  const authError = urlParams.get('auth_error');
+  if (authError) {
+    let displayError = authError;
+    if (authError.includes('Unable to exchange external code')) {
+      const currentLang = getCurrentLanguage();
+      displayError = currentLang === 'en'
+        ? 'Google Sign-In configuration error: Please check your Google Client ID and Client Secret in the Supabase Dashboard.'
+        : 'Google ile Giriş yapılandırma hatası: Lütfen Supabase Panelindeki Google Client ID ve Client Secret ayarlarınızı kontrol edin.';
+    }
+    setTimeout(() => {
+      showToast(displayError, 'error');
+    }, 100);
+    
+    // Clean URL query parameters
+    const cleanSearch = window.location.search.replace(/[\?&]auth_error=[^&]+/, '').replace(/^&/, '?').replace(/\?$/, '');
+    const cleanUrl = window.location.pathname + cleanSearch;
+    window.history.replaceState({}, document.title, cleanUrl);
+  }
+
   // Setup theme toggle listener helper
   const setupThemeToggleListener = () => {
     const themeToggleBtn = document.getElementById('landing-theme-toggle');

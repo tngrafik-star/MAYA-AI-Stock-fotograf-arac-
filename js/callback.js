@@ -2,6 +2,17 @@ import { supabase } from './supabase.js';
 
 const initCallback = () => {
   const urlParams = new URLSearchParams(window.location.search);
+  const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  
+  const error = urlParams.get('error_description') || urlParams.get('error') || 
+                hashParams.get('error_description') || hashParams.get('error');
+                
+  if (error) {
+    console.error('OAuth callback error:', error);
+    window.location.href = `/index.html?auth_error=${encodeURIComponent(error)}`;
+    return;
+  }
+
   const redirectPath = urlParams.get('redirect') || '/app/';
 
   // Listen for auth state changes (e.g. SIGNED_IN)
