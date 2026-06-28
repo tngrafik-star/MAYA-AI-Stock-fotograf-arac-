@@ -126,11 +126,16 @@ export async function updateProfile(name, email, password = null, geminiApiKey =
     
   if (profileError) throw profileError;
   
-  // 2. If password is provided, update it via Auth API
+  // 2. Update email and/or password via Auth API if changed
+  const authUpdates = {};
+  if (email && email !== user.email) {
+    authUpdates.email = email;
+  }
   if (password && password.trim() !== '') {
-    const { error: authError } = await supabase.auth.updateUser({
-      password: password
-    });
+    authUpdates.password = password;
+  }
+  if (Object.keys(authUpdates).length > 0) {
+    const { error: authError } = await supabase.auth.updateUser(authUpdates);
     if (authError) throw authError;
   }
   

@@ -977,9 +977,11 @@ const initApp = async () => {
           });
           btn.replaceWith(newBtn);
         } else {
-          btn.textContent = t('billing.currentPlanBtn');
-          btn.disabled = true;
-          btn.className = 'btn btn-primary change-plan-btn';
+          const newBtn = btn.cloneNode(true);
+          newBtn.textContent = t('billing.currentPlanBtn');
+          newBtn.disabled = true;
+          newBtn.className = 'btn btn-primary change-plan-btn';
+          btn.replaceWith(newBtn);
         }
         
         // Add badge
@@ -992,24 +994,18 @@ const initApp = async () => {
       } else {
         card.classList.remove('popular');
         
-        // If it was a VIP button, clone it back to make it a normal button
-        if (btn.classList.contains('vip-support-btn')) {
-          const newBtn = btn.cloneNode(true);
-          newBtn.textContent = t('billing.switchToPlan', { plan: plan.charAt(0).toUpperCase() + plan.slice(1) });
-          newBtn.disabled = false;
-          newBtn.className = 'btn btn-secondary change-plan-btn';
-          newBtn.style.backgroundColor = '';
-          newBtn.style.borderColor = '';
-          newBtn.style.color = '';
-          newBtn.addEventListener('click', () => {
-            handlePlanUpgrade(plan);
-          });
-          btn.replaceWith(newBtn);
-        } else {
-          btn.textContent = t('billing.switchToPlan', { plan: plan.charAt(0).toUpperCase() + plan.slice(1) });
-          btn.disabled = false;
-          btn.className = 'btn btn-secondary change-plan-btn';
-        }
+        // Clone button to remove any stale event listeners
+        const newBtn = btn.cloneNode(true);
+        newBtn.textContent = t('billing.switchToPlan', { plan: plan.charAt(0).toUpperCase() + plan.slice(1) });
+        newBtn.disabled = false;
+        newBtn.className = 'btn btn-secondary change-plan-btn';
+        newBtn.style.backgroundColor = '';
+        newBtn.style.borderColor = '';
+        newBtn.style.color = '';
+        newBtn.addEventListener('click', () => {
+          handlePlanUpgrade(plan);
+        });
+        btn.replaceWith(newBtn);
         
         const badge = card.querySelector('.pricing-badge');
         if (badge) badge.remove();
@@ -1071,14 +1067,8 @@ const initApp = async () => {
     }
   }
 
-  // Add click listeners to change subscription buttons
-  const planButtons = document.querySelectorAll('.change-plan-btn');
-  planButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const plan = btn.getAttribute('data-plan');
-      handlePlanUpgrade(plan);
-    });
-  });
+  // Note: change-plan-btn click listeners are bound dynamically inside loadBillingSettings()
+  // so no static binding is needed here.
 
   // 11. GLOBAL TOAST GENERATOR
   function showToast(message, type = 'success') {

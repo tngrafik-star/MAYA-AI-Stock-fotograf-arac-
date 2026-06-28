@@ -338,26 +338,6 @@ const initMain = () => {
   if (googleLoginBtn1) googleLoginBtn1.addEventListener('click', handleGoogleLogin);
   if (googleLoginBtn2) googleLoginBtn2.addEventListener('click', handleGoogleLogin);
 
-  // Pricing CTA buttons click
-  document.querySelectorAll('.pricing-cta-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const plan = btn.getAttribute('data-plan');
-      const billingCycle = yearly ? 'yearly' : 'monthly';
-      
-      // Save to sessionStorage to persist after signup/login redirects
-      sessionStorage.setItem('pending_plan', plan);
-      sessionStorage.setItem('pending_cycle', billingCycle);
-      
-      if (currentSessionUser) {
-        // Logged in user: redirect to billing dashboard directly
-        window.location.href = `/app/?tab=billing&selectPlan=${plan}&cycle=${billingCycle}`;
-      } else {
-        // Not logged in: open signup modal
-        openModal('signup-modal');
-      }
-    });
-  });
-
   // FAQ Accordion Collapsible Toggles
   const faqItems = document.querySelectorAll('.faq-item');
   faqItems.forEach(item => {
@@ -438,8 +418,12 @@ const initMain = () => {
     const promoVideo = document.getElementById('promo-video');
     if (promoVideo) {
       const currentLang = getCurrentLanguage();
-      const targetSrc = currentLang === 'en' ? '/MayaListing_Sunum_EN.mp4' : '/MayaListing_Sunum.mp4';
-      if (promoVideo.getAttribute('src') !== targetSrc) {
+      const cacheBust = '?v=20260628';
+      const targetSrc = currentLang === 'en'
+        ? '/MayaListing_Sunum_EN.mp4' + cacheBust
+        : '/MayaListing_Sunum.mp4' + cacheBust;
+      const currentSrc = promoVideo.getAttribute('src');
+      if (!currentSrc || !currentSrc.startsWith(targetSrc.split('?')[0])) {
         promoVideo.setAttribute('src', targetSrc);
         const wasPaused = promoVideo.paused;
         promoVideo.load();
@@ -498,6 +482,26 @@ const initMain = () => {
       });
     });
   }
+
+  // Pricing CTA buttons click (must be after `yearly` is declared)
+  document.querySelectorAll('.pricing-cta-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const plan = btn.getAttribute('data-plan');
+      const billingCycle = yearly ? 'yearly' : 'monthly';
+
+      // Save to sessionStorage to persist after signup/login redirects
+      sessionStorage.setItem('pending_plan', plan);
+      sessionStorage.setItem('pending_cycle', billingCycle);
+
+      if (currentSessionUser) {
+        // Logged in user: redirect to billing dashboard directly
+        window.location.href = `/app/?tab=billing&selectPlan=${plan}&cycle=${billingCycle}`;
+      } else {
+        // Not logged in: open signup modal
+        openModal('signup-modal');
+      }
+    });
+  });
 };
 
 if (document.readyState === 'loading') {
