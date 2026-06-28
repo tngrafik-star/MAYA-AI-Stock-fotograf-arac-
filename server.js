@@ -663,7 +663,7 @@ app.post('/api/email/inbound', async (req, res) => {
     console.log(`📧 Gelen Mail: [Kimden: ${from}] [Konu: ${subject}]`);
 
     // Prepare Gemini system prompt
-    const systemPrompt = `You are the automated customer support representative for the MayaSolutions platform (an AI-powered stock photography and e-commerce metadata assistant).
+    const systemPrompt = `You are the automated customer support representative for the MayaListing platform (an AI-powered stock photography and e-commerce metadata assistant).
 Analyze the language of the incoming customer support email (either Turkish or English). You must write the response in the same language as the incoming email (Turkish for Turkish emails, English for English emails).
 
 Incoming Email Details:
@@ -674,17 +674,17 @@ ${text}
 
 Response Rules (Turkish / Türkçe):
 1. Yanıtın başında mutlaka gönderen kişiye kibar bir şekilde hitap et (örn: "Merhaba," veya isim varsa "Merhaba Ali Bey,").
-2. MayaSolutions'ın özelliklerini bil: Görselleri analiz edip SEO uyumlu Türkçe başlık, açıklama ve anahtar kelimeler üreten yapay zeka asistanıdır. Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol gibi platformları destekler. Ücretsiz (5 limit, Ücretsiz), Starter (300 limit, 9.99$), Pro (1000 limit, 29.99$) ve Studio (Sınırsız limit, 49.99$) abonelik planları sunar.
+2. MayaListing'ın özelliklerini bil: Görselleri analiz edip SEO uyumlu Türkçe başlık, açıklama ve anahtar kelimeler üreten yapay zeka asistanıdır. Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol gibi platformları destekler. Ücretsiz (5 limit, Ücretsiz), Starter (300 limit, 9.99$), Pro (1000 limit, 29.99$) ve Studio (Sınırsız limit, 49.99$) abonelik planları sunar.
 3. Soruyu veya sorunu net bir şekilde anladığını hissettir. Eğer teknik bir sorun veya iade/fatura talebi varsa, konunun ayrıca teknik destek ekibine iletildiğini ve en kısa sürede inceleneceğini söyle.
 4. Müşteriye doğrudan yardımcı olabileceğin genel konularda (üyelik limitleri, platform özellikleri vb.) net ve açıklayıcı bilgi ver.
-5. Yazdığın yanıt doğrudan e-posta olarak gönderilecektir, bu yüzden sadece e-posta metnini döndür. E-postanın sonuna "Saygılarımızla,\nMayaSolutions Destek Ekibi" imzasını ekle. HTML tagları kullanma, sadece düz metin (plain text) üret.
+5. Yazdığın yanıt doğrudan e-posta olarak gönderilecektir, bu yüzden sadece e-posta metnini döndür. E-postanın sonuna "Saygılarımızla,\nMayaListing Destek Ekibi" imzasını ekle. HTML tagları kullanma, sadece düz metin (plain text) üret.
 
 Response Rules (English):
 1. Address the sender politely at the beginning (e.g., "Hello," or "Hello [Name]," or "Dear [Name],").
-2. Know MayaSolutions' features: It is an AI-powered assistant that analyzes photos to generate platform-specific SEO-friendly titles, descriptions, and keywords. It supports platforms like Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol, and Amazon. It offers four plans: Free (5 image limit, Free), Starter (300 image limit, $9.99/mo), Pro (1000 image limit, $29.99/mo), and Studio (Unlimited images, $49.99/mo).
+2. Know MayaListing' features: It is an AI-powered assistant that analyzes photos to generate platform-specific SEO-friendly titles, descriptions, and keywords. It supports platforms like Adobe Stock, Shutterstock, Freepik, Etsy, Trendyol, and Amazon. It offers four plans: Free (5 image limit, Free), Starter (300 image limit, $9.99/mo), Pro (1000 image limit, $29.99/mo), and Studio (Unlimited images, $49.99/mo).
 3. Make the customer feel that you clearly understood their issue. If there is a technical problem, refund request, or billing inquiry, state that the issue has been forwarded to the technical support team and will be reviewed as soon as possible.
 4. Provide clear and descriptive information for general questions where you can directly help (membership limits, platform features, etc.).
-5. Your response will be sent directly as an email, so only return the email body text. Add the signature "Best regards,\nMayaSolutions Support Team" at the end of the email. Do not use HTML tags, generate only plain text.`;
+5. Your response will be sent directly as an email, so only return the email body text. Add the signature "Best regards,\nMayaListing Support Team" at the end of the email. Do not use HTML tags, generate only plain text.`;
 
     const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
     let replyText = "";
@@ -722,9 +722,9 @@ Response Rules (English):
       // Fallback response if Gemini fails or is unconfigured
       const isEnglish = /hello|hi|support|help|account|issue|error|subscription|plan/i.test(subject + ' ' + text);
       if (isEnglish) {
-        replyText = `Hello,\n\nThank you for contacting MayaSolutions support. Your email has been received.\n\nYour request has been successfully forwarded to our support team and we will get back to you as soon as possible.\n\nBest regards,\nMayaSolutions Support Team`;
+        replyText = `Hello,\n\nThank you for contacting MayaListing support. Your email has been received.\n\nYour request has been successfully forwarded to our support team and we will get back to you as soon as possible.\n\nBest regards,\nMayaListing Support Team`;
       } else {
-        replyText = `Merhaba,\n\nMayaSolutions destek birimine gönderdiğiniz e-posta tarafımıza ulaşmıştır.\n\nTalebiniz başarıyla destek ekibimize iletilmiş olup en kısa sürede sizinle iletişime geçilecektir.\n\nSaygılarımızla,\nMayaSolutions Destek Ekibi`;
+        replyText = `Merhaba,\n\nMayaListing destek birimine gönderdiğiniz e-posta tarafımıza ulaşmıştır.\n\nTalebiniz başarıyla destek ekibimize iletilmiş olup en kısa sürede sizinle iletişime geçilecektir.\n\nSaygılarımızla,\nMayaListing Destek Ekibi`;
       }
     }
 
@@ -734,7 +734,7 @@ Response Rules (English):
       const toEmail = from.includes('<') ? from.substring(from.indexOf('<') + 1, from.indexOf('>')) : from.trim();
 
       const isResponseEnglish = /best regards|support team|hello|dear/i.test(replyText);
-      const senderName = isResponseEnglish ? "MayaSolutions Support" : "MayaSolutions Destek";
+      const senderName = isResponseEnglish ? "MayaListing Support" : "MayaListing Destek";
 
       const mailOptions = {
         from: `"${senderName}" <${process.env.EMAIL_SMTP_USER}>`,

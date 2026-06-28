@@ -1,6 +1,6 @@
 # Katkıda Bulunma Rehberi (Contributing Guide)
 
-MayaSolutions projesine katkıda bulunmak istediğiniz için teşekkür ederiz! 🎉 Her türlü katkıyı (hata bildirimleri, özellik önerileri, dokümantasyon düzeltmeleri veya kod katkıları) memnuniyetle kabul ediyoruz.
+MayaListing projesine katkıda bulunmak istediğiniz için teşekkür ederiz! 🎉 Her türlü katkıyı (hata bildirimleri, özellik önerileri, dokümantasyon düzeltmeleri veya kod katkıları) memnuniyetle kabul ediyoruz.
 
 Aşağıdaki rehber, projeye hızlı ve düzenli bir şekilde katkıda bulunmanıza yardımcı olacaktır.
 

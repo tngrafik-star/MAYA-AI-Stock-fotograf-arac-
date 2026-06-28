@@ -417,7 +417,7 @@ const initMain = () => {
     const promoVideo = document.getElementById('promo-video');
     if (promoVideo) {
       const currentLang = getCurrentLanguage();
-      const targetSrc = currentLang === 'en' ? '/MayaSolutions_Sunum_EN.mp4' : '/MayaSolutions_Sunum.mp4';
+      const targetSrc = currentLang === 'en' ? '/MayaListing_Sunum_EN.mp4' : '/MayaListing_Sunum.mp4';
       if (promoVideo.getAttribute('src') !== targetSrc) {
         promoVideo.setAttribute('src', targetSrc);
         const wasPaused = promoVideo.paused;

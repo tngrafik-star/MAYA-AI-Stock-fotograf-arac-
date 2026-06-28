@@ -13,7 +13,7 @@
   "hero": {
     "badge": "AI-Powered Stock Metadata Platform",
     "title": "AI That Makes Your Products Sale-Ready",
-    "description": "MayaSolutions analyzes your photos and generates high-converting titles, descriptions, and keywords for Etsy, Amazon, e-commerce, Adobe Stock and Shutterstock,  platforms in seconds.",
+    "description": "MayaListing analyzes your photos and generates high-converting titles, descriptions, and keywords for Etsy, Amazon, e-commerce, Adobe Stock and Shutterstock,  platforms in seconds.",
     "ctaTryFree": "Try Free",
     "ctaHowItWorks": "How It Works"
   },
@@ -64,7 +64,7 @@
   "benefits": {
     "microLabel": "Benefits",
     "title": "Create More,<br>Sell Faster.",
-    "description": "MayaSolutions fully automates the most tedious and time-consuming process in your creative workflow, so you can focus on what matters.",
+    "description": "MayaListing fully automates the most tedious and time-consuming process in your creative workflow, so you can focus on what matters.",
     "b1Title": "Save Time",
     "b1Desc": "Stop entering keywords one by one for each image. Save up to 90% of your time.",
     "b2Title": "Maximum Discoverability",
@@ -122,16 +122,16 @@
   "testimonials": {
     "microLabel": "Testimonials",
     "title": "Trusted by Creators",
-    "description": "What creators managing world-class stock portfolios say about MayaSolutions.",
-    "t1Quote": "\"Thanks to MayaSolutions, the tagging time for the 200+ stock photos I upload weekly dropped from 4 hours to 15 minutes. Plus, I've seen a noticeable increase in my sales.\"",
+    "description": "What creators managing world-class stock portfolios say about MayaListing.",
+    "t1Quote": "\"Thanks to MayaListing, the tagging time for the 200+ stock photos I upload weekly dropped from 4 hours to 15 minutes. Plus, I've seen a noticeable increase in my sales.\"",
     "t1Name": "Ethan Vance",
     "t1Initials": "EV",
     "t1Role": "Independent Stock Photographer",
-    "t2Quote": "\"We use MayaSolutions for tagging and SEO descriptions of our handmade wood products sold on Etsy and Amazon. The accuracy and quality of results is absolutely outstanding.\"",
+    "t2Quote": "\"We use MayaListing for tagging and SEO descriptions of our handmade wood products sold on Etsy and Amazon. The accuracy and quality of results is absolutely outstanding.\"",
     "t2Name": "Sarah Campbell",
     "t2Initials": "SC",
     "t2Role": "E-Commerce Brand Owner",
-    "t3Quote": "\"As a visual agency, we archive and catalog product images for hundreds of clients. MayaSolutions' CSV bulk export and history panel is exactly the professional solution we were looking for.\"",
+    "t3Quote": "\"As a visual agency, we archive and catalog product images for hundreds of clients. MayaListing' CSV bulk export and history panel is exactly the professional solution we were looking for.\"",
     "t3Name": "Benjamin Adams",
     "t3Initials": "BA",
     "t3Role": "Creative Director, Pixel Studio"
@@ -139,9 +139,9 @@
   "faq": {
     "microLabel": "Questions",
     "title": "Frequently Asked Questions",
-    "description": "Key topics and answers about MayaSolutions.",
+    "description": "Key topics and answers about MayaListing.",
     "q1": "What is the accuracy of AI metadata generation?",
-    "a1": "MayaSolutions uses advanced computer vision and natural language processing algorithms. By analyzing objects, composition, and color tones in the image, it generates titles and tags compliant with stock site policies with over 95% accuracy.",
+    "a1": "MayaListing uses advanced computer vision and natural language processing algorithms. By analyzing objects, composition, and color tones in the image, it generates titles and tags compliant with stock site policies with over 95% accuracy.",
     "q2": "Which platforms do you support?",
     "a2": "We support all global stock photo platforms, primarily Adobe Stock, Shutterstock, Freepik, and Vecteezy. We also generate SEO-compatible titles and search tags for e-commerce platforms like Trendyol, Etsy, Amazon, and Shopify.",
     "q3": "How is the privacy of my uploaded images protected?",
@@ -165,14 +165,14 @@
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
     "kvkk": "KVKK Disclosure",
-    "copyright": "© 2026 MayaSolutions. All Rights Reserved.",
+    "copyright": "© 2026 MayaListing. All Rights Reserved.",
     "location": "Istanbul, Turkey"
   },
   "auth": {
     "loginTitle": "Sign In",
     "loginSubtitle": "Access your account and continue your work.",
     "email": "EMAIL ADDRESS",
-    "emailPlaceholder": "name@mayasolutions.com",
+    "emailPlaceholder": "name@mayalisting.com",
     "password": "PASSWORD",
     "forgotPassword": "Forgot Password",
     "loginButton": "Sign In",
@@ -198,9 +198,9 @@
     "privacyTitle": "Privacy Policy",
     "kvkkTitle": "KVKK Disclosure",
     "lastUpdate": "Last Updated: June 23, 2026",
-    "termsContent": "<h4>1. Parties and Definitions</h4><p>These Terms of Service have been concluded between the MayaSolutions platform (\"Platform\") and all users (\"User\") who access or use the Platform. The Platform is a software service (SaaS) providing AI-powered stock photo metadata and e-commerce analysis services.</p><h4>2. Scope and Use of Service</h4><p>MayaSolutions allows users to analyze their images and generate titles, descriptions, keywords and tags for those images. The User may benefit from the service within the limits of their chosen membership plan (Starter, Pro, Studio). The service may be restricted in case of limit exceeded or non-payment.</p><h4>3. Intellectual Property Rights</h4><p>All software, designs, codes and AI algorithms on the Platform belong to MayaSolutions. The User may not copy, modify or reverse engineer the source code of the Platform. The copyright and ownership rights of images uploaded for analysis belong entirely to the User; MayaSolutions claims no rights over these images.</p><h4>4. Limitation of Liability</h4><p>Metadata (title, description, keywords) generated by artificial intelligence is advisory in nature. MayaSolutions does not guarantee the accuracy of the generated data, sales success on marketplaces, or approval on stock platforms. The User is fully responsible for the legal liability of images they share or upload.</p><h4>5. Amendments and Termination</h4><p>MayaSolutions reserves the right to update these Terms of Service without prior notice. Updated terms become effective from the moment they are published on the Platform. The User's continued use of the Platform constitutes acceptance of the updated terms.</p>",
-    "privacyContent": "<h4>1. Data Collected</h4><p>When using our Platform, your name, email address and password are collected for membership operations; payment and billing information processed by Stripe/Lemon Squeezy payment gateways are collected for payment operations. Images you upload for analysis are processed temporarily on our servers only during the AI analysis process.</p><h4>2. Processing and Security of Images</h4><p>The photos you upload are processed solely for generating metadata specific to you. Your images are never shared with third parties, sold, or used as datasets for general training of our AI models. Your files are transferred to our servers using secure encryption methods (SSL/TLS).</p><h4>3. Cookies</h4><p>Cookies are used to maintain your login session, remember your theme preferences (Light/Dark mode) and analyze overall website performance. You can change cookie management from your browser settings as you wish.</p><h4>4. Third-Party Services</h4><p>MayaSolutions uses Supabase (database and user management), Stripe/Lemon Squeezy (payment integration) and Google Gemini (AI model) services for infrastructure. The privacy and security policies of these platforms apply.</p><h4>5. Contact</h4><p>For all questions and requests regarding our privacy policy, you can contact us at <strong>support@mayasolutions.com</strong>.</p>",
-    "kvkkContent": "<p>This Disclosure Text has been prepared in accordance with the Personal Data Protection Law No. 6698 (\"KVKK\"), by MayaSolutions as data controller, to inform users about the purposes, legal grounds and rights regarding the processing of personal data obtained from users.</p><h4>1. Your Personal Data Processed</h4><p>Data processed by MayaSolutions includes: Identity information (Name, Surname), contact information (Email address), customer transaction information (membership plan, usage history), transaction security information (IP address, login logs) and payment status information.</p><h4>2. Purposes of Processing Data</h4><p>Your personal data is processed for the purposes of providing services on the Platform, creating and verifying user accounts, managing billing and payment processes, responding to support requests and fulfilling legal obligations.</p><h4>3. Transfer of Personal Data</h4><p>Your personal data may be transferred to our business partners (Supabase, Stripe, Lemon Squeezy) solely for the purpose of uninterrupted provision of the services specified above and within the limits stipulated by law. Legal notifications may be made to relevant institutions in accordance with legal requests of authorized official authorities.</p><h4>4. Rights of the Personal Data Subject (KVKK Article 11)</h4><p>Within the scope of Article 11 of KVKK, as data subjects, you have the following rights:</p><ul><li>Learning whether your personal data is processed,</li><li>Requesting information if it has been processed,</li><li>Learning the purpose of processing personal data and whether they are used in accordance with the purpose,</li><li>Knowing the third parties to whom personal data is transferred domestically or abroad,</li><li>Requesting correction in case personal data is incomplete or incorrectly processed,</li><li>Requesting deletion or destruction of personal data within the framework of KVKK conditions.</li></ul><p>To exercise these rights, you can send your requests with a wet-signature petition or from your registered email address to <strong>kvkk@mayasolutions.com</strong>.</p>"
+    "termsContent": "<h4>1. Parties and Definitions</h4><p>These Terms of Service have been concluded between the MayaListing platform (\"Platform\") and all users (\"User\") who access or use the Platform. The Platform is a software service (SaaS) providing AI-powered stock photo metadata and e-commerce analysis services.</p><h4>2. Scope and Use of Service</h4><p>MayaListing allows users to analyze their images and generate titles, descriptions, keywords and tags for those images. The User may benefit from the service within the limits of their chosen membership plan (Starter, Pro, Studio). The service may be restricted in case of limit exceeded or non-payment.</p><h4>3. Intellectual Property Rights</h4><p>All software, designs, codes and AI algorithms on the Platform belong to MayaListing. The User may not copy, modify or reverse engineer the source code of the Platform. The copyright and ownership rights of images uploaded for analysis belong entirely to the User; MayaListing claims no rights over these images.</p><h4>4. Limitation of Liability</h4><p>Metadata (title, description, keywords) generated by artificial intelligence is advisory in nature. MayaListing does not guarantee the accuracy of the generated data, sales success on marketplaces, or approval on stock platforms. The User is fully responsible for the legal liability of images they share or upload.</p><h4>5. Amendments and Termination</h4><p>MayaListing reserves the right to update these Terms of Service without prior notice. Updated terms become effective from the moment they are published on the Platform. The User's continued use of the Platform constitutes acceptance of the updated terms.</p>",
+    "privacyContent": "<h4>1. Data Collected</h4><p>When using our Platform, your name, email address and password are collected for membership operations; payment and billing information processed by Stripe/Lemon Squeezy payment gateways are collected for payment operations. Images you upload for analysis are processed temporarily on our servers only during the AI analysis process.</p><h4>2. Processing and Security of Images</h4><p>The photos you upload are processed solely for generating metadata specific to you. Your images are never shared with third parties, sold, or used as datasets for general training of our AI models. Your files are transferred to our servers using secure encryption methods (SSL/TLS).</p><h4>3. Cookies</h4><p>Cookies are used to maintain your login session, remember your theme preferences (Light/Dark mode) and analyze overall website performance. You can change cookie management from your browser settings as you wish.</p><h4>4. Third-Party Services</h4><p>MayaListing uses Supabase (database and user management), Stripe/Lemon Squeezy (payment integration) and Google Gemini (AI model) services for infrastructure. The privacy and security policies of these platforms apply.</p><h4>5. Contact</h4><p>For all questions and requests regarding our privacy policy, you can contact us at <strong>support@mayalisting.com</strong>.</p>",
+    "kvkkContent": "<p>This Disclosure Text has been prepared in accordance with the Personal Data Protection Law No. 6698 (\"KVKK\"), by MayaListing as data controller, to inform users about the purposes, legal grounds and rights regarding the processing of personal data obtained from users.</p><h4>1. Your Personal Data Processed</h4><p>Data processed by MayaListing includes: Identity information (Name, Surname), contact information (Email address), customer transaction information (membership plan, usage history), transaction security information (IP address, login logs) and payment status information.</p><h4>2. Purposes of Processing Data</h4><p>Your personal data is processed for the purposes of providing services on the Platform, creating and verifying user accounts, managing billing and payment processes, responding to support requests and fulfilling legal obligations.</p><h4>3. Transfer of Personal Data</h4><p>Your personal data may be transferred to our business partners (Supabase, Stripe, Lemon Squeezy) solely for the purpose of uninterrupted provision of the services specified above and within the limits stipulated by law. Legal notifications may be made to relevant institutions in accordance with legal requests of authorized official authorities.</p><h4>4. Rights of the Personal Data Subject (KVKK Article 11)</h4><p>Within the scope of Article 11 of KVKK, as data subjects, you have the following rights:</p><ul><li>Learning whether your personal data is processed,</li><li>Requesting information if it has been processed,</li><li>Learning the purpose of processing personal data and whether they are used in accordance with the purpose,</li><li>Knowing the third parties to whom personal data is transferred domestically or abroad,</li><li>Requesting correction in case personal data is incomplete or incorrectly processed,</li><li>Requesting deletion or destruction of personal data within the framework of KVKK conditions.</li></ul><p>To exercise these rights, you can send your requests with a wet-signature petition or from your registered email address to <strong>kvkk@mayalisting.com</strong>.</p>"
   },
   "dashboard": {
     "sidebar": {
@@ -354,8 +354,8 @@
       "f2": "5-Member Team Access",
       "f3": "24/7 Priority Support"
     },
-    "vipMailtoSubject": "MayaSolutions - Studio VIP Support Request",
-    "vipMailtoBody": "Hello, I am a MayaSolutions Studio plan user. The support topic I need help with is:"
+    "vipMailtoSubject": "MayaListing - Studio VIP Support Request",
+    "vipMailtoBody": "Hello, I am a MayaListing Studio plan user. The support topic I need help with is:"
   },
   "toast": {
     "accountCreated": "Account created successfully! Redirecting...",
@@ -419,18 +419,18 @@
     "other": "Other / General"
   },
   "seo": {
-    "landingTitle": "MayaSolutions - AI Stock Photography Assistant",
-    "landingMetaTitle": "MayaSolutions - AI Stock Photography Assistant",
+    "landingTitle": "MayaListing - AI Stock Photography Assistant",
+    "landingMetaTitle": "MayaListing - AI Stock Photography Assistant",
     "landingDescription": "AI-powered title, description, keyword, and SEO tag generator for professional photographers and e-commerce sellers. Generate stock metadata in seconds.",
     "landingKeywords": "AI stock photography, stock metadata generator, AI keyword generator, Adobe Stock keywords, Shutterstock keywords, stock photo metadata, AI image analysis",
-    "ogTitle": "MayaSolutions - AI Stock Photography Assistant",
+    "ogTitle": "MayaListing - AI Stock Photography Assistant",
     "ogDescription": "Analyze your images and generate Adobe Stock, Shutterstock, Etsy, and Amazon compatible titles, descriptions, and SEO tags in seconds.",
-    "dashboardTitle": "MayaSolutions - Dashboard",
-    "callbackTitle": "MayaSolutions - Verifying Session..."
+    "dashboardTitle": "MayaListing - Dashboard",
+    "callbackTitle": "MayaListing - Verifying Session..."
   },
   "callback": {
     "title": "Verifying Session",
-    "description": "Please wait, redirecting to MayaSolutions..."
+    "description": "Please wait, redirecting to MayaListing..."
   },
   "activity": {
     "accountCreated": "Account Created and Signed In",

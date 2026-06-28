@@ -1,4 +1,4 @@
-/* Apple-inspired Design System — MayaSolutions */
+/* Apple-inspired Design System — MayaListing */
 
 /* CSS Variables */
 :root {
@@ -259,7 +259,7 @@ header.scrolled {
   color: var(--color-text-primary);
 }
 
-.logo-solutions {
+.logo-listing {
   font-family: 'Neue Haas Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: inherit;

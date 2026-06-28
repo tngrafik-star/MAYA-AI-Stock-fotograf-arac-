@@ -19,7 +19,8 @@ i18next
       escapeValue: false // Not needed for vanilla JS (no XSS risk from framework rendering)
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['querystring', 'localStorage', 'navigator'],
+      lookupQuerystring: 'lang',
       lookupLocalStorage: 'maya-language',
       caches: ['localStorage']
     },

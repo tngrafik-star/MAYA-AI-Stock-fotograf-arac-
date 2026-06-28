@@ -1,6 +1,6 @@
-# MayaSolutions - Yapay Zeka Destekli Stok Fotoğraf Asistanı 📷✨
+# MayaListing - Yapay Zeka Destekli Stok Fotoğraf Asistanı 📷✨
 
-MayaSolutions, profesyonel fotoğrafçılar, içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş, yapay zeka destekli bir stok fotoğraf ve ürün metadata otomasyon platformudur. Görsellerinizi saniyeler içinde analiz ederek platforma özel başlık, açıklama ve SEO uyumlu etiket (keyword) setleri üretir.
+MayaListing, profesyonel fotoğrafçılar, içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş, yapay zeka destekli bir stok fotoğraf ve ürün metadata otomasyon platformudur. Görsellerinizi saniyeler içinde analiz ederek platforma özel başlık, açıklama ve SEO uyumlu etiket (keyword) setleri üretir.
 
 ---
 

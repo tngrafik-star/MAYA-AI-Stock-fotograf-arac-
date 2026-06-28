@@ -1,4 +1,4 @@
-// AI Metadata Simulator for MayaSolutions
+// AI Metadata Simulator for MayaListing
 // Generates realistic stock & e-commerce metadata based on category and language selection
 
 const CATEGORY_TEMPLATES_EN = {
