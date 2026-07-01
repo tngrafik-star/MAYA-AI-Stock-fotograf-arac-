@@ -111,7 +111,11 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl, or server-to-server)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+    
+    const isAllowed = allowedOrigins.indexOf(origin) !== -1;
+    const isVercel = origin.endsWith('.vercel.app') || /https?:\/\/.*\.vercel\.app$/.test(origin);
+
+    if (isAllowed || isVercel || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error('CORS Policy: Request origin is not allowed.'));
