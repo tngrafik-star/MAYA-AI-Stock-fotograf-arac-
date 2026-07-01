@@ -805,40 +805,43 @@ export function getCategories() {
   }));
 }
 
+export function detectCategoryFromFilename(filename) {
+  if (!filename) return 'other';
+  const lowerFn = filename.toLowerCase();
+  if (lowerFn.includes('kahve') || lowerFn.includes('kupa') || lowerFn.includes('vazo') || lowerFn.includes('mum') || lowerFn.includes('pillow') || lowerFn.includes('decor') || lowerFn.includes('yasam')) {
+    return 'decor';
+  } else if (lowerFn.includes('serum') || lowerFn.includes('krem') || lowerFn.includes('maske') || lowerFn.includes('yag') || lowerFn.includes('rose') || lowerFn.includes('skin') || lowerFn.includes('beauty') || lowerFn.includes('kozmetik')) {
+    return 'cosmetics';
+  } else if (lowerFn.includes('kulaklik') || lowerFn.includes('saat') || lowerFn.includes('phone') || lowerFn.includes('watch') || lowerFn.includes('laptop') || lowerFn.includes('tech') || lowerFn.includes('aksesuar')) {
+    return 'tech';
+  } else if (lowerFn.includes('yemek') || lowerFn.includes('oil') || lowerFn.includes('ekmek') || lowerFn.includes('coffee') || lowerFn.includes('food') || lowerFn.includes('tea') || lowerFn.includes('icecek')) {
+    return 'food';
+  } else if (lowerFn.includes('doga') || lowerFn.includes('sunset') || lowerFn.includes('forest') || lowerFn.includes('landscape') || lowerFn.includes('manzara') || lowerFn.includes('mountain')) {
+    return 'landscape';
+  } else if (lowerFn.includes('elbise') || lowerFn.includes('ceket') || lowerFn.includes('giyim') || lowerFn.includes('fashion') || lowerFn.includes('tisort') || lowerFn.includes('kombin')) {
+    return 'fashion';
+  } else if (lowerFn.includes('spor') || lowerFn.includes('yoga') || lowerFn.includes('fitness') || lowerFn.includes('mat') || lowerFn.includes('kosu') || lowerFn.includes('dambil')) {
+    return 'fitness';
+  } else if (lowerFn.includes('ofis') || lowerFn.includes('toplanti') || lowerFn.includes('is') || lowerFn.includes('sirket') || lowerFn.includes('grafik') || lowerFn.includes('business')) {
+    return 'business';
+  } else if (lowerFn.includes('mimari') || lowerFn.includes('bina') || lowerFn.includes('ev') || lowerFn.includes('loft') || lowerFn.includes('tasarim') || lowerFn.includes('architecture')) {
+    return 'architecture';
+  } else if (lowerFn.includes('kedi') || lowerFn.includes('kopek') || lowerFn.includes('pet') || lowerFn.includes('hayvan') || lowerFn.includes('animal') || lowerFn.includes('kus')) {
+    return 'animals';
+  } else if (lowerFn.includes('seyahat') || lowerFn.includes('gezi') || lowerFn.includes('harita') || lowerFn.includes('canta') || lowerFn.includes('travel') || lowerFn.includes('turist')) {
+    return 'travel';
+  } else if (lowerFn.includes('araba') || lowerFn.includes('motor') || lowerFn.includes('motosiklet') || lowerFn.includes('oto') || lowerFn.includes('car') || lowerFn.includes('hiz')) {
+    return 'automotive';
+  } else if (lowerFn.includes('insan') || lowerFn.includes('kadin') || lowerFn.includes('adam') || lowerFn.includes('aile') || lowerFn.includes('cocuk') || lowerFn.includes('portre') || lowerFn.includes('portrait')) {
+    return 'portrait';
+  }
+  return 'other';
+}
+
 export function generateAIData(categoryKey, filename = '', userPlan = 'starter', language = 'tr') {
   const TEMPLATES = language === 'en' ? CATEGORY_TEMPLATES_EN : CATEGORY_TEMPLATES;
-  // If no category selected, try to infer from filename
-  let selectedCategory = categoryKey;
-  if (!selectedCategory && filename) {
-    const lowerFn = filename.toLowerCase();
-    if (lowerFn.includes('kahve') || lowerFn.includes('kupa') || lowerFn.includes('vazo') || lowerFn.includes('mum') || lowerFn.includes('pillow') || lowerFn.includes('decor') || lowerFn.includes('yasam')) {
-      selectedCategory = 'decor';
-    } else if (lowerFn.includes('serum') || lowerFn.includes('krem') || lowerFn.includes('maske') || lowerFn.includes('yag') || lowerFn.includes('rose') || lowerFn.includes('skin') || lowerFn.includes('beauty') || lowerFn.includes('kozmetik')) {
-      selectedCategory = 'cosmetics';
-    } else if (lowerFn.includes('kulaklik') || lowerFn.includes('saat') || lowerFn.includes('phone') || lowerFn.includes('watch') || lowerFn.includes('laptop') || lowerFn.includes('tech') || lowerFn.includes('aksesuar')) {
-      selectedCategory = 'tech';
-    } else if (lowerFn.includes('yemek') || lowerFn.includes('oil') || lowerFn.includes('ekmek') || lowerFn.includes('coffee') || lowerFn.includes('food') || lowerFn.includes('tea') || lowerFn.includes('icecek')) {
-      selectedCategory = 'food';
-    } else if (lowerFn.includes('doga') || lowerFn.includes('sunset') || lowerFn.includes('forest') || lowerFn.includes('landscape') || lowerFn.includes('manzara') || lowerFn.includes('mountain')) {
-      selectedCategory = 'landscape';
-    } else if (lowerFn.includes('elbise') || lowerFn.includes('ceket') || lowerFn.includes('giyim') || lowerFn.includes('fashion') || lowerFn.includes('tisort') || lowerFn.includes('kombin')) {
-      selectedCategory = 'fashion';
-    } else if (lowerFn.includes('spor') || lowerFn.includes('yoga') || lowerFn.includes('fitness') || lowerFn.includes('mat') || lowerFn.includes('kosu') || lowerFn.includes('dambil')) {
-      selectedCategory = 'fitness';
-    } else if (lowerFn.includes('ofis') || lowerFn.includes('toplanti') || lowerFn.includes('is') || lowerFn.includes('sirket') || lowerFn.includes('grafik') || lowerFn.includes('business')) {
-      selectedCategory = 'business';
-    } else if (lowerFn.includes('mimari') || lowerFn.includes('bina') || lowerFn.includes('ev') || lowerFn.includes('loft') || lowerFn.includes('tasarim') || lowerFn.includes('architecture')) {
-      selectedCategory = 'architecture';
-    } else if (lowerFn.includes('kedi') || lowerFn.includes('kopek') || lowerFn.includes('pet') || lowerFn.includes('hayvan') || lowerFn.includes('animal') || lowerFn.includes('kus')) {
-      selectedCategory = 'animals';
-    } else if (lowerFn.includes('seyahat') || lowerFn.includes('gezi') || lowerFn.includes('harita') || lowerFn.includes('canta') || lowerFn.includes('travel') || lowerFn.includes('turist')) {
-      selectedCategory = 'travel';
-    } else if (lowerFn.includes('araba') || lowerFn.includes('motor') || lowerFn.includes('motosiklet') || lowerFn.includes('oto') || lowerFn.includes('car') || lowerFn.includes('hiz')) {
-      selectedCategory = 'automotive';
-    } else if (lowerFn.includes('insan') || lowerFn.includes('kadin') || lowerFn.includes('adam') || lowerFn.includes('aile') || lowerFn.includes('cocuk') || lowerFn.includes('portre') || lowerFn.includes('portrait')) {
-      selectedCategory = 'portrait';
-    }
-  }
+  
+  let selectedCategory = categoryKey || detectCategoryFromFilename(filename);
   
   if (!selectedCategory || !CATEGORY_TEMPLATES[selectedCategory]) {
     const keys = Object.keys(CATEGORY_TEMPLATES);

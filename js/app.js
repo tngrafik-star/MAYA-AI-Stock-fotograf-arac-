@@ -1,6 +1,6 @@
 import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs } from './db.js';
 import { logout, updateProfile, updateSubscription } from './auth.js';
-import { getCategories, generateAIData, generateGeminiMetadata } from './ai.js';
+import { getCategories, generateAIData, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
 import { supabase } from './supabase.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage, translateActivityLog } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
@@ -429,6 +429,14 @@ const initApp = async () => {
     }
     
     selectedFile = file;
+    
+    // Auto-detect category from filename and set the dropdown value
+    if (categorySelector && file.name) {
+      const detectedCat = detectCategoryFromFilename(file.name);
+      console.log('📂 [Debug] Auto-detected category:', detectedCat, 'for file:', file.name);
+      categorySelector.value = detectedCat;
+    }
+
     // Auto-switch to Upload view to process
     switchView('upload');
     startSimulatedGeneration();
