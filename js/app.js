@@ -434,6 +434,43 @@ const initApp = async () => {
     startSimulatedGeneration();
   }
 
+  // Helper to resize/compress base64 image client-side before sending/saving
+  function resizeImage(base64Str, maxWidth = 1024, maxHeight = 1024) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = base64Str;
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Export as compressed JPEG
+        resolve(canvas.toDataURL('image/jpeg', 0.8));
+      };
+      img.onerror = () => {
+        resolve(base64Str); // Fallback to original if load fails
+      };
+    });
+  }
+
   // Real or Simulated AI Analyzer Flow
   function startSimulatedGeneration() {
     console.log('📂 [Debug] startSimulatedGeneration triggered, selectedFile:', selectedFile ? selectedFile.name : 'null');
@@ -467,70 +504,73 @@ const initApp = async () => {
     // Parse image file to display preview
     const reader = new FileReader();
     reader.onload = (e) => {
-      document.getElementById('result-preview-img').src = e.target.result;
+      const rawBase64 = e.target.result;
+      document.getElementById('result-preview-img').src = rawBase64;
       
-      const categoryKey = categorySelector.value;
-      const userKey = user.gemini_api_key || '';
+      resizeImage(rawBase64, 1024, 1024).then(compressedBase64 => {
+        const categoryKey = categorySelector.value;
+        const userKey = user.gemini_api_key || '';
 
-      // Real API call via secure backend proxy
-      generateGeminiMetadata(e.target.result, categoryKey, userKey, user.plan, getCurrentLanguage())
-        .then(generatedData => {
-          // Save to Database
-          saveGeneration(user.id, e.target.result, generatedData).then(() => {
-            // Load details to display
-            activeMetadata = generatedData;
-            populateResultsView(generatedData);
-            
-            // Hide simulation warning banner
-            const warningBanner = document.getElementById('simulation-warning-banner');
-            if (warningBanner) warningBanner.style.display = 'none';
-
-            // Adjust screens
-            loading.style.display = 'none';
-            results.style.display = 'block';
-            
-            showToast(t('toast.analysisComplete'), 'success');
-          }).catch(dbErr => {
-            showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
-            loading.style.display = 'none';
-            dropzone.style.display = 'flex';
-          });
-        })
-        .catch(err => {
-          console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
-          
-          showToast(t('toast.noApiKey'), 'warning');
-          if (err.message && (err.message.includes('API key not valid') || err.message.includes('invalid') || err.message.includes('API_KEY_INVALID') || err.message.includes('API key'))) {
-            showToast(t('toast.invalidApiKey'), 'warning');
-          } else if (err.message && err.message.includes('quota')) {
-            showToast(t('toast.quotaExceeded'), 'warning');
-          }
-          
-          setTimeout(() => {
-            const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan, getCurrentLanguage());
-            
+        // Real API call via secure backend proxy
+        generateGeminiMetadata(compressedBase64, categoryKey, userKey, user.plan, getCurrentLanguage())
+          .then(generatedData => {
             // Save to Database
-            saveGeneration(user.id, e.target.result, generatedData).then(() => {
+            saveGeneration(user.id, compressedBase64, generatedData).then(() => {
               // Load details to display
               activeMetadata = generatedData;
               populateResultsView(generatedData);
               
-              // Show simulation warning banner
+              // Hide simulation warning banner
               const warningBanner = document.getElementById('simulation-warning-banner');
-              if (warningBanner) warningBanner.style.display = 'block';
+              if (warningBanner) warningBanner.style.display = 'none';
 
               // Adjust screens
               loading.style.display = 'none';
               results.style.display = 'block';
               
-              showToast(t('toast.simulationComplete'), 'success');
+              showToast(t('toast.analysisComplete'), 'success');
             }).catch(dbErr => {
               showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
               loading.style.display = 'none';
               dropzone.style.display = 'flex';
             });
-          }, 1500);
-        });
+          })
+          .catch(err => {
+            console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
+            
+            showToast(t('toast.noApiKey'), 'warning');
+            if (err.message && (err.message.includes('API key not valid') || err.message.includes('invalid') || err.message.includes('API_KEY_INVALID') || err.message.includes('API key'))) {
+              showToast(t('toast.invalidApiKey'), 'warning');
+            } else if (err.message && err.message.includes('quota')) {
+              showToast(t('toast.quotaExceeded'), 'warning');
+            }
+            
+            setTimeout(() => {
+              const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan, getCurrentLanguage());
+              
+              // Save to Database
+              saveGeneration(user.id, compressedBase64, generatedData).then(() => {
+                // Load details to display
+                activeMetadata = generatedData;
+                populateResultsView(generatedData);
+                
+                // Show simulation warning banner
+                const warningBanner = document.getElementById('simulation-warning-banner');
+                if (warningBanner) warningBanner.style.display = 'block';
+
+                // Adjust screens
+                loading.style.display = 'none';
+                results.style.display = 'block';
+                
+                showToast(t('toast.simulationComplete'), 'success');
+              }).catch(dbErr => {
+                showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
+                loading.style.display = 'none';
+                dropzone.style.display = 'flex';
+              });
+            }, 1500);
+          });
+      });
     };
     reader.readAsDataURL(selectedFile);
   }
