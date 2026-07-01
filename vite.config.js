@@ -15,6 +15,9 @@ export default defineConfig(({ mode }) => {
       'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(supabaseAnonKey),
       'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(geminiApiKey),
     },
+    esbuild: {
+      pure: mode === 'production' ? ['console.log', 'console.debug', 'console.info'] : []
+    },
     plugins: [
     {
       name: 'multi-page-redirect',

@@ -16,7 +16,7 @@ i18next
     nonExplicitSupportedLngs: false,
     debug: false,
     interpolation: {
-      escapeValue: false // Not needed for vanilla JS (no XSS risk from framework rendering)
+      escapeValue: true // Automatically escape variables to prevent XSS vulnerabilities
     },
     detection: {
       order: ['querystring', 'localStorage', 'navigator'],

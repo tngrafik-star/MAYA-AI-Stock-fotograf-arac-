@@ -12,6 +12,17 @@ initDB();
 updateHtmlLang();
 updateSEOMeta();
 
+// Helper function to escape HTML strings to prevent XSS vulnerabilities
+const escapeHTML = (str) => {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+
 const initApp = async () => {
   console.log('📂 [Debug] initApp starting...');
   
@@ -298,11 +309,11 @@ const initApp = async () => {
       
       tr.innerHTML = `
         <td class="thumbnail-cell">
-          <img src="${row.image_url}" class="table-thumbnail" alt="thumbnail">
+          <img src="${escapeHTML(row.image_url)}" class="table-thumbnail" alt="thumbnail">
         </td>
         <td>
-          <div class="table-title">${row.title}</div>
-          <div style="font-size: 11px; color: var(--color-text-muted); max-width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${row.description}</div>
+          <div class="table-title">${escapeHTML(row.title)}</div>
+          <div style="font-size: 11px; color: var(--color-text-muted); max-width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(row.description)}</div>
         </td>
         <td>${formattedDate}</td>
         <td><span class="table-badge">${getCategoryName(row.category)}</span></td>
@@ -714,11 +725,11 @@ const initApp = async () => {
       
       tr.innerHTML = `
         <td class="thumbnail-cell">
-          <img src="${row.image_url}" class="table-thumbnail" alt="thumbnail">
+          <img src="${escapeHTML(row.image_url)}" class="table-thumbnail" alt="thumbnail">
         </td>
         <td>
-          <div class="table-title">${row.title}</div>
-          <div style="font-size: 11px; color: var(--color-text-muted); max-width: 450px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${row.description}</div>
+          <div class="table-title">${escapeHTML(row.title)}</div>
+          <div style="font-size: 11px; color: var(--color-text-muted); max-width: 450px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(row.description)}</div>
         </td>
         <td>${formattedDate}</td>
         <td><span class="table-badge">${getCategoryName(row.category)}</span></td>
@@ -769,10 +780,10 @@ const initApp = async () => {
           <input type="checkbox" class="export-row-checkbox" data-id="${row.id}">
         </td>
         <td class="thumbnail-cell">
-          <img src="${row.image_url}" class="table-thumbnail" alt="thumbnail">
+          <img src="${escapeHTML(row.image_url)}" class="table-thumbnail" alt="thumbnail">
         </td>
         <td>
-          <div class="table-title">${row.title}</div>
+          <div class="table-title">${escapeHTML(row.title)}</div>
         </td>
         <td>${formattedDate}</td>
         <td><span class="table-badge">${getCategoryName(row.category)}</span></td>
