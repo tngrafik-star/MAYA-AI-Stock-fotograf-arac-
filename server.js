@@ -292,7 +292,7 @@ app.post('/api/generate', rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
       return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
     }
 
-    let apiKey = customApiKey || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+    let apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
     const isPlaceholder = !apiKey || 
       apiKey.includes('your_gemini_api_key_here') || 
       apiKey.trim() === '' || 

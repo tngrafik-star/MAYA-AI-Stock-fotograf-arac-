@@ -517,10 +517,9 @@ const initApp = async () => {
       
       resizeImage(rawBase64, 1024, 1024).then(compressedBase64 => {
         const categoryKey = categorySelector.value;
-        const userKey = user.gemini_api_key || '';
 
-        // Real API call via secure backend proxy
-        generateGeminiMetadata(compressedBase64, categoryKey, userKey, user.plan, getCurrentLanguage())
+        // Real API call via secure backend proxy (relying strictly on server-side .env keys)
+        generateGeminiMetadata(compressedBase64, categoryKey, null, user.plan, getCurrentLanguage())
           .then(generatedData => {
             // Save to Database
             saveGeneration(user.id, compressedBase64, generatedData).then(() => {
@@ -981,7 +980,6 @@ const initApp = async () => {
     document.getElementById('profile-email').value = user.email;
     document.getElementById('profile-password').value = '';
     document.getElementById('profile-password-confirm').value = '';
-    document.getElementById('profile-gemini-key').value = user.gemini_api_key || '';
     
     // Set initials in large avatar circle
     const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -995,7 +993,6 @@ const initApp = async () => {
       const email = document.getElementById('profile-email').value;
       const pwd = document.getElementById('profile-password').value;
       const pwdConfirm = document.getElementById('profile-password-confirm').value;
-      const geminiApiKey = document.getElementById('profile-gemini-key').value;
 
       if (pwd !== '' && pwd !== pwdConfirm) {
         showToast(t('toast.passwordMismatch'), 'error');
@@ -1003,7 +1000,7 @@ const initApp = async () => {
       }
 
       try {
-        await updateProfile(name, email, pwd, geminiApiKey);
+        await updateProfile(name, email, pwd, null);
         showToast(t('toast.profileUpdated'), 'success');
         updateSidebarProfile();
       } catch (err) {
