@@ -23,6 +23,21 @@ const escapeHTML = (str) => {
     .replace(/'/g, '&#39;');
 };
 
+// Helper function to convert Turkish strings to lowercase safely for search comparisons
+const turkishToLower = (str) => {
+  if (!str) return '';
+  return String(str)
+    .replace(/İ/g, 'i')
+    .replace(/I/g, 'ı')
+    .replace(/Ğ/g, 'ğ')
+    .replace(/Ü/g, 'ü')
+    .replace(/Ş/g, 'ş')
+    .replace(/Ö/g, 'ö')
+    .replace(/Ç/g, 'ç')
+    .toLowerCase();
+};
+
+
 const initApp = async () => {
   console.log('📂 [Debug] initApp starting...');
   
@@ -703,13 +718,16 @@ const initApp = async () => {
     const tbody = document.getElementById('history-table-tbody');
     tbody.innerHTML = '';
 
-    const searchQuery = historySearch ? historySearch.value.toLowerCase() : '';
+    const searchQuery = historySearch ? turkishToLower(historySearch.value) : '';
     const selectedCategory = historyFilterCategory ? historyFilterCategory.value : '';
 
     const filtered = history.filter(row => {
-      const matchesSearch = row.title.toLowerCase().includes(searchQuery) || 
-                            row.description.toLowerCase().includes(searchQuery) ||
-                            row.keywords.toLowerCase().includes(searchQuery);
+      const title = row.title || '';
+      const description = row.description || '';
+      const keywords = row.keywords || '';
+      const matchesSearch = turkishToLower(title).includes(searchQuery) || 
+                            turkishToLower(description).includes(searchQuery) ||
+                            turkishToLower(keywords).includes(searchQuery);
       const matchesCategory = selectedCategory === '' || row.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
