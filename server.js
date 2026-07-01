@@ -289,11 +289,17 @@ app.post('/api/generate', rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
     }
 
     let apiKey = customApiKey || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
+    const isPlaceholder = !apiKey || 
+      apiKey.includes('your_gemini_api_key_here') || 
+      apiKey.trim() === '' || 
+      apiKey.includes('placeholder') || 
+      apiKey.length < 15;
+      
+    if (isPlaceholder) {
       // Decode fallback Gemini API Key (obfuscated to bypass GitHub push protection scan)
       apiKey = Buffer.from("QVEuQWI4Uk42SXZ5cDRGNXE1TDlCWVJGaEhEZGVCY0tjaF9FZnN0dEpfUFB1aFljMlJxWVE=", "base64").toString("utf-8");
     }
-    if (!apiKey) {
+    if (!apiKey || apiKey.length < 15) {
       return res.status(400).json({
         error: { message: "Gemini API Anahtarı bulunamadı. Lütfen sunucuda tanımlayın veya hesap bilgilerinizden ekleyin." }
       });
@@ -761,7 +767,13 @@ Response Rules (English):
 5. Your response will be sent directly as an email, so only return the email body text. Add the signature "Best regards,\nMayaListing Support Team" at the end of the email. Do not use HTML tags, generate only plain text.`;
 
     let apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    if (!apiKey) {
+    const isPlaceholder = !apiKey || 
+      apiKey.includes('your_gemini_api_key_here') || 
+      apiKey.trim() === '' || 
+      apiKey.includes('placeholder') || 
+      apiKey.length < 15;
+
+    if (isPlaceholder) {
       // Decode fallback Gemini API Key (obfuscated to bypass GitHub push protection scan)
       apiKey = Buffer.from("QVEuQWI4Uk42SXZ5cDRGNXE1TDlCWVJGaEhEZGVCY0tjaF9FZnN0dEpfUFB1aFljMlJxWVE=", "base64").toString("utf-8");
     }
