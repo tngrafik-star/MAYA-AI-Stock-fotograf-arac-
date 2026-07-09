@@ -545,11 +545,15 @@ const initApp = async () => {
           .catch(err => {
             console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
             
-            showToast(t('toast.noApiKey'), 'warning');
-            if (err.message && (err.message.includes('API key not valid') || err.message.includes('invalid') || err.message.includes('API_KEY_INVALID') || err.message.includes('API key'))) {
-              showToast(t('toast.invalidApiKey'), 'warning');
-            } else if (err.message && err.message.includes('quota')) {
+            const errMsg = err.message || '';
+            const lowerMsg = errMsg.toLowerCase();
+
+            if (lowerMsg.includes('quota') || lowerMsg.includes('limit') || lowerMsg.includes('exhausted') || lowerMsg.includes('429')) {
               showToast(t('toast.quotaExceeded'), 'warning');
+            } else if (lowerMsg.includes('api key not valid') || lowerMsg.includes('invalid') || lowerMsg.includes('api_key_invalid') || lowerMsg.includes('key not found') || lowerMsg.includes('api key')) {
+              showToast(t('toast.invalidApiKey'), 'warning');
+            } else {
+              showToast(t('toast.noApiKey'), 'warning');
             }
             
             setTimeout(() => {
