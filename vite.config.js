@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
           const url = new URL(req.url, 'http://localhost');
           const pathname = url.pathname;
           
-          if (pathname === '/app' || pathname === '/auth/callback') {
+          if (pathname === '/app' || pathname === '/auth/callback' || pathname === '/blog') {
             res.writeHead(301, { 
               Location: pathname + '/' + url.search + url.hash 
             });
@@ -44,7 +44,12 @@ export default defineConfig(({ mode }) => {
       input: {
         main: resolve(__dirname, 'index.html'),
         app: resolve(__dirname, 'app/index.html'),
-        authCallback: resolve(__dirname, 'auth/callback/index.html')
+        authCallback: resolve(__dirname, 'auth/callback/index.html'),
+        blog: resolve(__dirname, 'blog/index.html'),
+        blogAdobeStock: resolve(__dirname, 'blog/adobe-stock-fotograf-nasil-satilir.html'),
+        blogKeyword: resolve(__dirname, 'blog/stok-fotograf-anahtar-kelime-rehberi.html'),
+        blogEcommerce: resolve(__dirname, 'blog/e-ticaret-urun-fotografi-seo.html'),
+        blogShutterstock: resolve(__dirname, 'blog/shutterstock-satici-rehberi.html')
       },
       output: {
         manualChunks: {
