@@ -11,6 +11,22 @@
     {
       "source": "/auth/callback/(.*)",
       "destination": "/auth/callback/index.html"
+    },
+    {
+      "source": "/blog/adobe-stock-fotograf-nasil-satilir",
+      "destination": "/blog/adobe-stock-fotograf-nasil-satilir.html"
+    },
+    {
+      "source": "/blog/stok-fotograf-anahtar-kelime-rehberi",
+      "destination": "/blog/stok-fotograf-anahtar-kelime-rehberi.html"
+    },
+    {
+      "source": "/blog/e-ticaret-urun-fotografi-seo",
+      "destination": "/blog/e-ticaret-urun-fotografi-seo.html"
+    },
+    {
+      "source": "/blog/shutterstock-satici-rehberi",
+      "destination": "/blog/shutterstock-satici-rehberi.html"
     }
   ]
 }

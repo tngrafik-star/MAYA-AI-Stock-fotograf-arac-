@@ -4,7 +4,7 @@
   <!-- Default / Turkish page -->
   <url>
     <loc>https://mayalisting.com/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/?lang=tr"/>
@@ -14,7 +14,7 @@
   <!-- English page -->
   <url>
     <loc>https://mayalisting.com/?lang=en</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/?lang=tr"/>
@@ -24,11 +24,46 @@
   <!-- Turkish page direct query -->
   <url>
     <loc>https://mayalisting.com/?lang=tr</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/?lang=tr"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/?lang=en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/"/>
+  </url>
+  <!-- Blog listing page -->
+  <url>
+    <loc>https://mayalisting.com/blog/</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Blog: Adobe Stock Rehberi -->
+  <url>
+    <loc>https://mayalisting.com/blog/adobe-stock-fotograf-nasil-satilir</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Blog: Anahtar Kelime Rehberi -->
+  <url>
+    <loc>https://mayalisting.com/blog/stok-fotograf-anahtar-kelime-rehberi</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Blog: E-Ticaret SEO Rehberi -->
+  <url>
+    <loc>https://mayalisting.com/blog/e-ticaret-urun-fotografi-seo</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- Blog: Shutterstock Rehberi -->
+  <url>
+    <loc>https://mayalisting.com/blog/shutterstock-satici-rehberi</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
