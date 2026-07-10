@@ -49,7 +49,9 @@ export default defineConfig(({ mode }) => {
         blogAdobeStock: resolve(__dirname, 'blog/adobe-stock-fotograf-nasil-satilir.html'),
         blogKeyword: resolve(__dirname, 'blog/stok-fotograf-anahtar-kelime-rehberi.html'),
         blogEcommerce: resolve(__dirname, 'blog/e-ticaret-urun-fotografi-seo.html'),
-        blogShutterstock: resolve(__dirname, 'blog/shutterstock-satici-rehberi.html')
+        blogShutterstock: resolve(__dirname, 'blog/shutterstock-satici-rehberi.html'),
+        blogMarketplacesTr: resolve(__dirname, 'blog/e-ticaret-pazaryerleri-rehberi.html'),
+        blogMarketplacesEn: resolve(__dirname, 'blog/e-commerce-marketplaces-guide.html')
       },
       output: {
         manualChunks: {

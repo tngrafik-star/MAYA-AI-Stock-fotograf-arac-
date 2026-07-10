@@ -66,4 +66,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Blog: E-Ticaret Pazaryerleri Rehberi (TR) -->
+  <url>
+    <loc>https://mayalisting.com/blog/e-ticaret-pazaryerleri-rehberi</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/e-ticaret-pazaryerleri-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/e-commerce-marketplaces-guide"/>
+  </url>
+  <!-- Blog: E-Commerce Marketplaces Guide (EN) -->
+  <url>
+    <loc>https://mayalisting.com/blog/e-commerce-marketplaces-guide</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/e-ticaret-pazaryerleri-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/e-commerce-marketplaces-guide"/>
+  </url>
 </urlset>

@@ -155,6 +155,17 @@ export function applyTranslations() {
       }
     }
   });
+
+  // Href attribute translations
+  document.querySelectorAll('[data-i18n-href]').forEach(el => {
+    const key = el.getAttribute('data-i18n-href');
+    if (key) {
+      const translated = i18next.t(key);
+      if (translated && translated !== key) {
+        el.setAttribute('href', translated);
+      }
+    }
+  });
 }
 
 /**
@@ -210,6 +221,7 @@ function detectCurrentPage() {
   const path = window.location.pathname;
   if (path.includes('/app')) return 'dashboard';
   if (path.includes('/auth/callback')) return 'callback';
+  if (path.includes('/blog')) return 'blog';
   return 'landing';
 }
 

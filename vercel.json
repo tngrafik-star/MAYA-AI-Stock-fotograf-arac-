@@ -27,6 +27,14 @@
     {
       "source": "/blog/shutterstock-satici-rehberi",
       "destination": "/blog/shutterstock-satici-rehberi.html"
+    },
+    {
+      "source": "/blog/e-ticaret-pazaryerleri-rehberi",
+      "destination": "/blog/e-ticaret-pazaryerleri-rehberi.html"
+    },
+    {
+      "source": "/blog/e-commerce-marketplaces-guide",
+      "destination": "/blog/e-commerce-marketplaces-guide.html"
     }
   ]
 }
