@@ -3,6 +3,10 @@ import { login, signup, loginWithGoogle, resetPassword } from './auth.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getCurrentLanguage } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
 import { supabase } from './supabase.js';
+import { inject } from '@vercel/analytics';
+
+// Initialize Vercel Analytics
+inject();
 
 // Initialize Database on load
 initDB();

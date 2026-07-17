@@ -4,6 +4,10 @@ import { getCategories, generateAIData, generateGeminiMetadata, detectCategoryFr
 import { supabase } from './supabase.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage, translateActivityLog } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
+import { inject } from '@vercel/analytics';
+
+// Initialize Vercel Analytics
+inject();
 
 // Seed DB just in case
 initDB();
