@@ -35,6 +35,14 @@
     {
       "source": "/blog/e-commerce-marketplaces-guide",
       "destination": "/blog/e-commerce-marketplaces-guide.html"
+    },
+    {
+      "source": "/blog/yapay-zeka-stok-fotograf-satma-rehberi",
+      "destination": "/blog/yapay-zeka-stok-fotograf-satma-rehberi.html"
+    },
+    {
+      "source": "/blog/selling-ai-generated-stock-photos",
+      "destination": "/blog/selling-ai-generated-stock-photos.html"
     }
   ]
 }
