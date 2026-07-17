@@ -84,4 +84,22 @@
     <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/e-ticaret-pazaryerleri-rehberi"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/e-commerce-marketplaces-guide"/>
   </url>
+  <!-- Blog: Yapay Zeka Stok Fotoğraf Satma Rehberi (TR) -->
+  <url>
+    <loc>https://mayalisting.com/blog/yapay-zeka-stok-fotograf-satma-rehberi</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/yapay-zeka-stok-fotograf-satma-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/selling-ai-generated-stock-photos"/>
+  </url>
+  <!-- Blog: Selling AI-Generated Stock Photos Guide (EN) -->
+  <url>
+    <loc>https://mayalisting.com/blog/selling-ai-generated-stock-photos</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/yapay-zeka-stok-fotograf-satma-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/selling-ai-generated-stock-photos"/>
+  </url>
 </urlset>

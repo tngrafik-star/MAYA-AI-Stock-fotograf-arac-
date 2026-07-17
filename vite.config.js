@@ -51,7 +51,9 @@ export default defineConfig(({ mode }) => {
         blogEcommerce: resolve(__dirname, 'blog/e-ticaret-urun-fotografi-seo.html'),
         blogShutterstock: resolve(__dirname, 'blog/shutterstock-satici-rehberi.html'),
         blogMarketplacesTr: resolve(__dirname, 'blog/e-ticaret-pazaryerleri-rehberi.html'),
-        blogMarketplacesEn: resolve(__dirname, 'blog/e-commerce-marketplaces-guide.html')
+        blogMarketplacesEn: resolve(__dirname, 'blog/e-commerce-marketplaces-guide.html'),
+        blogAiStockTr: resolve(__dirname, 'blog/yapay-zeka-stok-fotograf-satma-rehberi.html'),
+        blogAiStockEn: resolve(__dirname, 'blog/selling-ai-generated-stock-photos.html')
       },
       output: {
         manualChunks: {
