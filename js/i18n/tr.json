@@ -11,9 +11,9 @@
     "changeTheme": "Temayı Değiştir"
   },
   "hero": {
-    "badge": "Yapay Zeka Destekli Stok Metadata Platformu",
+    "badge": "Yapay Zeka Destekli E-Ticaret ve Stok Platformu",
     "title": "Ürünleri Satışa Hazır Hale Getiren Yapay Zeka",
-    "description": "MayaListing, fotoğraflarınızı analiz eder ve saniyeler içinde Trendyol, Hepsiburada, n11, Amazon, Stock, Shutterstock, Freepik ve e-ticaret siteleri için yüksek dönüşümlü başlık, açıklama ve anahtar kelimeler oluşturur.",
+    "description": "MayaListing, görsellerinizi analiz eder ve saniyeler içinde Trendyol, Hepsiburada, n11, Amazon, Etsy, Shopify ile Adobe Stock, Shutterstock ve Freepik için yüksek dönüşümlü başlık, açıklama ve anahtar kelimeler oluşturur.",
     "ctaTryFree": "Ücretsiz Dene",
     "ctaHowItWorks": "Nasıl Çalışır"
   },
@@ -35,31 +35,31 @@
     "microLabel": "Adım Adım",
     "title": "Nasıl Çalışır?",
     "description": "Görsellerinizi pazaryerlerine ulaştırmanın en hızlı ve akıllıca yolu.",
-    "step1Title": "Fotoğrafı Yükle",
-    "step1Desc": "Yüksek çözünürlüklü stok fotoğrafınızı veya ürün görselinizi sürükleyip platforma bırakın.",
+    "step1Title": "Görseli Yükle",
+    "step1Desc": "Ürün görselinizi veya yüksek çözünürlüklü stok fotoğrafınızı sürükleyip platforma bırakın.",
     "step2Title": "Yapay Zeka Analiz Etsin",
     "step2Desc": "Gelişmiş görsel işleme modelimiz renkleri, kompozisyonu, nesneleri ve potansiyel SEO değerlerini çözsün.",
     "step3Title": "Metadata Oluştur",
-    "step3Desc": "Saniyeler içinde E-ticaret ve Stock platformlarına özel Türkçe metadata setleri üretilsin.",
+    "step3Desc": "Saniyeler içinde e-ticaret siteleri ile stok platformlarına özel Türkçe metadata setleri üretilsin.",
     "step4Title": "Platformlara Yükle",
     "step4Desc": "Dışa aktarılan CSV dosyaları veya hızlı kopyalama araçlarıyla saniyeler içinde yüklemenizi tamamlayın."
   },
   "features": {
     "microLabel": "Özellikler",
     "title": "Profesyonel Çözümler",
-    "description": "Stok üreticileri ve ticari markalar için özel olarak tasarlanmış gelişmiş araçlar.",
+    "description": "E-ticaret satıcıları, markalar ve stok üreticileri için özel olarak tasarlanmış gelişmiş araçlar.",
     "f1Title": "Yapay Zeka Metadata Üretici",
     "f1Desc": "Yüklenen fotoğrafa uygun, arama hacmi yüksek Türkçe başlık ve pazaryeri uyumlu açıklamalar oluşturur.",
     "f2Title": "Akıllı Anahtar Kelime Motoru",
-    "f2Desc": "Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ kelimelik etiket havuzları üretir.",
+    "f2Desc": "Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ etiket havuzları üretir.",
     "f3Title": "Toplu İşlem (Batch Processing)",
     "f3Desc": "Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.",
     "f4Title": "Gelişmiş Dışa Aktarım",
-    "f4Desc": "Adobe Stock, Shutterstock, Freepik veya Etsy gibi online satış kanallarına özel CSV formatlarında çıktı alın.",
+    "f4Desc": "Etsy, Amazon, Shopify veya Adobe Stock, Shutterstock, Freepik gibi mecralara özel CSV formatlarında çıktı alın.",
     "f5Title": "Geçmiş ve Arşiv Yönetimi",
     "f5Desc": "Daha önce yaptığınız tüm analiz ve üretimleri güvenle saklayın, dilediğiniz an tekrar arayın ve kopyalayın.",
     "f6Title": "Çoklu Platform Uyumluluğu",
-    "f6Desc": "Tek bir tıklamayla hem popüler stok siteleri hem de online satış kanalları (Etsy, Trendyol vs.) için etiket oluşturun."
+    "f6Desc": "Tek bir tıklamayla hem e-ticaret siteleri (Etsy, Trendyol, Amazon vs.) hem de popüler stok mecraları için etiket oluşturun."
   },
   "benefits": {
     "microLabel": "Avantajlar",
@@ -68,11 +68,11 @@
     "b1Title": "Zaman Tasarrufu",
     "b1Desc": "Her görsel için tek tek anahtar kelime girmeyi bırakın. Zamandan %90 tasarruf edin.",
     "b2Title": "Maksimum Keşif",
-    "b2Desc": "SEO uyumlu algoritmalar sayesinde görsellerinizin pazaryerlerindeki görünürlüğünü katlayın.",
+    "b2Desc": "SEO uyumlu algoritmalar sayesinde görsellerinizin pazaryerindeki görünürlüğünü katlayın.",
     "b3Title": "Metadata Kalitesi",
     "b3Desc": "Hatalı ve alakasız etiketlerden kurtulun, arama sonuçlarıyla birebir örtüşen veriler sunun.",
-    "b4Title": "Portföy Büyüme Hızı",
-    "b4Desc": "Toplu dışa aktarım sayesinde yeni stok ürünlerinizi günler yerine saatler içinde satışa açın."
+    "b4Title": "Ürün Giriş Hızı",
+    "b4Desc": "Toplu dışa aktarım sayesinde yeni e-ticaret ürünlerinizi ve stok portföyünüzü günler yerine saatler içinde satışa açın."
   },
   "pricing": {
     "microLabel": "Fiyatlandırma",
@@ -90,7 +90,6 @@
     "analysesPerMonth": "Görsel Analizi / Ay",
     "unlimitedAnalyses": "Sınırsız Görsel Analizi",
     "extraUserNote": "+ Ek kullanıcı başına 9.99 $ / ay",
-    "startFree": "Ücretsiz Başla",
     "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Kullanılmayan analiz kredileri, aboneliğiniz aktif kaldığı sürece aydan aya devreder.",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Uyumlu",
@@ -419,11 +418,11 @@
     "other": "Diğer / Genel"
   },
   "seo": {
-    "landingTitle": "MayaListing - Yapay Zeka Destekli Stok Fotoğraf Asistanı",
-    "landingMetaTitle": "MayaListing - Yapay Zeka Destekli Stok Fotoğraf Asistanı",
-    "landingDescription": "Profesyonel fotoğrafçılar ve e-ticaret satıcıları için yapay zeka destekli başlık, açıklama, anahtar kelime ve SEO etiket oluşturma aracı.",
-    "landingKeywords": "yapay zeka, stok fotoğraf, metadata, seo etiket, adobe stock, shutterstock, freepik, trendyol, etsy, amazon, ürün açıklaması, otomatik etiketleme",
-    "ogTitle": "MayaListing - Yapay Zeka Destekli Stok Fotoğraf Asistanı",
+    "landingTitle": "MayaListing - Yapay Zeka Destekli E-Ticaret Ürün ve Stok Asistanı",
+    "landingMetaTitle": "MayaListing - Yapay Zeka Destekli E-Ticaret Ürün ve Stok Asistanı",
+    "landingDescription": "E-ticaret satıcıları ve profesyonel fotoğrafçılar için yapay zeka destekli başlık, açıklama, anahtar kelime ve SEO etiket oluşturma aracı. Ürün ve stok metadata üretimini saniyeler içinde tamamlayın.",
+    "landingKeywords": "yapay zeka, e-ticaret, ürün açıklaması, seo etiket, trendyol, etsy, amazon, otomatik etiketleme, stok fotoğraf, metadata, adobe stock, shutterstock, freepik",
+    "ogTitle": "MayaListing - Yapay Zeka Destekli E-Ticaret Ürün ve Stok Asistanı",
     "ogDescription": "Görsellerinizi analiz ederek saniyeler içinde Adobe Stock, Shutterstock, Trendyol ve Etsy uyumlu başlık, açıklama ve SEO etiket setleri üretin.",
     "dashboardTitle": "MayaListing - Gösterge Paneli",
     "callbackTitle": "MayaListing - Oturum Doğrulanıyor..."

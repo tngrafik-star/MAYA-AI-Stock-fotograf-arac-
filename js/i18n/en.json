@@ -11,9 +11,9 @@
     "changeTheme": "Toggle Theme"
   },
   "hero": {
-    "badge": "AI-Powered Stock Metadata Platform",
+    "badge": "AI-Powered E-Commerce & Stock Metadata Platform",
     "title": "AI That Makes Your Products Sale-Ready",
-    "description": "MayaListing analyzes your photos and generates high-converting titles, descriptions, and keywords for Etsy, Amazon, e-commerce, Adobe Stock and Shutterstock,  platforms in seconds.",
+    "description": "MayaListing analyzes your images and generates high-converting titles, descriptions, and keywords for Etsy, Amazon, Trendyol, Hepsiburada, Shopify, Adobe Stock, and Shutterstock in seconds.",
     "ctaTryFree": "Try Free",
     "ctaHowItWorks": "How It Works"
   },
@@ -35,19 +35,19 @@
     "microLabel": "Step by Step",
     "title": "How It Works",
     "description": "The fastest and smartest way to get your visuals to marketplaces.",
-    "step1Title": "Upload Your Photo",
-    "step1Desc": "Drag and drop your high-resolution stock photo or product image onto the platform.",
+    "step1Title": "Upload Image",
+    "step1Desc": "Drag and drop your product image or high-resolution stock photo onto the platform.",
     "step2Title": "Let AI Analyze",
     "step2Desc": "Our advanced image processing model detects colors, composition, objects, and potential SEO values.",
     "step3Title": "Generate Metadata",
-    "step3Desc": "Platform-specific metadata sets for e-commerce and stock sites are generated within seconds.",
+    "step3Desc": "Platform-specific listings for e-commerce sites (Amazon, Etsy, etc.) and stock platforms are generated within seconds.",
     "step4Title": "Upload to Platforms",
     "step4Desc": "Complete your upload in seconds using exported CSV files or quick copy tools."
   },
   "features": {
     "microLabel": "Features",
     "title": "Professional Solutions",
-    "description": "Advanced tools specifically designed for stock contributors and commercial brands.",
+    "description": "Advanced tools specifically designed for e-commerce sellers, brands, and stock contributors.",
     "f1Title": "AI Metadata Generator",
     "f1Desc": "Creates high-search-volume titles and marketplace-compatible descriptions tailored to each uploaded photo.",
     "f2Title": "Smart Keyword Engine",
@@ -55,11 +55,11 @@
     "f3Title": "Batch Processing",
     "f3Desc": "Queue hundreds of photos at once and generate all metadata sets in the background in a single batch.",
     "f4Title": "Advanced Export",
-    "f4Desc": "Get output in CSV formats specific to online sales channels like Adobe Stock, Shutterstock, Freepik, or Etsy.",
+    "f4Desc": "Get output in CSV formats specific to online sales channels like Etsy, Amazon, Shopify, or Adobe Stock, Shutterstock, Freepik.",
     "f5Title": "History & Archive Management",
     "f5Desc": "Safely store all your previous analyses and generations, search and copy them anytime you need.",
     "f6Title": "Multi-Platform Compatibility",
-    "f6Desc": "Create tags for both popular stock sites and online sales channels (Etsy, Trendyol, etc.) with a single click."
+    "f6Desc": "Create tags for both e-commerce marketplaces (Etsy, Trendyol, Amazon, etc.) and popular stock sites with a single click."
   },
   "benefits": {
     "microLabel": "Benefits",
@@ -71,8 +71,8 @@
     "b2Desc": "Multiply your images' visibility on marketplaces with SEO-optimized algorithms.",
     "b3Title": "Metadata Quality",
     "b3Desc": "Eliminate inaccurate and irrelevant tags. Deliver data that matches search results precisely.",
-    "b4Title": "Portfolio Growth Speed",
-    "b4Desc": "List your new stock products for sale in hours instead of days with bulk export."
+    "b4Title": "Product Listing Speed",
+    "b4Desc": "List your new e-commerce products and stock designs for sale in hours instead of days with bulk export."
   },
   "pricing": {
     "microLabel": "Pricing",
@@ -419,11 +419,11 @@
     "other": "Other / General"
   },
   "seo": {
-    "landingTitle": "MayaListing - AI Stock Photography Assistant",
-    "landingMetaTitle": "MayaListing - AI Stock Photography Assistant",
-    "landingDescription": "AI-powered title, description, keyword, and SEO tag generator for professional photographers and e-commerce sellers. Generate stock metadata in seconds.",
-    "landingKeywords": "AI stock photography, stock metadata generator, AI keyword generator, Adobe Stock keywords, Shutterstock keywords, stock photo metadata, AI image analysis",
-    "ogTitle": "MayaListing - AI Stock Photography Assistant",
+    "landingTitle": "MayaListing - AI E-Commerce Product & Stock Assistant",
+    "landingMetaTitle": "MayaListing - AI E-Commerce Product & Stock Assistant",
+    "landingDescription": "AI-powered title, description, keyword, and SEO tag generator for e-commerce sellers and professional photographers. Generate product and stock metadata in seconds.",
+    "landingKeywords": "AI e-commerce, product description generator, AI keyword generator, Etsy SEO tags, Amazon listings, Shopify keywords, stock photo metadata, AI image analysis",
+    "ogTitle": "MayaListing - AI E-Commerce Product & Stock Assistant",
     "ogDescription": "Analyze your images and generate Adobe Stock, Shutterstock, Etsy, and Amazon compatible titles, descriptions, and SEO tags in seconds.",
     "dashboardTitle": "MayaListing - Dashboard",
     "callbackTitle": "MayaListing - Verifying Session..."
