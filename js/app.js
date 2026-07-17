@@ -1051,7 +1051,7 @@ const initApp = async () => {
             e.preventDefault();
             const subject = encodeURIComponent(t('billing.vipMailtoSubject'));
             const body = encodeURIComponent(t('billing.vipMailtoBody'));
-            window.location.href = `mailto:support@mayalisting.com?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:destek.mayalisting@gmail.com?subject=${subject}&body=${body}`;
           });
           btn.replaceWith(newBtn);
         } else {
