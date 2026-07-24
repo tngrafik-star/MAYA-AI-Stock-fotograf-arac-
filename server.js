@@ -9,6 +9,7 @@ import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import WebSocket from 'ws';
 import jwt from 'jsonwebtoken';
+import Joi from 'joi';
 
 // Polyfill WebSocket for Supabase Realtime in older Node versions
 if (typeof globalThis.WebSocket === 'undefined') {
@@ -161,6 +162,58 @@ const verifyAuth = (req, res, next) => {
       error: { message: "Geçersiz veya süresi dolmuş token." }
     });
   }
+};
+
+// Validation Schemas
+const generateSchema = Joi.object({
+  imageData: Joi.string().base64().required().messages({
+    'string.empty': 'Görsel verisi gerekli',
+    'string.base64': 'Görsel verisi geçerli base64 formatında olmalıdır'
+  }),
+  categoryKey: Joi.string().required().messages({
+    'string.empty': 'Kategori gerekli'
+  }),
+  customApiKey: Joi.string().allow(null, '').optional(),
+  plan: Joi.string().valid('free', 'starter', 'pro', 'studio').default('starter').messages({
+    'any.only': 'Plan türü geçersiz'
+  }),
+  language: Joi.string().valid('en', 'tr').default('tr').messages({
+    'any.only': 'Dil geçersiz'
+  })
+});
+
+const checkoutSessionSchema = Joi.object({
+  plan: Joi.string().valid('free', 'starter', 'pro', 'studio').required().messages({
+    'any.only': 'Plan türü geçersiz',
+    'string.empty': 'Plan gerekli'
+  }),
+  userId: Joi.string().uuid().required().messages({
+    'string.guid': 'Kullanıcı ID geçersiz'
+  }),
+  billingCycle: Joi.string().valid('monthly', 'yearly').optional(),
+  successUrl: Joi.string().uri().optional(),
+  cancelUrl: Joi.string().uri().optional()
+});
+
+// Validation Middleware
+const validateRequest = (schema) => {
+  return (req, res, next) => {
+    const { error, value } = schema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true
+    });
+
+    if (error) {
+      const messages = error.details.map(detail => detail.message).join('; ');
+      console.warn(`❌ Validation error: ${messages}`);
+      return res.status(400).json({
+        error: { message: `Geçersiz istek: ${messages}` }
+      });
+    }
+
+    req.body = value;
+    next();
+  };
 };
 
 // Middlewares
@@ -405,12 +458,21 @@ app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
 // Endpoint for metadata generation (Rate limited: max 30 per 15 minutes)
-app.post('/api/generate', verifyAuth, rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
+app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
   try {
     const { base64DataUrl, categoryKey, customApiKey, plan, language } = req.body;
 
     if (!base64DataUrl) {
       return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
+    }
+
+    // Validate image size (max 5MB)
+    const maxImageSize = 5 * 1024 * 1024; // 5MB in bytes
+    const imageSizeBytes = Math.ceil((base64DataUrl.length * 3) / 4); // base64 to bytes conversion
+    if (imageSizeBytes > maxImageSize) {
+      return res.status(413).json({
+        error: { message: `Görsel çok büyük. Maksimum 5MB olabilir. (${(imageSizeBytes / 1024 / 1024).toFixed(2)}MB)` }
+      });
     }
 
     let apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
@@ -659,12 +721,20 @@ JSON Yapısı ve Kurallar:
 });
 
 // Endpoint to create a Stripe Checkout Session
-app.post('/api/payment/create-checkout-session', verifyAuth, async (req, res) => {
+app.post('/api/payment/create-checkout-session', verifyAuth, validateRequest(checkoutSessionSchema), async (req, res) => {
   try {
     const { plan, userId, successUrl, cancelUrl } = req.body;
 
     if (!plan || !userId) {
       return res.status(400).json({ error: { message: "Plan ve Kullanıcı ID gereklidir." } });
+    }
+
+    // Verify user owns this checkout session (prevent creating checkout for other users)
+    if (req.userId !== userId) {
+      console.warn(`⚠️ Security: User ${req.userId} attempted to create checkout for user ${userId}`);
+      return res.status(403).json({
+        error: { message: "Bu işlemi gerçekleştirme izniniz yoktur." }
+      });
     }
 
     if (!stripe) {
@@ -721,12 +791,20 @@ app.post('/api/payment/create-checkout-session', verifyAuth, async (req, res) =>
 });
 
 // Endpoint to create a Lemon Squeezy Checkout Session
-app.post('/api/payment/lemon/create-checkout-session', verifyAuth, async (req, res) => {
+app.post('/api/payment/lemon/create-checkout-session', verifyAuth, validateRequest(checkoutSessionSchema), async (req, res) => {
   try {
     const { plan, userId, billingCycle, successUrl, cancelUrl } = req.body;
 
     if (!plan || !userId) {
       return res.status(400).json({ error: { message: "Plan ve Kullanıcı ID gereklidir." } });
+    }
+
+    // Verify user owns this checkout session (prevent creating checkout for other users)
+    if (req.userId !== userId) {
+      console.warn(`⚠️ Security: User ${req.userId} attempted to create checkout for user ${userId}`);
+      return res.status(403).json({
+        error: { message: "Bu işlemi gerçekleştirme izniniz yoktur." }
+      });
     }
 
     const apiKey = process.env.LEMON_SQUEEZY_API_KEY;

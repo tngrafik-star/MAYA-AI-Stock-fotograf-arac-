@@ -23,6 +23,7 @@
     "express": "^5.2.1",
     "i18next": "^26.3.2",
     "i18next-browser-languagedetector": "^8.2.1",
+    "joi": "^18.2.3",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^9.0.1",
     "stripe": "^22.2.2",
