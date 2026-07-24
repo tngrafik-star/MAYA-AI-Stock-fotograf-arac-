@@ -1100,12 +1100,22 @@ export function generateAIData(categoryKey, filename = '', userPlan = 'starter',
 }
 
 export async function generateGeminiMetadata(base64DataUrl, categoryKey, customApiKey = null, userPlan = 'starter', language = 'tr') {
+  // Get JWT token from Supabase session
+  const { supabase } = await import('./supabase.js');
+  const { data: { session } } = await supabase.auth.getSession();
+
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+
+  if (session?.access_token) {
+    headers['Authorization'] = `Bearer ${session.access_token}`;
+  }
+
   // Call the secure backend proxy endpoint
   const response = await fetch('/api/generate', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify({
       base64DataUrl,
       categoryKey,

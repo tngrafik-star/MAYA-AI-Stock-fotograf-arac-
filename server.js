@@ -8,6 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import WebSocket from 'ws';
+import jwt from 'jsonwebtoken';
 
 // Polyfill WebSocket for Supabase Realtime in older Node versions
 if (typeof globalThis.WebSocket === 'undefined') {
@@ -19,6 +20,33 @@ dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Validate required environment variables
+const validateEnv = () => {
+  const required = [
+    'VITE_SUPABASE_URL',
+    'VITE_SUPABASE_ANON_KEY',
+    'VITE_GEMINI_API_KEY'
+  ];
+
+  const missing = required.filter(key => {
+    const value = process.env[key];
+    return !value || value.startsWith('your_') || value.includes('placeholder');
+  });
+
+  if (missing.length > 0) {
+    console.error('❌ MISSING REQUIRED ENV VARIABLES:');
+    missing.forEach(key => {
+      console.error(`   - ${key}`);
+    });
+    console.error('\n📖 See .env.example for setup instructions');
+    process.exit(1);
+  }
+
+  console.log('✅ Environment variables validated');
+};
+
+validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -102,6 +130,39 @@ const rateLimiter = (limitCount, windowMs) => {
   };
 };
 
+// JWT Authentication Middleware
+const verifyAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      error: { message: "Kimlik doğrulama gerekli. Authorization header eksik." }
+    });
+  }
+
+  const token = authHeader.slice(7); // Remove "Bearer " prefix
+
+  try {
+    // Verify with Supabase JWT secret
+    const jwtSecret = process.env.SUPABASE_JWT_SECRET || process.env.VITE_SUPABASE_JWT_SECRET;
+    if (!jwtSecret) {
+      console.warn('⚠️ SUPABASE_JWT_SECRET not set, skipping verification in development');
+      // In development, if secret not available, extract user ID from token payload
+      const decoded = jwt.decode(token);
+      req.userId = decoded?.sub;
+      return next();
+    }
+
+    const decoded = jwt.verify(token, jwtSecret);
+    req.userId = decoded.sub; // Supabase uses 'sub' for user ID
+    next();
+  } catch (error) {
+    console.error('JWT verification error:', error.message);
+    return res.status(401).json({
+      error: { message: "Geçersiz veya süresi dolmuş token." }
+    });
+  }
+};
+
 // Middlewares
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',') 
@@ -162,12 +223,26 @@ app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), asyn
     const userId = session.metadata?.userId;
     const plan = session.metadata?.plan;
     const limit = parseInt(session.metadata?.limit || '300', 10);
+    const eventId = event.id;
 
     if (userId && plan) {
       console.log(`✅ Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
 
       if (supabaseAdmin) {
-        const { error } = await supabaseAdmin
+        // Check if webhook was already processed (idempotency)
+        const { data: existingEvent } = await supabaseAdmin
+          .from('webhook_events')
+          .select('id')
+          .eq('event_id', eventId)
+          .maybeSingle();
+
+        if (existingEvent) {
+          console.log(`⏭️  Webhook ${eventId} already processed. Skipping.`);
+          return res.json({ received: true });
+        }
+
+        // Process the webhook
+        const { error: updateError } = await supabaseAdmin
           .from('profiles')
           .update({
             plan: plan,
@@ -175,10 +250,24 @@ app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), asyn
           })
           .eq('id', userId);
 
-        if (error) {
-          console.error(`❌ Supabase update error: ${error.message}`);
+        if (updateError) {
+          console.error(`❌ Supabase update error: ${updateError.message}`);
         } else {
           console.log(`🎉 User ${userId} successfully upgraded to ${plan.toUpperCase()} plan.`);
+
+          // Record webhook event to prevent duplicate processing
+          const { error: logError } = await supabaseAdmin
+            .from('webhook_events')
+            .insert({
+              event_id: eventId,
+              event_type: event.type,
+              provider: 'stripe',
+              payload: session
+            });
+
+          if (logError) {
+            console.warn(`⚠️ Failed to log webhook event: ${logError.message}`);
+          }
         }
       } else {
         console.warn("⚠️ Supabase admin client not initialized. Cannot update user profile.");
@@ -233,9 +322,10 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
   }
 
   const eventName = event.meta?.event_name;
+  const eventId = event.meta?.event_id;
   const customData = event.meta?.custom_data;
 
-  console.log(`🔔 Lemon Squeezy Webhook received: ${eventName}`);
+  console.log(`🔔 Lemon Squeezy Webhook received: ${eventName} (ID: ${eventId})`);
 
   // Handle subscription_created / order_created
   if (eventName === 'order_created' || eventName === 'subscription_created') {
@@ -255,7 +345,22 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
       console.log(`✅ Lemon Squeezy Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
 
       if (supabaseAdmin) {
-        const { error } = await supabaseAdmin
+        // Check if webhook was already processed (idempotency)
+        if (eventId) {
+          const { data: existingEvent } = await supabaseAdmin
+            .from('webhook_events')
+            .select('id')
+            .eq('event_id', eventId)
+            .maybeSingle();
+
+          if (existingEvent) {
+            console.log(`⏭️  Webhook ${eventId} already processed. Skipping.`);
+            return res.json({ received: true });
+          }
+        }
+
+        // Process the webhook
+        const { error: updateError } = await supabaseAdmin
           .from('profiles')
           .update({
             plan: plan,
@@ -263,10 +368,26 @@ app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' })
           })
           .eq('id', userId);
 
-        if (error) {
-          console.error(`❌ Supabase update error: ${error.message}`);
+        if (updateError) {
+          console.error(`❌ Supabase update error: ${updateError.message}`);
         } else {
           console.log(`🎉 User ${userId} successfully upgraded to ${plan.toUpperCase()} plan via Lemon Squeezy.`);
+
+          // Record webhook event to prevent duplicate processing
+          if (eventId) {
+            const { error: logError } = await supabaseAdmin
+              .from('webhook_events')
+              .insert({
+                event_id: eventId,
+                event_type: eventName,
+                provider: 'lemonsqueezy',
+                payload: event
+              });
+
+            if (logError) {
+              console.warn(`⚠️ Failed to log webhook event: ${logError.message}`);
+            }
+          }
         }
       } else {
         console.warn("⚠️ Supabase admin client not initialized. Cannot update user profile.");
@@ -284,7 +405,7 @@ app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
 // Endpoint for metadata generation (Rate limited: max 30 per 15 minutes)
-app.post('/api/generate', rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
+app.post('/api/generate', verifyAuth, rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
   try {
     const { base64DataUrl, categoryKey, customApiKey, plan, language } = req.body;
 
@@ -300,12 +421,8 @@ app.post('/api/generate', rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
       apiKey.length < 15;
       
     if (isPlaceholder) {
-      // Decode fallback Gemini API Key (obfuscated to bypass GitHub push protection scan)
-      apiKey = Buffer.from("QVEuQWI4Uk42SXZ5cDRGNXE1TDlCWVJGaEhEZGVCY0tjaF9FZnN0dEpfUFB1aFljMlJxWVE=", "base64").toString("utf-8");
-    }
-    if (!apiKey || apiKey.length < 15) {
-      return res.status(400).json({
-        error: { message: "Gemini API Anahtarı bulunamadı. Lütfen sunucuda tanımlayın veya hesap bilgilerinizden ekleyin." }
+      return res.status(500).json({
+        error: { message: "Sunucu hatası: Gemini API anahtarı yapılandırılmamış. Sistem yöneticisine başvurunuz." }
       });
     }
 
@@ -542,7 +659,7 @@ JSON Yapısı ve Kurallar:
 });
 
 // Endpoint to create a Stripe Checkout Session
-app.post('/api/payment/create-checkout-session', async (req, res) => {
+app.post('/api/payment/create-checkout-session', verifyAuth, async (req, res) => {
   try {
     const { plan, userId, successUrl, cancelUrl } = req.body;
 
@@ -604,7 +721,7 @@ app.post('/api/payment/create-checkout-session', async (req, res) => {
 });
 
 // Endpoint to create a Lemon Squeezy Checkout Session
-app.post('/api/payment/lemon/create-checkout-session', async (req, res) => {
+app.post('/api/payment/lemon/create-checkout-session', verifyAuth, async (req, res) => {
   try {
     const { plan, userId, billingCycle, successUrl, cancelUrl } = req.body;
 
@@ -778,8 +895,9 @@ Response Rules (English):
       apiKey.length < 15;
 
     if (isPlaceholder) {
-      // Decode fallback Gemini API Key (obfuscated to bypass GitHub push protection scan)
-      apiKey = Buffer.from("QVEuQWI4Uk42SXZ5cDRGNXE1TDlCWVJGaEhEZGVCY0tjaF9FZnN0dEpfUFB1aFljMlJxWVE=", "base64").toString("utf-8");
+      return res.status(500).json({
+        error: { message: "Sunucu hatası: Gemini API anahtarı yapılandırılmamış. Sistem yöneticisine başvurunuz." }
+      });
     }
     let replyText = "";
 

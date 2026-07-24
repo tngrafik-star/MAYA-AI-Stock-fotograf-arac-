@@ -59,6 +59,18 @@ CREATE TABLE public.activity_history (
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- 6. "webhook_events" Tablosunun Oluşturulması
+-- Stripe ve Lemon Squeezy webhook'larının idempotency'sini sağlamak için
+-- gelen webhook event ID'lerini tracking eder.
+CREATE TABLE public.webhook_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_id TEXT NOT NULL UNIQUE,
+    event_type TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    payload JSONB NOT NULL,
+    processed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- 6. Otomatik Profil Oluşturma Tetikleyicisi (Trigger)
 -- Yeni bir kullanıcı kaydolduğunda (auth.users tablosuna eklendiğinde)
 -- public.profiles tablosuna otomatik olarak ücretsiz plan ile satır eklenir.

@@ -1115,12 +1115,22 @@ const initApp = async () => {
 
     try {
       showToast(t('toast.paymentRedirect'), 'success');
-      
+
+      // Get JWT token from Supabase session
+      const { supabase } = await import('./supabase.js');
+      const { data: { session } } = await supabase.auth.getSession();
+
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      if (session?.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+
       const response = await fetch('/api/payment/lemon/create-checkout-session', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers,
         body: JSON.stringify({
           plan: plan,
           userId: user.id,
