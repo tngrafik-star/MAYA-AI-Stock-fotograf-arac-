@@ -43,6 +43,14 @@
     {
       "source": "/blog/selling-ai-generated-stock-photos",
       "destination": "/blog/selling-ai-generated-stock-photos.html"
+    },
+    {
+      "source": "/blog/e-ticaret-gorsel-seo-alt-text-rehberi",
+      "destination": "/blog/e-ticaret-gorsel-seo-alt-text-rehberi.html"
+    },
+    {
+      "source": "/blog/e-commerce-image-seo-alt-text-guide",
+      "destination": "/blog/e-commerce-image-seo-alt-text-guide.html"
     }
   ]
 }
