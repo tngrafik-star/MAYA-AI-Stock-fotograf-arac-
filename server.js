@@ -219,9 +219,12 @@ const verifyAuth = (req, res, next) => {
 
 // Validation Schemas
 const generateSchema = Joi.object({
-  imageData: Joi.string().base64().required().messages({
+  // Frontend, görseli "data:image/...;base64,...." data-URL formatında
+  // "base64DataUrl" alanıyla gönderir. Bu bir data-URL'dir (saf base64 değil),
+  // bu yüzden Joi.base64() KULLANMA — aksi halde geçerli istekler reddedilir.
+  base64DataUrl: Joi.string().required().messages({
     'string.empty': 'Görsel verisi gerekli',
-    'string.base64': 'Görsel verisi geçerli base64 formatında olmalıdır'
+    'any.required': 'Görsel verisi gerekli'
   }),
   categoryKey: Joi.string().required().messages({
     'string.empty': 'Kategori gerekli'
@@ -1215,6 +1218,36 @@ app.use((req, res, next) => {
   next();
 });
 
+// Health check endpoint — available in ALL environments (including Vercel).
+// Useful to verify at runtime whether env vars (Gemini/Supabase/etc.) are reachable.
+app.get('/health', async (req, res) => {
+  const checks = {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || (process.env.VERCEL ? 'vercel' : 'development'),
+    services: {}
+  };
+
+  // Check Gemini API key
+  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+  checks.services.gemini = (apiKey && !apiKey.startsWith('your_') && apiKey.length >= 15)
+    ? { status: 'healthy' }
+    : { status: 'unconfigured' };
+
+  // Check Supabase
+  checks.services.supabase = (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY)
+    ? { status: 'healthy' }
+    : { status: 'unconfigured' };
+
+  // Check Stripe
+  checks.services.stripe = stripe ? { status: 'healthy' } : { status: 'unconfigured' };
+
+  // Check Email
+  checks.services.email = emailTransporter ? { status: 'healthy' } : { status: 'unconfigured' };
+
+  return res.status(200).json(checks);
+});
+
 // Serve static files and handle SPA fallback only when not running on Vercel
 if (!process.env.VERCEL) {
   // Serve static files from the 'dist' directory with cache headers
@@ -1231,54 +1264,6 @@ if (!process.env.VERCEL) {
       }
     }
   }));
-
-  // Health check endpoint for monitoring and deployment verification
-  app.get('/health', async (req, res) => {
-    const checks = {
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development',
-      services: {}
-    };
-
-    // Check Supabase connection
-    if (supabaseAdmin) {
-      try {
-        const { data } = await supabaseAdmin.from('profiles').select('count(*)', { count: 'exact' }).limit(1);
-        checks.services.supabase = { status: 'healthy' };
-      } catch (err) {
-        checks.status = 'degraded';
-        checks.services.supabase = { status: 'unhealthy', error: err.message };
-      }
-    } else {
-      checks.services.supabase = { status: 'unconfigured' };
-    }
-
-    // Check Stripe
-    if (stripe) {
-      checks.services.stripe = { status: 'healthy' };
-    } else {
-      checks.services.stripe = { status: 'unconfigured' };
-    }
-
-    // Check Email
-    if (emailTransporter) {
-      checks.services.email = { status: 'healthy' };
-    } else {
-      checks.services.email = { status: 'unconfigured' };
-    }
-
-    // Check Gemini API
-    const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    if (apiKey && !apiKey.startsWith('your_')) {
-      checks.services.gemini = { status: 'healthy' };
-    } else {
-      checks.services.gemini = { status: 'unconfigured' };
-    }
-
-    const statusCode = checks.status === 'ok' ? 200 : 503;
-    return res.status(statusCode).json(checks);
-  });
 
   // Fallback for SPA routing
   app.get(/.*/, (req, res) => {
