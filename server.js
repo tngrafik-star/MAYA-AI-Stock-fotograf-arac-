@@ -101,18 +101,37 @@ if (smtpHost && smtpUser && smtpPass && smtpHost !== 'your_smtp_host_here') {
 }
 
 // Simple in-memory rate limiter for sensitive API endpoints
+// ⚠️ NOTE: For production with multiple instances, use Redis instead
 const rateLimits = new Map();
-const rateLimiter = (limitCount, windowMs) => {
+
+// Cleanup old entries every 5 minutes to prevent memory leaks
+setInterval(() => {
+  const now = Date.now();
+  let cleaned = 0;
+  for (const [ip, limitInfo] of rateLimits.entries()) {
+    if (now > limitInfo.resetTime + 60000) { // Keep entries for 1 min after expiry
+      rateLimits.delete(ip);
+      cleaned++;
+    }
+  }
+  if (cleaned > 0) {
+    console.log(`🧹 Rate limiter: Cleaned ${cleaned} expired entries`);
+  }
+}, 5 * 60 * 1000); // 5 minutes
+
+const rateLimiter = (limitCount, windowMs, label = 'API') => {
   return (req, res, next) => {
-    // Identify by IP
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // Identify by IP (handle proxies)
+    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+               req.socket.remoteAddress ||
+               'unknown';
     const now = Date.now();
-    
+
     if (!rateLimits.has(ip)) {
-      rateLimits.set(ip, { count: 1, resetTime: now + windowMs });
+      rateLimits.set(ip, { count: 1, resetTime: now + windowMs, label });
       return next();
     }
-    
+
     const limitInfo = rateLimits.get(ip);
     if (now > limitInfo.resetTime) {
       // Window expired, reset limit
@@ -120,14 +139,27 @@ const rateLimiter = (limitCount, windowMs) => {
       limitInfo.resetTime = now + windowMs;
       return next();
     }
-    
+
     limitInfo.count++;
+    const remaining = limitCount - limitInfo.count;
+
     if (limitInfo.count > limitCount) {
+      const resetTime = new Date(limitInfo.resetTime).toISOString();
+      console.warn(`⛔ Rate limit exceeded for ${ip} on ${label}: ${limitInfo.count}/${limitCount}`);
       return res.status(429).json({
-        error: { message: "Çok fazla istek gönderdiniz. Lütfen 15 dakika sonra tekrar deneyin." }
+        error: {
+          message: `Çok fazla istek gönderdiniz. ${Math.ceil((limitInfo.resetTime - now) / 1000)} saniye bekleyiniz.`,
+          retryAfter: Math.ceil((limitInfo.resetTime - now) / 1000),
+          resetTime
+        }
       });
     }
-    
+
+    // Add rate limit info to response headers
+    res.set('X-RateLimit-Limit', limitCount);
+    res.set('X-RateLimit-Remaining', remaining);
+    res.set('X-RateLimit-Reset', Math.ceil(limitInfo.resetTime / 1000));
+
     next();
   };
 };
@@ -312,7 +344,7 @@ app.use((req, res, next) => {
 });
 
 // Stripe Webhook Endpoint (needs raw body parser, must be defined before express.json)
-app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+app.post('/api/payment/webhook', rateLimiter(100, 60 * 1000, 'Stripe Webhook'), express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -400,7 +432,7 @@ app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), asyn
 });
 
 // Lemon Squeezy Webhook Endpoint (needs raw body parser, must be defined before express.json)
-app.post('/api/payment/lemon/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeezy Webhook'), express.raw({ type: 'application/json' }), async (req, res) => {
   const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET;
   const signature = req.headers['x-signature'];
 
@@ -1021,7 +1053,7 @@ app.post('/api/payment/lemon/create-checkout-session', verifyAuth, validateReque
 });
 
 // Webhook endpoint to receive inbound emails and reply automatically using Gemini & SMTP
-app.post('/api/email/inbound', async (req, res) => {
+app.post('/api/email/inbound', rateLimiter(50, 60 * 1000, 'Email Inbound'), async (req, res) => {
   try {
     const clientSecret = req.query.secret || req.headers['x-inbound-secret'];
     const expectedSecret = process.env.EMAIL_INBOUND_SECRET;
