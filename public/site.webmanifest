@@ -1,0 +1,23 @@
+{
+  "name": "MayaListing - Yapay Zeka Destekli E-Ticaret ve Stok Asistanı",
+  "short_name": "MayaListing",
+  "description": "E-ticaret satıcıları ve profesyonel fotoğrafçılar için yapay zeka destekli başlık, açıklama, anahtar kelime ve SEO etiket oluşturma aracı.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#FF9500",
+  "background_color": "#FBFBFD",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

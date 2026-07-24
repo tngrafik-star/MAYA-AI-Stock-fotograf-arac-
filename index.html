@@ -78,6 +78,81 @@
   }
   </script>
 
+  <!-- JSON-LD: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MayaListing",
+    "url": "https://mayalisting.com/",
+    "logo": "https://mayalisting.com/apple-touch-icon.png",
+    "email": "destek.mayalisting@gmail.com",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "destek.mayalisting@gmail.com",
+      "contactType": "customer support",
+      "availableLanguage": ["Turkish", "English"]
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "MayaListing",
+    "url": "https://mayalisting.com/",
+    "inLanguage": ["tr", "en"],
+    "publisher": {
+      "@type": "Organization",
+      "name": "MayaListing"
+    }
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Yapay zeka metadata üretim doğruluğu nedir?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MayaListing, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Hangi platformları destekliyorsunuz?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Yüklediğim görsellerin gizliliği nasıl korunuyor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "İstediğim zaman aboneliğimi iptal edebilir miyim?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Evet, dilediğiniz an taahhüt olmadan aboneliğinizi panelinizdeki faturalandırma sayfasından iptal edebilir veya planlar arasında geçiş yapabilirsiniz. İptal durumunda haklarınız fatura kesim tarihine kadar devam eder."
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mayalisting.com/">
@@ -85,6 +160,8 @@
   <meta property="og:description" content="Görsellerinizi analiz ederek saniyeler içinde Trendyol, Etsy, Amazon, Hepsiburada, Adobe Stock ve Shutterstock uyumlu başlık, açıklama ve SEO etiket setleri üretin.">
   <meta property="og:image" content="https://mayalisting.com/og-image.png">
   <meta property="og:site_name" content="MayaListing">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:locale:alternate" content="en_US">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
@@ -95,6 +172,9 @@
 
   <!-- Favicon / Brand Icon -->
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#FF9500">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   
   <!-- Theme Initializer (Avoid white flash on dark theme load) -->
@@ -105,9 +185,7 @@
     })();
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/fonts.css">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/landing.css">
 </head>
@@ -349,12 +427,14 @@
         </div>
         
         <div class="benefits-image" style="padding: 0;">
-          <video 
-            id="promo-video" 
-            src="/MayaListing_Sunum.mp4?v=20260628" 
-            loop 
-            muted 
-            autoplay 
+          <video
+            id="promo-video"
+            src="/MayaListing_Sunum.mp4?v=20260628"
+            poster="/og-image.png"
+            preload="none"
+            loop
+            muted
+            autoplay
             playsinline
           ></video>
           <div class="video-overlay">
