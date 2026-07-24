@@ -67,8 +67,51 @@ export function addUser(user) {
 
 // Active user methods
 export function getCurrentUser() {
-  const user = localStorage.getItem('maya_current_user');
-  return user ? JSON.parse(user) : null;
+  // NEVER trust localStorage for auth - always verify with Supabase
+  // This should only be used for UI display, not authentication
+  const cached = localStorage.getItem('maya_current_user');
+  return cached ? JSON.parse(cached) : null;
+}
+
+export async function getCurrentUserVerified() {
+  // Get and verify user from Supabase session
+  try {
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !authUser) {
+      localStorage.removeItem('maya_current_user');
+      return null;
+    }
+
+    // Fetch profile data from database
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', authUser.id)
+      .maybeSingle();
+
+    if (profileError) {
+      console.error('Profile fetch error:', profileError);
+      return null;
+    }
+
+    // Update localStorage with verified data
+    const verifiedUser = {
+      id: authUser.id,
+      email: authUser.email,
+      name: profile?.name || authUser.user_metadata?.name || 'Kullanıcı',
+      plan: profile?.plan || 'free',
+      generations_limit: profile?.generations_limit || 5,
+      generations_used: profile?.generations_used || 0,
+      created_at: profile?.created_at || authUser.created_at
+    };
+
+    setCurrentUser(verifiedUser);
+    return verifiedUser;
+  } catch (error) {
+    console.error('getCurrentUserVerified error:', error);
+    return null;
+  }
 }
 
 export function setCurrentUser(user) {
