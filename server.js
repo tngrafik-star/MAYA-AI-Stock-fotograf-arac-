@@ -1218,9 +1218,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health check endpoint — available in ALL environments (including Vercel).
-// Useful to verify at runtime whether env vars (Gemini/Supabase/etc.) are reachable.
-app.get('/health', async (req, res) => {
+// Health check endpoint — under /api/ so Vercel's "/api/(.*)" rewrite routes it
+// to this Express app in production. Verifies at runtime whether env vars
+// (Gemini/Supabase/etc.) are actually reachable.
+app.get(['/api/health', '/health'], async (req, res) => {
   const checks = {
     status: 'ok',
     timestamp: new Date().toISOString(),
