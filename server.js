@@ -45,6 +45,17 @@ const validateEnv = () => {
     process.exit(1);
   }
 
+  // Validate NODE_ENV for production
+  const nodeEnv = process.env.NODE_ENV || 'development';
+  if (nodeEnv === 'production' || process.env.VERCEL === '1') {
+    console.log('🚀 Running in PRODUCTION mode');
+    if (!process.env.SUPABASE_JWT_SECRET && !process.env.VITE_SUPABASE_JWT_SECRET) {
+      console.warn('⚠️ WARNING: SUPABASE_JWT_SECRET not set in production - JWT verification disabled');
+    }
+  } else {
+    console.log('🔧 Running in DEVELOPMENT mode');
+  }
+
   console.log('✅ Environment variables validated');
 };
 
@@ -1211,6 +1222,54 @@ if (!process.env.VERCEL) {
       }
     }
   }));
+
+  // Health check endpoint for monitoring and deployment verification
+  app.get('/health', async (req, res) => {
+    const checks = {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      services: {}
+    };
+
+    // Check Supabase connection
+    if (supabaseAdmin) {
+      try {
+        const { data } = await supabaseAdmin.from('profiles').select('count(*)', { count: 'exact' }).limit(1);
+        checks.services.supabase = { status: 'healthy' };
+      } catch (err) {
+        checks.status = 'degraded';
+        checks.services.supabase = { status: 'unhealthy', error: err.message };
+      }
+    } else {
+      checks.services.supabase = { status: 'unconfigured' };
+    }
+
+    // Check Stripe
+    if (stripe) {
+      checks.services.stripe = { status: 'healthy' };
+    } else {
+      checks.services.stripe = { status: 'unconfigured' };
+    }
+
+    // Check Email
+    if (emailTransporter) {
+      checks.services.email = { status: 'healthy' };
+    } else {
+      checks.services.email = { status: 'unconfigured' };
+    }
+
+    // Check Gemini API
+    const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+    if (apiKey && !apiKey.startsWith('your_')) {
+      checks.services.gemini = { status: 'healthy' };
+    } else {
+      checks.services.gemini = { status: 'unconfigured' };
+    }
+
+    const statusCode = checks.status === 'ok' ? 200 : 503;
+    return res.status(statusCode).json(checks);
+  });
 
   // Fallback for SPA routing
   app.get(/.*/, (req, res) => {
