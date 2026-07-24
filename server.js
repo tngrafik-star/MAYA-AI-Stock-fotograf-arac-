@@ -42,7 +42,16 @@ const validateEnv = () => {
       console.error(`   - ${key}`);
     });
     console.error('\n📖 See .env.example for setup instructions');
-    process.exit(1);
+
+    // Production/Vercel'de tüm süreci sonlandırma — bu, tek bir eksik değişkende
+    // sitenin komple çökmesine yol açar. Sadece uyar ve devam et; eksik anahtara
+    // bağlı endpoint'ler (ör. /api/generate) zaten kendi anlamlı hatasını döner.
+    const isProd = process.env.NODE_ENV === 'production' || process.env.VERCEL;
+    if (isProd) {
+      console.error('⚠️ Production modunda eksik değişken(ler)le devam ediliyor. İlgili özellikler çalışmayabilir.');
+    } else {
+      process.exit(1);
+    }
   }
 
   // Validate NODE_ENV for production
