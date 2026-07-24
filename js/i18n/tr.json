@@ -150,7 +150,7 @@
   },
   "cta": {
     "title": "Portföyünüzü Büyütmeye Bugün Başlayın",
-    "description": "Hemen ücretsiz hesabınızı oluşturun ve ilk 10 görselinizi saniyeler içinde analiz edin.",
+    "description": "Hemen ücretsiz hesabınızı oluşturun ve ilk 5 görselinizi saniyeler içinde analiz edin.",
     "button": "Ücretsiz Hesap Oluştur"
   },
   "footer": {
@@ -182,7 +182,7 @@
     "signupTitle": "Hesap Oluştur",
     "signupSubtitle": "Hemen kaydolun ve portföyünüzü optimize etmeye başlayın.",
     "fullName": "ADINIZ SOYADINIZ",
-    "namePlaceholder": "Ali Çoban",
+    "namePlaceholder": "Ad Soyad",
     "signupButton": "Kayıt Ol",
     "googleSignup": "Google ile Kaydol",
     "hasAccount": "Hesabınız var mı?",
@@ -484,6 +484,11 @@
     "c6Excerpt": "Midjourney ve DALL-E görsellerini stok platformlarında satarken dikkat edilmesi gerekenler. Lisans kuralları, kalite standartları ve SEO ipuçları.",
     "c6Date": "17 Temmuz 2026",
     "c6Time": "9 dk okuma",
-    "c6Link": "/blog/yapay-zeka-stok-fotograf-satma-rehberi"
+    "c6Link": "/blog/yapay-zeka-stok-fotograf-satma-rehberi",
+    "c7Title": "E-Ticarette Görsel SEO'su: Google Görseller'den Mağazanıza Ücretsiz Trafik Çekin (Alt Text Rehberi)",
+    "c7Excerpt": "Shopify, WooCommerce ve e-ticaret siteleri için ürün fotoğrafı Alt Text ve Görsel SEO rehberi. Google Görseller'den organik trafik çekme ve otomasyon.",
+    "c7Date": "24 Temmuz 2026",
+    "c7Time": "10 dk okuma",
+    "c7Link": "/blog/e-ticaret-gorsel-seo-alt-text-rehberi"
   }
 }

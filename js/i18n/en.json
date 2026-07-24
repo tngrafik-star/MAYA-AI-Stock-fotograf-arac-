@@ -151,7 +151,7 @@
   },
   "cta": {
     "title": "Start Growing Your Portfolio Today",
-    "description": "Create your free account now and analyze your first 10 images in seconds.",
+    "description": "Create your free account now and analyze your first 5 images in seconds.",
     "button": "Create Free Account"
   },
   "footer": {
@@ -485,6 +485,11 @@
     "c6Excerpt": "Important details when selling Midjourney and DALL-E images on stock platforms. Licensing rules, quality standards, and SEO tips.",
     "c6Date": "July 17, 2026",
     "c6Time": "9 min read",
-    "c6Link": "/blog/selling-ai-generated-stock-photos"
+    "c6Link": "/blog/selling-ai-generated-stock-photos",
+    "c7Title": "E-Commerce Image SEO: Drive Free Organic Traffic from Google Images (Alt Text Guide)",
+    "c7Excerpt": "A comprehensive Image SEO and Alt Text guide for Shopify, WooCommerce, and e-commerce stores. Rank higher on Google Images.",
+    "c7Date": "July 24, 2026",
+    "c7Time": "10 min read",
+    "c7Link": "/blog/e-commerce-image-seo-alt-text-guide"
   }
 }

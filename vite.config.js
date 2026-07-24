@@ -53,7 +53,9 @@ export default defineConfig(({ mode }) => {
         blogMarketplacesTr: resolve(__dirname, 'blog/e-ticaret-pazaryerleri-rehberi.html'),
         blogMarketplacesEn: resolve(__dirname, 'blog/e-commerce-marketplaces-guide.html'),
         blogAiStockTr: resolve(__dirname, 'blog/yapay-zeka-stok-fotograf-satma-rehberi.html'),
-        blogAiStockEn: resolve(__dirname, 'blog/selling-ai-generated-stock-photos.html')
+        blogAiStockEn: resolve(__dirname, 'blog/selling-ai-generated-stock-photos.html'),
+        blogImageSeoTr: resolve(__dirname, 'blog/e-ticaret-gorsel-seo-alt-text-rehberi.html'),
+        blogImageSeoEn: resolve(__dirname, 'blog/e-commerce-image-seo-alt-text-guide.html')
       },
       output: {
         manualChunks: {
