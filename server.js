@@ -217,6 +217,55 @@ const validateRequest = (schema) => {
   };
 };
 
+// Gemini API Error Handler
+const handleGeminiError = (status, errorData) => {
+  const message = errorData?.error?.message || '';
+
+  // Classify error type
+  if (status === 429) {
+    return {
+      status: 429,
+      userMessage: 'Çok fazla istek gönderdiniz. Lütfen birkaç saniye sonra tekrar deneyin.',
+      type: 'RATE_LIMIT',
+      retriable: true
+    };
+  }
+
+  if (status === 403 || message.includes('quota')) {
+    return {
+      status: 403,
+      userMessage: 'API quota aşılmıştır. Lütfen daha sonra tekrar deneyin.',
+      type: 'QUOTA_EXCEEDED',
+      retriable: false
+    };
+  }
+
+  if (status === 400 || message.includes('invalid')) {
+    return {
+      status: 400,
+      userMessage: 'Görsel biçimi veya içeriği geçersiz. Lütfen PNG/JPG görseli deneyin.',
+      type: 'INVALID_INPUT',
+      retriable: false
+    };
+  }
+
+  if (status === 500 || status === 503) {
+    return {
+      status: status,
+      userMessage: 'AI servisi geçici olarak unavailable. Lütfen birkaç saniye sonra tekrar deneyin.',
+      type: 'SERVICE_ERROR',
+      retriable: true
+    };
+  }
+
+  return {
+    status: status || 500,
+    userMessage: message || 'AI API hatası oluştu. Lütfen tekrar deneyin.',
+    type: 'UNKNOWN_ERROR',
+    retriable: false
+  };
+};
+
 // Middlewares
 // Add security headers with Helmet
 app.use(helmet({
@@ -715,27 +764,63 @@ JSON Yapısı ve Kurallar:
     });
 
     if (!response.ok) {
-      const errText = await response.text();
-      let errMsg = "API Hatası oluştu.";
+      let errorData = {};
       try {
-        const errJson = JSON.parse(errText);
-        errMsg = errJson.error?.message || errMsg;
-      } catch (e) { }
-      return res.status(response.status).json({ error: { message: errMsg } });
+        const errText = await response.text();
+        errorData = JSON.parse(errText);
+      } catch (e) {
+        console.warn('Failed to parse error response');
+      }
+
+      const error = handleGeminiError(response.status, errorData);
+      console.error(`❌ Gemini API Error (${error.type}):`, errorData.error?.message);
+
+      return res.status(error.status).json({
+        error: {
+          message: error.userMessage,
+          type: error.type,
+          retriable: error.retriable
+        }
+      });
     }
 
     const result = await response.json();
     const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) {
-      return res.status(500).json({ error: { message: "API boş yanıt döndürdü." } });
+      console.error('❌ Gemini API returned empty response');
+      return res.status(500).json({
+        error: {
+          message: "AI servisi boş yanıt döndürdü. Lütfen tekrar deneyin.",
+          type: 'EMPTY_RESPONSE',
+          retriable: true
+        }
+      });
     }
 
-    const parsedJson = JSON.parse(rawText.trim());
-    return res.json(parsedJson);
+    // Parse AI response as JSON
+    try {
+      const parsedJson = JSON.parse(rawText.trim());
+      return res.json(parsedJson);
+    } catch (parseErr) {
+      console.error('❌ Failed to parse AI response as JSON:', parseErr);
+      return res.status(500).json({
+        error: {
+          message: "AI yanıtı işlenemedi. Lütfen tekrar deneyin.",
+          type: 'PARSE_ERROR',
+          retriable: true
+        }
+      });
+    }
 
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: { message: err.message || "Bilinmeyen sunucu hatası." } });
+    console.error('❌ Unexpected error in /api/generate:', err);
+    return res.status(500).json({
+      error: {
+        message: err.message || "Bilinmeyen sunucu hatası oluştu.",
+        type: 'UNKNOWN_ERROR',
+        retriable: true
+      }
+    });
   }
 });
 
