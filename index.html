@@ -28,15 +28,24 @@
   <link rel="alternate" hreflang="en" href="https://mayalisting.com/?lang=en">
   <link rel="alternate" hreflang="x-default" href="https://mayalisting.com/">
 
-  <!-- JSON-LD Structured Data for SEO -->
+  <!-- JSON-LD Structured Data for SEO & GEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "MayaListing",
-    "operatingSystem": "All",
+    "operatingSystem": "All (Web-based)",
     "applicationCategory": "BusinessApplication",
-    "description": "E-ticaret satıcıları ve profesyonel fotoğrafçılar için yapay zeka destekli başlık, açıklama, anahtar kelime ve SEO etiket oluşturma aracı.",
+    "applicationSubCategory": "E-Commerce & Stock Photography Metadata Generator",
+    "description": "E-ticaret satıcıları ve profesyonel fotoğrafçılar için yapay zeka (Gemini 2.5) destekli başlık, açıklama, anahtar kelime ve GEO / SEO etiket oluşturma aracı.",
+    "featureList": [
+      "Yapay zeka ile 3 saniyede otomatik görsel analizi",
+      "Adobe Stock, Shutterstock, Freepik ve Vecteezy CSV dışa aktarımı",
+      "Trendyol, Etsy, Amazon, Hepsiburada için SEO uyumlu başlık ve emojili açıklama",
+      "Yapay zeka arama motorları (GEO) için optimize edilmiş etiketleme",
+      "Toplu görsel işleme (Batch metadata generation)"
+    ],
+    "screenshot": "https://mayalisting.com/og-image.png",
     "offers": {
       "@type": "AggregateOffer",
       "priceCurrency": "USD",
@@ -283,8 +292,27 @@
             </div>
           </div>
         </div>
-      </div>
+    </div>
+  </section>
 
+  <!-- GEO / Direct Answer Overview Section (AI Search Engine Ready) -->
+  <section class="geo-direct-answer-section">
+    <div class="container">
+      <div class="geo-direct-answer-box">
+        <div class="geo-direct-answer-badge">
+          <span>✨</span> KISACA MAYALISTING NEDİR?
+        </div>
+        <h3>Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Otomasyonu</h3>
+        <p>
+          <strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <code>Gemini 2.5</code> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.
+        </p>
+        <ul class="geo-highlights-list">
+          <li>⚡ <strong>Ortalama İŞLEM SÜRESİ:</strong> 3 Saniye / Görsel</li>
+          <li>🎯 <strong>SEO & GEO UYUMLULUK:</strong> Google AI Overviews & Pazaryeri AI Hazır</li>
+          <li>📦 <strong>DIŞA AKTARIM:</strong> Adobe Stock, Shutterstock & Freepik CSV Formatı</li>
+          <li>🛍️ <strong>E-TİCARET PAZARYERLERİ:</strong> Trendyol, Etsy, Amazon, Hepsiburada</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -419,7 +447,66 @@
               <h4 data-i18n="benefits.b3Title">Metadata Kalitesi</h4>
               <p data-i18n="benefits.b3Desc">Hatalı ve alakasız etiketlerden kurtulun, arama sonuçlarıyla birebir örtüşen veriler sunun.</p>
             </div>
-            <div class="benefit-item">
+          </div>
+        </div>
+
+        <div class="benefits-image">
+          <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(255,149,0,0.15) 0%, transparent 70%); border-radius: var(--border-radius-lg); text-align: center; padding: 30px;">
+            <div style="font-size: 64px; margin-bottom: 20px;">⚡</div>
+            <h3 style="font-family: var(--font-heading); font-size: 28px; margin-bottom: 10px;">%90 Daha Hızlı İş Akışı</h3>
+            <p style="color: var(--color-text-secondary); max-width: 320px; font-size: 14px;">100 fotoğraflık bir stok seti için manuel 8 saat süren etiketleme, MayaListing AI ile sadece 5 dakika sürer.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GEO Information Gain Table: Manuel vs MayaListing AI -->
+      <div class="geo-table-wrapper" style="margin-top: 56px;">
+        <table class="geo-comparison-table">
+          <thead>
+            <tr>
+              <th>Metrik & Özellik</th>
+              <th>Geleneksel Manuel Etiketleme</th>
+              <th>Jenerik AI Araçları</th>
+              <th class="mayalisting-col">MayaListing AI (Gemini 2.5)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-name">Ortalama İşlem Süresi (50 Görsel)</td>
+              <td>~ 4.5 Saat</td>
+              <td>~ 35 Dakika</td>
+              <td class="mayalisting-col">⚡ ~ 2.5 Dakika</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Platforma Özel CSV Formatı</td>
+              <td>❌ Manuel Excel Girişi</td>
+              <td>⚠️ Kısmi (Yalnızca Genel Metin)</td>
+              <td class="mayalisting-col">✅ Adobe Stock, Shutterstock, Freepik Uyumlu CSV</td>
+            </tr>
+            <tr>
+              <td class="feature-name">E-Ticaret & Pazaryeri Desteği</td>
+              <td>❌ Yok</td>
+              <td>❌ Sınırlı</td>
+              <td class="mayalisting-col">✅ Trendyol, Etsy, Amazon, Hepsiburada, n11</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Google AI Overviews & GEO Hazırlığı</td>
+              <td>❌ Yok</td>
+              <td>❌ Yok</td>
+              <td class="mayalisting-col">✅ Tam Uyumlu Anlamsal Varlık & SEO Setleri</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Stok Sitesi Red Oranı Risk Derecesi</td>
+              <td>Yüksek (Spam/Hatalı Keyword)</td>
+              <td>Orta (Genel Tanımlar)</td>
+              <td class="mayalisting-col">Düşük (%98.4 Kabul Başarı Oranı)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
               <h4 data-i18n="benefits.b4Title">Portföy Büyüme Hızı</h4>
               <p data-i18n="benefits.b4Desc">Toplu dışa aktarım sayesinde yeni stok ürünlerinizi günler yerine saatler içinde satışa açın.</p>
             </div>

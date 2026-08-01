@@ -667,39 +667,39 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
     let planInstructions = "";
     if (isEnglish) {
       if (userPlan === 'starter') {
-        planInstructions = `Subscription Plan: Starter. Generate standard quality, short and clear titles/descriptions.
-- Title: A simple title of maximum 60 characters.
+        planInstructions = `Subscription Plan: Starter. Generate standard quality, GEO (Generative Engine Optimization) & AI Search ready short and clear titles/descriptions.
+- Title: A simple title of maximum 60 characters with key entity nouns.
 - Description: A simple description of at most 2 sentences.
 - Keywords: Select between 20 and 30 standard keywords.`;
       } else if (userPlan === 'pro') {
-        planInstructions = `Subscription Plan: Pro. Generate professional quality, high SEO and detailed content.
-- Title: An attention-grabbing title with high-search-volume keywords (maximum 75 characters).
-- Description: A professional 3-4 sentence text explaining the image's color palette, composition and commercial value.
-- Keywords: Between 30 and 40 popular tags aligned with search trends.`;
+        planInstructions = `Subscription Plan: Pro. Generate professional quality, high SEO & GEO (Generative Engine Optimization) detailed content for AI Search Engines.
+- Title: An attention-grabbing title with high-search-volume keywords and semantic attributes (maximum 75 characters).
+- Description: A professional 3-4 sentence text explaining the image's color palette, composition, semantic attributes and commercial value.
+- Keywords: Between 30 and 40 popular tags aligned with search trends and AI image recognition terms.`;
       } else if (userPlan === 'studio') {
-        planInstructions = `Subscription Plan: Studio. Generate top-level VIP studio quality content with artistic angle, lighting, textures, feel and luxury marketing copy.
-- Title: Rich studio title optimized for maximum click-through rate and SEO-friendly (maximum 80 characters).
-- Description: At least 4-sentence detailed analysis describing the image's composition, light quality, textures and artistic angle.
+        planInstructions = `Subscription Plan: Studio. Generate top-level VIP studio quality content optimized for Google AI Overviews, Lens, and E-Commerce AI (Amazon Rufus / Etsy AI).
+- Title: Rich studio title optimized for maximum click-through rate and AI Search indexability (maximum 80 characters).
+- Description: At least 4-sentence detailed analysis describing the image's composition, light quality, textures, color attributes and artistic angle.
 - Keywords: Exactly 45 to 50 niche and highest-volume stock/e-commerce tags.
-- E-Commerce Description: Rich marketing copy decorated with emojis, luxury and attractive, with bullet-pointed features, box contents and gift recommendations.`;
+- E-Commerce Description: Rich marketing copy decorated with emojis, bullet-pointed features, structured specifications, and gift recommendations tailored for generative search engines.`;
       }
     } else {
       if (userPlan === 'starter') {
-        planInstructions = `Abonelik Planı: Starter. Standart kalitede, kısa ve net başlıklar/açıklamalar üret.
-- Başlık: Maksimum 60 karakterlik sade bir başlık.
+        planInstructions = `Abonelik Planı: Starter. Standart kalitede, GEO (Generative Engine Optimization) ve yapay zeka arama motorlarına hazır kısa ve net başlıklar/açıklamalar üret.
+- Başlık: Maksimum 60 karakterlik, ana nesne isimlerini barındıran sade bir başlık.
 - Açıklama: En fazla 2 cümlelik basit bir açıklama.
 - Anahtar kelimeler (keywords): 20 ila 30 adet arası standart anahtar kelime seç.`;
       } else if (userPlan === 'pro') {
-        planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru optimizasyonu (SEO) yüksek ve detaylı içerik üret.
-- Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler içeren zengin başlık (maksimum 75 karakter).
-- Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
-- Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine uygun popüler etiketler.`;
+        planInstructions = `Abonelik Planı: Pro. Profesyonel kalitede, arama motoru (SEO) ve yapay zeka araması (GEO) uyumlu detaylı içerik üret.
+- Başlık: Dikkat çekici, arama hacmi yüksek anahtar kelimeler ve anlamsal nitelemeler içeren zengin başlık (maksimum 75 karakter).
+- Açıklama: 3-4 cümlelik, görselin renk paletini, kompozisyonunu, nesne ilişkilerini ve ticari kullanım değerlerini açıklayan profesyonel bir metin.
+- Anahtar kelimeler (keywords): 30 ila 40 adet arası arama trendlerine ve yapay zeka tanıma terimlerine uygun etiketler.`;
       } else if (userPlan === 'studio') {
-        planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, sanatsal açıyı, ışıklandırmayı, dokuları, hissi ve lüks pazarlama kopyalarını barındıran zengin içerik üret.
-- Başlık: Maksimum tıklama oranı (CTR) sağlayacak, arama motoru dostu zengin stüdyo başlığı (maksimum 80 karakter, başına [STUDIO VIP] ekleme, sadece zengin başlık).
-- Açıklama: En az 4 cümlelik, görselin kompozisyonunu, ışık kalitesini (yumuşak stüdyo ışığı vb.), dokularını ve sanatsal açısını betimleyen detaylı bir analiz metni.
+        planInstructions = `Abonelik Planı: Studio. En üst düzey VIP stüdyo kalitesinde, Google AI Overviews, Google Lens ve E-Ticaret AI (Amazon Rufus / Etsy AI) sistemlerine tam uyumlu zengin içerik üret.
+- Başlık: Maksimum tıklama oranı (CTR) ve yapay zeka indekslemesi sağlayacak zengin stüdyo başlığı (maksimum 80 karakter, başına [STUDIO VIP] ekleme, sadece zengin başlık).
+- Açıklama: En az 4 cümlelik, görselin kompozisyonunu, ışık kalitesini (yumuşak stüdyo ışığı vb.), dokularını, renk nitelemelerini ve sanatsal açısını betimleyen detaylı bir analiz metni.
 - Anahtar kelimeler (keywords): Tam olarak 45 ila 50 adet arası niş ve en yüksek hacimli stok/e-ticaret etiketleri.
-- E-Ticaret Açıklaması: Emojilerle süslenmiş, lüks ve çekici, maddeler halinde özellikler, kutu içeriği ve hediye tavsiyeleri içeren zengin bir pazarlama kopyası olmalıdır.`;
+- E-Ticaret Açıklaması: Emojilerle süslenmiş, maddeler halinde teknik ve kullanım özellikleri, kutu içeriği ve yapay zeka özetleme algoritmalarına tam uyumlu pazarlama kopyası olmalıdır.`;
       }
     }
 
