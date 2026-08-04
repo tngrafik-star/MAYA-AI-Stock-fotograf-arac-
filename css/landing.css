@@ -645,6 +645,11 @@ footer {
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
   .container { padding: 0 16px; }
   .benefits-content h2 { font-size: 32px; }
+  .benefits-list { grid-template-columns: 1fr; gap: 20px; }
+  .geo-direct-answer-box { padding: 24px 20px; }
+  .geo-direct-answer-box h3 { font-size: 20px; }
+  .geo-direct-answer-box p { font-size: 14px; }
+  .geo-comparison-table th, .geo-comparison-table td { padding: 12px 14px; font-size: 13px; }
 }
 
 /* GEO (Generative Engine Optimization) Modules */
