@@ -654,31 +654,18 @@ footer {
 
 /* GEO (Generative Engine Optimization) Modules */
 .geo-direct-answer-section {
-  padding: 48px 0;
+  padding: 40px 0;
 }
 
 .geo-direct-answer-box {
-  position: relative;
   background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  padding: 36px 40px;
+  border: 1px solid var(--color-accent-soft);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--border-radius-md);
+  padding: 32px;
   max-width: 980px;
   margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
-}
-
-.geo-direct-answer-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 5px;
-  background: linear-gradient(180deg, var(--color-accent) 0%, #f59e0b 100%);
-  border-top-left-radius: var(--border-radius-lg);
-  border-bottom-left-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .geo-direct-answer-badge {
@@ -688,73 +675,54 @@ footer {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--color-accent);
   margin-bottom: 12px;
-  background: rgba(255, 149, 0, 0.08);
-  padding: 4px 12px;
-  border-radius: var(--border-radius-pill);
 }
 
 .geo-direct-answer-box h3 {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   color: var(--color-text-primary);
-  line-height: 1.25;
 }
 
 .geo-direct-answer-box p {
-  font-size: 15.5px;
-  line-height: 1.65;
+  font-size: 16px;
+  line-height: 1.6;
   color: var(--color-text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .geo-highlights-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .geo-highlights-list {
-    grid-template-columns: 1fr;
-  }
-}
-
 .geo-highlights-list li {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 149, 0, 0.05);
-  padding: 12px 16px;
+  background: rgba(255, 149, 0, 0.04);
+  padding: 10px 14px;
   border-radius: var(--border-radius-sm);
-  border: 1px solid rgba(255, 149, 0, 0.15);
-  transition: var(--transition-fast);
-}
-
-.geo-highlights-list li:hover {
-  background: rgba(255, 149, 0, 0.09);
-  border-color: rgba(255, 149, 0, 0.3);
-  transform: translateY(-1px);
+  border: 1px solid var(--color-border);
 }
 
 /* GEO Comparison Table (Information Gain Module) */
 .geo-table-wrapper {
-  overflow: hidden;
   overflow-x: auto;
-  margin-top: 36px;
-  border-radius: var(--border-radius-lg);
+  margin-top: 32px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-card-bg);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .geo-comparison-table {
@@ -766,24 +734,15 @@ footer {
 
 .geo-comparison-table th,
 .geo-comparison-table td {
-  padding: 16px 22px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--color-border);
-  vertical-align: middle;
 }
 
 .geo-comparison-table th {
   background-color: var(--color-secondary-bg);
   font-weight: 700;
   color: var(--color-text-primary);
-  font-size: 14.5px;
-}
-
-/* MayaListing Featured Column Highlight */
-.geo-comparison-table th.mayalisting-col {
-  background: rgba(255, 149, 0, 0.14) !important;
-  color: var(--color-accent) !important;
-  font-weight: 800;
-  border-left: 2px solid rgba(255, 149, 0, 0.3);
+  font-size: 15px;
 }
 
 .geo-comparison-table tr:last-child td {
@@ -793,25 +752,11 @@ footer {
 .geo-comparison-table td.feature-name {
   font-weight: 600;
   color: var(--color-text-primary);
-  width: 28%;
 }
 
 .geo-comparison-table td.mayalisting-col {
-  color: #d97706;
+  color: var(--color-accent);
   font-weight: 700;
-  background: rgba(255, 149, 0, 0.08) !important;
-  border-left: 2px solid rgba(255, 149, 0, 0.3);
-}
-
-[data-theme=dark] .geo-comparison-table td.mayalisting-col {
-  color: #fb923c;
-  background: rgba(249, 115, 22, 0.12) !important;
-  border-left: 2px solid rgba(249, 115, 22, 0.3);
-}
-
-[data-theme=dark] .geo-comparison-table th.mayalisting-col {
-  background: rgba(249, 115, 22, 0.22) !important;
-  color: #fb923c !important;
-  border-left: 2px solid rgba(249, 115, 22, 0.3);
+  background: rgba(255, 149, 0, 0.03);
 }
 
