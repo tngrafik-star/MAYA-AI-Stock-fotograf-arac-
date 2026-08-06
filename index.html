@@ -198,7 +198,7 @@
        başına yükler. Üç ayrı <link> kullanıldığında Vite bunları ayrı chunk'lara
        böleceği ve global.css'i landing.css'ten SONRA yerleştirdiği için
        landing.css'teki responsive override'lar üretimde eziliyordu. -->
-  <link rel="stylesheet" href="/css/landing.css?v=3.5">
+  <link rel="stylesheet" href="/css/landing.css?v=4.0">
 </head>
 <body>
 
@@ -319,19 +319,19 @@
         <ul class="geo-highlights-list">
           <li>
             <span class="geo-hl-icon" aria-hidden="true">⚡</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl1"><strong>ORTALAMA İŞLEM SÜRESİ:</strong> 3 Saniye / Görsel</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl1"><div class="geo-card-label">ORTALAMA İŞLEM SÜRESİ</div><div class="geo-card-val">3 Saniye / Görsel <span>(~2.5 Dk / 50 Görsel)</span></div></span>
           </li>
           <li>
             <span class="geo-hl-icon" aria-hidden="true">🎯</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl2"><strong>SEO &amp; GEO UYUMLULUK:</strong> Google AI Overviews &amp; Pazaryeri AI Hazır</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl2"><div class="geo-card-label">SEO &amp; GEO UYUMLULUK</div><div class="geo-card-val">Google AI Overviews &amp; Pazaryeri AI Hazır</div></span>
           </li>
           <li>
             <span class="geo-hl-icon" aria-hidden="true">📦</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl3"><strong>DIŞA AKTARIM:</strong> Adobe Stock, Shutterstock &amp; Freepik CSV Formatı</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl3"><div class="geo-card-label">DIŞA AKTARIM</div><div class="geo-card-val">Adobe Stock, Shutterstock &amp; Freepik CSV Formatı</div></span>
           </li>
           <li>
             <span class="geo-hl-icon" aria-hidden="true">🛍️</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl4"><strong>E-TİCARET PAZARYERLERİ:</strong> Trendyol, Etsy, Amazon, Hepsiburada</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl4"><div class="geo-card-label">E-TİCARET PAZARYERLERİ</div><div class="geo-card-val">Trendyol, Etsy, Amazon, Hepsiburada, n11</div></span>
           </li>
         </ul>
       </div>
@@ -532,9 +532,9 @@
           <tbody>
             <tr>
               <td class="feature-name" data-i18n="geo.r1Name">Ortalama İşlem Süresi (50 Görsel)</td>
-              <td><span class="cell-text" data-i18n="geo.r1Manual">~ 4.5 Saat</span></td>
-              <td><span class="cell-text" data-i18n="geo.r1Generic">~ 35 Dakika</span></td>
-              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">⚡</span><span class="cell-text" data-i18n="geo.r1Maya">~ 2.5 Dakika</span></td>
+              <td><span class="cell-icon" aria-hidden="true">⏳</span><span class="cell-text" data-i18n="geo.r1Manual">~ 4.5 Saat</span></td>
+              <td><span class="cell-icon" aria-hidden="true">⏱️</span><span class="cell-text" data-i18n="geo.r1Generic">~ 35 Dakika</span></td>
+              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">⚡</span><span class="cell-text" data-i18n="geo.r1Maya">~ 2.5 Dakika (3 Sn / Görsel)</span></td>
             </tr>
             <tr>
               <td class="feature-name" data-i18n="geo.r2Name">Platforma Özel CSV Formatı</td>
@@ -545,7 +545,7 @@
             <tr>
               <td class="feature-name" data-i18n="geo.r3Name">E-Ticaret &amp; Pazaryeri Desteği</td>
               <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r3Manual">Yok</span></td>
-              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r3Generic">Sınırlı</span></td>
+              <td><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-text" data-i18n="geo.r3Generic">Sınırlı</span></td>
               <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r3Maya">Trendyol, Etsy, Amazon, Hepsiburada, n11</span></td>
             </tr>
             <tr>
@@ -556,8 +556,8 @@
             </tr>
             <tr>
               <td class="feature-name" data-i18n="geo.r5Name">Stok Sitesi Red Oranı Risk Derecesi</td>
-              <td><span class="cell-text" data-i18n="geo.r5Manual">Yüksek (Spam/Hatalı Keyword)</span></td>
-              <td><span class="cell-text" data-i18n="geo.r5Generic">Orta (Genel Tanımlar)</span></td>
+              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r5Manual">Yüksek (Spam/Hatalı Keyword)</span></td>
+              <td><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-text" data-i18n="geo.r5Generic">Orta (Genel Tanımlar)</span></td>
               <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">🛡️</span><span class="cell-text" data-i18n="geo.r5Maya">Düşük (%98.4 Kabul Başarı Oranı)</span></td>
             </tr>
           </tbody>
