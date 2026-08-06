@@ -198,7 +198,7 @@
        başına yükler. Üç ayrı <link> kullanıldığında Vite bunları ayrı chunk'lara
        böleceği ve global.css'i landing.css'ten SONRA yerleştirdiği için
        landing.css'teki responsive override'lar üretimde eziliyordu. -->
-  <link rel="stylesheet" href="/css/landing.css?v=5.1">
+  <link rel="stylesheet" href="/css/landing.css?v=6.0">
 </head>
 <body>
 
@@ -306,34 +306,54 @@
   </section>
 
   <!-- GEO / Direct Answer Overview Section (AI Search Engine Ready) -->
-  <section class="geo-direct-answer-section">
+  <section class="section" id="geo-overview">
     <div class="container">
-      <div class="geo-direct-answer-box">
-        <div class="geo-direct-answer-badge">
-          <span aria-hidden="true">✨</span> <span data-i18n="geo.badge">KISACA MAYALISTING NEDİR?</span>
+      <div class="section-header">
+        <span class="micro-label" data-i18n="geo.badge">KISACA MAYALISTING NEDİR?</span>
+        <h2 data-i18n="geo.title">Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Otomasyonu</h2>
+        <p data-i18n="geo.description">Görsellerinizi Gemini 2.5 ile analiz eder; Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon uyumlu metadata üretir.</p>
+      </div>
+
+      <div class="features-grid geo-cards-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </div>
+          <h3 data-i18n="geo.hl1Title">3 Saniye / Görsel İşlem Hızı</h3>
+          <p data-i18n="geo.hl1Desc">Geleneksel etiketlemedeki ~4.5 saatlik manuel süreci 50 görsel için sadece 2.5 dakikaya indirir.</p>
         </div>
-        <h3 data-i18n="geo.title">Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Otomasyonu</h3>
-        <p data-i18n-html="geo.intro">
-          <strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <span class="gemini-model-badge">⚡ Gemini 2.5</span> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.
-        </p>
-        <ul class="geo-highlights-list">
-          <li>
-            <span class="geo-hl-icon" aria-hidden="true">⚡</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl1"><div class="geo-card-label">ORTALAMA İŞLEM SÜRESİ</div><div class="geo-card-val">3 Saniye / Görsel <span>(~2.5 Dk / 50 Görsel)</span></div></span>
-          </li>
-          <li>
-            <span class="geo-hl-icon" aria-hidden="true">🎯</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl2"><div class="geo-card-label">SEO &amp; GEO UYUMLULUK</div><div class="geo-card-val">Google AI Overviews &amp; Pazaryeri AI Hazır</div></span>
-          </li>
-          <li>
-            <span class="geo-hl-icon" aria-hidden="true">📦</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl3"><div class="geo-card-label">DIŞA AKTARIM</div><div class="geo-card-val">Adobe Stock, Shutterstock &amp; Freepik CSV Formatı</div></span>
-          </li>
-          <li>
-            <span class="geo-hl-icon" aria-hidden="true">🛍️</span>
-            <span class="geo-hl-body" data-i18n-html="geo.hl4"><div class="geo-card-label">E-TİCARET PAZARYERLERİ</div><div class="geo-card-val">Trendyol, Etsy, Amazon, Hepsiburada, n11</div></span>
-          </li>
-        </ul>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </div>
+          <h3 data-i18n="geo.hl2Title">Google AI Overviews &amp; GEO Uyumlu</h3>
+          <p data-i18n="geo.hl2Desc">Yapay zeka arama motorları ve pazaryeri AI indeksleme sistemleri için anlamsal SEO ve etiket setleri hazırlar.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+            </svg>
+          </div>
+          <h3 data-i18n="geo.hl3Title">Platforma Özel CSV Formatları</h3>
+          <p data-i18n="geo.hl3Desc">Adobe Stock, Shutterstock ve Freepik yüklemeleri için %100 uyumlu CSV dosyaları tek tıkla dışa aktarılır.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+            </svg>
+          </div>
+          <h3 data-i18n="geo.hl4Title">E-Ticaret &amp; Pazaryeri Desteği</h3>
+          <p data-i18n="geo.hl4Desc">Trendyol, Etsy, Amazon, Hepsiburada ve n11 için dönüşümü yüksek Türkçe başlık ve emojili açıklama metinleri üretir.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -511,59 +531,6 @@
           </div>
         </div>
       </div>
-
-      <!-- GEO Information Gain Table: Manuel vs MayaListing AI -->
-      <div class="geo-table-wrapper">
-        <table class="geo-comparison-table">
-          <colgroup>
-            <col class="col-metric">
-            <col class="col-compare">
-            <col class="col-compare">
-            <col class="col-maya">
-          </colgroup>
-          <thead>
-            <tr>
-              <th data-i18n="geo.colMetric">Metrik &amp; Özellik</th>
-              <th data-i18n="geo.colManual">Geleneksel Manuel Etiketleme</th>
-              <th data-i18n="geo.colGeneric">Jenerik AI Araçları</th>
-              <th class="mayalisting-col" data-i18n="geo.colMaya">✨ MayaListing AI (Gemini 2.5)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="feature-name" data-i18n="geo.r1Name">Ortalama İşlem Süresi (50 Görsel)</td>
-              <td><span class="cell-icon" aria-hidden="true">⏳</span><span class="cell-text" data-i18n="geo.r1Manual">~ 4.5 Saat</span></td>
-              <td><span class="cell-icon" aria-hidden="true">⏱️</span><span class="cell-text" data-i18n="geo.r1Generic">~ 35 Dakika</span></td>
-              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">⚡</span><span class="cell-text" data-i18n="geo.r1Maya">~ 2.5 Dakika (3 Sn / Görsel)</span></td>
-            </tr>
-            <tr>
-              <td class="feature-name" data-i18n="geo.r2Name">Platforma Özel CSV Formatı</td>
-              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r2Manual">Manuel Excel Girişi</span></td>
-              <td><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-text" data-i18n="geo.r2Generic">Kısmi (Yalnızca Genel Metin)</span></td>
-              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r2Maya">Adobe Stock, Shutterstock, Freepik Uyumlu CSV</span></td>
-            </tr>
-            <tr>
-              <td class="feature-name" data-i18n="geo.r3Name">E-Ticaret &amp; Pazaryeri Desteği</td>
-              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r3Manual">Yok</span></td>
-              <td><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-text" data-i18n="geo.r3Generic">Sınırlı</span></td>
-              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r3Maya">Trendyol, Etsy, Amazon, Hepsiburada, n11</span></td>
-            </tr>
-            <tr>
-              <td class="feature-name" data-i18n="geo.r4Name">Google AI Overviews &amp; GEO Hazırlığı</td>
-              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r4Manual">Yok</span></td>
-              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r4Generic">Yok</span></td>
-              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r4Maya">Tam Uyumlu Anlamsal Varlık &amp; SEO Setleri</span></td>
-            </tr>
-            <tr>
-              <td class="feature-name" data-i18n="geo.r5Name">Stok Sitesi Red Oranı Risk Derecesi</td>
-              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r5Manual">Yüksek (Spam/Hatalı Keyword)</span></td>
-              <td><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-text" data-i18n="geo.r5Generic">Orta (Genel Tanımlar)</span></td>
-              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">🛡️</span><span class="cell-text" data-i18n="geo.r5Maya">Düşük (%98.4 Kabul Başarı Oranı)</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
     </div>
   </section>
 
