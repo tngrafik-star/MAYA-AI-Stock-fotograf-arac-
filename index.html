@@ -198,7 +198,7 @@
        başına yükler. Üç ayrı <link> kullanıldığında Vite bunları ayrı chunk'lara
        böleceği ve global.css'i landing.css'ten SONRA yerleştirdiği için
        landing.css'teki responsive override'lar üretimde eziliyordu. -->
-  <link rel="stylesheet" href="/css/landing.css?v=4.0">
+  <link rel="stylesheet" href="/css/landing.css?v=5.0">
 </head>
 <body>
 
@@ -314,7 +314,7 @@
         </div>
         <h3 data-i18n="geo.title">Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Otomasyonu</h3>
         <p data-i18n-html="geo.intro">
-          <strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <code>Gemini 2.5</code> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.
+          <strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <span class="gemini-model-badge">⚡ Gemini 2.5</span> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.
         </p>
         <ul class="geo-highlights-list">
           <li>
@@ -526,7 +526,12 @@
               <th data-i18n="geo.colMetric">Metrik &amp; Özellik</th>
               <th data-i18n="geo.colManual">Geleneksel Manuel Etiketleme</th>
               <th data-i18n="geo.colGeneric">Jenerik AI Araçları</th>
-              <th class="mayalisting-col" data-i18n="geo.colMaya">✨ MayaListing AI (Gemini 2.5)</th>
+              <th class="mayalisting-col hero-header-cell">
+                <div class="mayalisting-header-inner">
+                  <span class="hero-badge-tag">ÖNERİLEN</span>
+                  <span class="hero-header-title" data-i18n="geo.colMaya">✨ MayaListing AI (Gemini 2.5)</span>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>

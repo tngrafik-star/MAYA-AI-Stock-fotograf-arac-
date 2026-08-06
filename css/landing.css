@@ -660,71 +660,78 @@ footer {
 
 /* GEO (Generative Engine Optimization) Modules */
 .geo-direct-answer-section {
-  padding: 48px 0;
+  padding: 56px 0;
 }
 
 .geo-direct-answer-box {
   position: relative;
-  background: var(--color-card-bg);
-  border: 1px solid rgba(255, 149, 0, 0.25);
-  border-left: 5px solid var(--color-accent);
+  background: linear-gradient(135deg, var(--color-card-bg) 0%, rgba(255, 248, 240, 0.4) 100%);
+  border: 1px solid rgba(255, 149, 0, 0.3);
   border-radius: var(--border-radius-lg);
-  padding: 36px 40px;
+  padding: 44px 48px;
   max-width: 980px;
   margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 20px 50px rgba(255, 149, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.03);
   overflow: hidden;
+}
+
+[data-theme=dark] .geo-direct-answer-box {
+  background: linear-gradient(135deg, var(--color-card-bg) 0%, rgba(35, 22, 10, 0.5) 100%);
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
 .geo-direct-answer-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--color-accent);
-  margin-bottom: 14px;
-  background: rgba(255, 149, 0, 0.1);
-  padding: 4px 14px;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, rgba(255, 149, 0, 0.15), rgba(255, 149, 0, 0.05));
+  padding: 6px 16px;
   border-radius: var(--border-radius-pill);
+  border: 1px solid rgba(255, 149, 0, 0.25);
 }
 
 .geo-direct-answer-box h3 {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   margin-bottom: 16px;
   color: var(--color-text-primary);
   line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
 .geo-direct-answer-box p {
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 16.5px;
+  line-height: 1.7;
   color: var(--color-text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
-.geo-direct-answer-box code {
-  font-family: inherit;
-  font-size: 0.9em;
+.gemini-model-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #ff9500 0%, #ff5e00 100%);
+  color: #ffffff;
   font-weight: 700;
-  line-height: 1;
+  font-size: 12.5px;
   padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(255, 149, 0, 0.12);
-  color: var(--color-accent-hover, #d97706);
-  border: 1px solid rgba(255, 149, 0, 0.25);
+  border-radius: var(--border-radius-pill);
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
   white-space: nowrap;
-  display: inline-block;
   vertical-align: middle;
 }
 
 .geo-highlights-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 18px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -739,34 +746,34 @@ footer {
 .geo-highlights-list li {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
   background: var(--color-card-bg);
-  padding: 16px 20px;
-  border-radius: var(--border-radius-md);
+  padding: 20px 22px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 149, 0, 0.2);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .geo-highlights-list li:hover {
   background: var(--color-card-bg);
   border-color: var(--color-accent);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(255, 149, 0, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(255, 149, 0, 0.14);
 }
 
 .geo-highlights-list .geo-hl-icon {
-  flex: 0 0 36px;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(255, 149, 0, 0.1);
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 149, 0, 0.18) 0%, rgba(255, 149, 0, 0.06) 100%);
   color: var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  margin-top: 2px;
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.1);
 }
 
 .geo-highlights-list .geo-hl-body {
@@ -776,24 +783,24 @@ footer {
 
 .geo-card-label {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
   margin-bottom: 4px;
 }
 
 .geo-card-val {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--color-text-primary);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .geo-card-val span {
   font-size: 13px;
-  font-weight: 500;
-  color: var(--color-accent-hover, #d97706);
+  font-weight: 600;
+  color: #d97706;
   margin-left: 4px;
 }
 
@@ -801,17 +808,17 @@ footer {
 .geo-table-wrapper {
   overflow-x: auto;
   overflow-y: hidden;
-  margin-top: 48px;
+  margin-top: 52px;
   border-radius: var(--border-radius-lg);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 149, 0, 0.25);
   background: var(--color-card-bg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
 }
 
 .geo-comparison-table {
   width: 100%;
   table-layout: fixed;
-  min-width: 780px;
+  min-width: 820px;
   border-collapse: separate;
   border-spacing: 0;
   text-align: left;
@@ -819,12 +826,12 @@ footer {
 }
 
 .geo-comparison-table .col-metric { width: 26%; }
-.geo-comparison-table .col-compare { width: 21%; }
-.geo-comparison-table .col-maya { width: 32%; }
+.geo-comparison-table .col-compare { width: 20%; }
+.geo-comparison-table .col-maya { width: 34%; }
 
 .geo-comparison-table th,
 .geo-comparison-table td {
-  padding: 18px 22px;
+  padding: 20px 24px;
   border-bottom: 1px solid var(--color-border);
   vertical-align: middle;
   line-height: 1.5;
@@ -843,50 +850,89 @@ footer {
 }
 
 .geo-comparison-table td.feature-name {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text-primary);
+  font-size: 14.5px;
 }
 
-/* MayaListing Featured Column Highlight */
+/* MayaListing Featured Hero Column */
 .geo-comparison-table .mayalisting-col {
   font-weight: 600;
-  background: rgba(255, 149, 0, 0.07) !important;
+  background: rgba(255, 149, 0, 0.08) !important;
   border-left: 2px solid rgba(255, 149, 0, 0.3);
   border-right: 2px solid rgba(255, 149, 0, 0.3);
 }
 
 .geo-comparison-table th.mayalisting-col {
-  background: linear-gradient(180deg, rgba(255, 149, 0, 0.22) 0%, rgba(255, 149, 0, 0.12) 100%) !important;
-  color: var(--color-accent) !important;
+  background: linear-gradient(135deg, #ff9500 0%, #ff5e00 100%) !important;
+  color: #ffffff !important;
+  padding: 0 !important;
+  border: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.mayalisting-header-inner {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.hero-badge-tag {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.hero-header-title {
+  font-size: 16px;
   font-weight: 800;
-  font-size: 15.5px;
-  border-top: 4px solid var(--color-accent);
+  color: #ffffff !important;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme=dark] .geo-comparison-table .mayalisting-col {
-  background: rgba(249, 115, 22, 0.1) !important;
-  border-color: rgba(249, 115, 22, 0.25);
+  background: rgba(249, 115, 22, 0.12) !important;
+  border-color: rgba(249, 115, 22, 0.35);
 }
 
 [data-theme=dark] .geo-comparison-table th.mayalisting-col {
-  background: linear-gradient(180deg, rgba(249, 115, 22, 0.28) 0%, rgba(249, 115, 22, 0.15) 100%) !important;
-  color: #fb923c !important;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+}
+
+.geo-comparison-table td .cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
 }
 
 .geo-comparison-table td .cell-icon {
-  display: inline-block;
-  width: 22px;
-  margin-right: 6px;
-  flex: none;
-  font-weight: 400;
-  font-style: normal;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  font-size: 15px;
 }
 
-.geo-comparison-table td:has(.cell-icon) .cell-text {
-  display: inline-block;
-  vertical-align: middle;
-  max-width: calc(100% - 28px);
+.geo-comparison-table td .cell-text {
+  font-size: 14px;
+}
+
+.geo-comparison-table td.mayalisting-col .cell-text {
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 /* Dar telefonlarda header taşması:

@@ -495,7 +495,7 @@
   "geo": {
     "badge": "WHAT IS MAYALISTING, IN SHORT?",
     "title": "AI-Powered Stock Photo and E-Commerce Metadata Automation",
-    "intro": "<strong>MayaListing</strong> is an AI-based <strong>image metadata and SEO tagging platform</strong> built for professional stock photographers, digital content creators and e-commerce sellers. It analyses the objects, composition, mood and colour tones of your uploaded photos with the <code>Gemini 2.5</code> AI model and produces high-converting titles, descriptions and keyword sets compatible with <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy and Amazon</strong>.",
+    "intro": "<strong>MayaListing</strong> is an AI-based <strong>image metadata and SEO tagging platform</strong> built for professional stock photographers, digital content creators and e-commerce sellers. It analyses the objects, composition, mood and colour tones of your uploaded photos with the <span class=\"gemini-model-badge\">⚡ Gemini 2.5</span> AI model and produces high-converting titles, descriptions and keyword sets compatible with <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy and Amazon</strong>.",
     "hl1": "<div class=\"geo-card-label\">AVERAGE PROCESSING TIME</div><div class=\"geo-card-val\">3 Seconds / Image <span>(~2.5 Min / 50 Images)</span></div>",
     "hl2": "<div class=\"geo-card-label\">SEO &amp; GEO COMPATIBILITY</div><div class=\"geo-card-val\">Google AI Overviews &amp; Marketplace AI Ready</div>",
     "hl3": "<div class=\"geo-card-label\">EXPORT FORMATS</div><div class=\"geo-card-val\">Adobe Stock, Shutterstock &amp; Freepik CSV Format</div>",

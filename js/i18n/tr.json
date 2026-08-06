@@ -494,7 +494,7 @@
   "geo": {
     "badge": "KISACA MAYALISTING NEDİR?",
     "title": "Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Otomasyonu",
-    "intro": "<strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <code>Gemini 2.5</code> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.",
+    "intro": "<strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <span class=\"gemini-model-badge\">⚡ Gemini 2.5</span> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.",
     "hl1": "<div class=\"geo-card-label\">ORTALAMA İŞLEM SÜRESİ</div><div class=\"geo-card-val\">3 Saniye / Görsel <span>(~2.5 Dk / 50 Görsel)</span></div>",
     "hl2": "<div class=\"geo-card-label\">SEO &amp; GEO UYUMLULUK</div><div class=\"geo-card-val\">Google AI Overviews &amp; Pazaryeri AI Hazır</div>",
     "hl3": "<div class=\"geo-card-label\">DIŞA AKTARIM</div><div class=\"geo-card-val\">Adobe Stock, Shutterstock &amp; Freepik CSV Formatı</div>",
