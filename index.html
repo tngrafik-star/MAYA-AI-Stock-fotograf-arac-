@@ -194,9 +194,11 @@
     })();
   </script>
 
-  <link rel="stylesheet" href="/css/fonts.css">
-  <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/landing.css">
+  <!-- Tek CSS girişi: landing.css, fonts.css ve global.css'i @import ile kendi
+       başına yükler. Üç ayrı <link> kullanıldığında Vite bunları ayrı chunk'lara
+       böleceği ve global.css'i landing.css'ten SONRA yerleştirdiği için
+       landing.css'teki responsive override'lar üretimde eziliyordu. -->
+  <link rel="stylesheet" href="/css/landing.css?v=3.5">
 </head>
 <body>
 
@@ -212,6 +214,13 @@
         <li><a href="/blog/">Blog</a></li>
       </ul>
       <div class="nav-actions" id="nav-auth-actions">
+        <!-- Dil değiştirici statik olarak render edilir; JS sonradan enjekte
+             ettiğinde header'ın sağa/sola kaymasını (CLS) önler.
+             Aktif durum js/languageSwitcher.js tarafından hydrate edilir. -->
+        <div class="lang-switcher" role="radiogroup" aria-label="Language selection">
+          <button class="lang-btn active" data-lang="tr" role="radio" aria-checked="true" aria-label="Türkçe">TR</button>
+          <button class="lang-btn" data-lang="en" role="radio" aria-checked="false" aria-label="English">EN</button>
+        </div>
         <button class="theme-toggle-btn" id="landing-theme-toggle" title="Temayı Değiştir" data-i18n-title="nav.changeTheme" style="margin-right: 8px;">
           <!-- Moon Icon (for dark mode selection) -->
           <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
@@ -301,17 +310,29 @@
     <div class="container">
       <div class="geo-direct-answer-box">
         <div class="geo-direct-answer-badge">
-          <span>✨</span> KISACA MAYALISTING NEDİR?
+          <span aria-hidden="true">✨</span> <span data-i18n="geo.badge">KISACA MAYALISTING NEDİR?</span>
         </div>
-        <h3>Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Otomasyonu</h3>
-        <p>
+        <h3 data-i18n="geo.title">Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Otomasyonu</h3>
+        <p data-i18n-html="geo.intro">
           <strong>MayaListing</strong>, profesyonel stok fotoğrafçıları, dijital içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş yapay zeka tabanlı bir <strong>görsel metadata ve SEO etiket oluşturma platformudur</strong>. Yüklenen fotoğrafların nesne, kompozisyon, duygu ve renk tonlarını <code>Gemini 2.5</code> yapay zeka modeli ile analiz ederek <strong>Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon</strong> uyumlu yüksek dönüşümlü başlık, açıklama ve keyword setleri üretir.
         </p>
         <ul class="geo-highlights-list">
-          <li>⚡ <strong>Ortalama İŞLEM SÜRESİ:</strong> 3 Saniye / Görsel</li>
-          <li>🎯 <strong>SEO & GEO UYUMLULUK:</strong> Google AI Overviews & Pazaryeri AI Hazır</li>
-          <li>📦 <strong>DIŞA AKTARIM:</strong> Adobe Stock, Shutterstock & Freepik CSV Formatı</li>
-          <li>🛍️ <strong>E-TİCARET PAZARYERLERİ:</strong> Trendyol, Etsy, Amazon, Hepsiburada</li>
+          <li>
+            <span class="geo-hl-icon" aria-hidden="true">⚡</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl1"><strong>ORTALAMA İŞLEM SÜRESİ:</strong> 3 Saniye / Görsel</span>
+          </li>
+          <li>
+            <span class="geo-hl-icon" aria-hidden="true">🎯</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl2"><strong>SEO &amp; GEO UYUMLULUK:</strong> Google AI Overviews &amp; Pazaryeri AI Hazır</span>
+          </li>
+          <li>
+            <span class="geo-hl-icon" aria-hidden="true">📦</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl3"><strong>DIŞA AKTARIM:</strong> Adobe Stock, Shutterstock &amp; Freepik CSV Formatı</span>
+          </li>
+          <li>
+            <span class="geo-hl-icon" aria-hidden="true">🛍️</span>
+            <span class="geo-hl-body" data-i18n-html="geo.hl4"><strong>E-TİCARET PAZARYERLERİ:</strong> Trendyol, Etsy, Amazon, Hepsiburada</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -492,46 +513,52 @@
       </div>
 
       <!-- GEO Information Gain Table: Manuel vs MayaListing AI -->
-      <div class="geo-table-wrapper" style="margin-top: 56px;">
+      <div class="geo-table-wrapper">
         <table class="geo-comparison-table">
+          <colgroup>
+            <col class="col-metric">
+            <col class="col-compare">
+            <col class="col-compare">
+            <col class="col-maya">
+          </colgroup>
           <thead>
             <tr>
-              <th>Metrik & Özellik</th>
-              <th>Geleneksel Manuel Etiketleme</th>
-              <th>Jenerik AI Araçları</th>
-              <th class="mayalisting-col">MayaListing AI (Gemini 2.5)</th>
+              <th data-i18n="geo.colMetric">Metrik &amp; Özellik</th>
+              <th data-i18n="geo.colManual">Geleneksel Manuel Etiketleme</th>
+              <th data-i18n="geo.colGeneric">Jenerik AI Araçları</th>
+              <th class="mayalisting-col" data-i18n="geo.colMaya">✨ MayaListing AI (Gemini 2.5)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="feature-name">Ortalama İşlem Süresi (50 Görsel)</td>
-              <td>~ 4.5 Saat</td>
-              <td>~ 35 Dakika</td>
-              <td class="mayalisting-col">⚡ ~ 2.5 Dakika</td>
+              <td class="feature-name" data-i18n="geo.r1Name">Ortalama İşlem Süresi (50 Görsel)</td>
+              <td><span class="cell-text" data-i18n="geo.r1Manual">~ 4.5 Saat</span></td>
+              <td><span class="cell-text" data-i18n="geo.r1Generic">~ 35 Dakika</span></td>
+              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">⚡</span><span class="cell-text" data-i18n="geo.r1Maya">~ 2.5 Dakika</span></td>
             </tr>
             <tr>
-              <td class="feature-name">Platforma Özel CSV Formatı</td>
-              <td>❌ Manuel Excel Girişi</td>
-              <td>⚠️ Kısmi (Yalnızca Genel Metin)</td>
-              <td class="mayalisting-col">✅ Adobe Stock, Shutterstock, Freepik Uyumlu CSV</td>
+              <td class="feature-name" data-i18n="geo.r2Name">Platforma Özel CSV Formatı</td>
+              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r2Manual">Manuel Excel Girişi</span></td>
+              <td><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-text" data-i18n="geo.r2Generic">Kısmi (Yalnızca Genel Metin)</span></td>
+              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r2Maya">Adobe Stock, Shutterstock, Freepik Uyumlu CSV</span></td>
             </tr>
             <tr>
-              <td class="feature-name">E-Ticaret & Pazaryeri Desteği</td>
-              <td>❌ Yok</td>
-              <td>❌ Sınırlı</td>
-              <td class="mayalisting-col">✅ Trendyol, Etsy, Amazon, Hepsiburada, n11</td>
+              <td class="feature-name" data-i18n="geo.r3Name">E-Ticaret &amp; Pazaryeri Desteği</td>
+              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r3Manual">Yok</span></td>
+              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r3Generic">Sınırlı</span></td>
+              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r3Maya">Trendyol, Etsy, Amazon, Hepsiburada, n11</span></td>
             </tr>
             <tr>
-              <td class="feature-name">Google AI Overviews & GEO Hazırlığı</td>
-              <td>❌ Yok</td>
-              <td>❌ Yok</td>
-              <td class="mayalisting-col">✅ Tam Uyumlu Anlamsal Varlık & SEO Setleri</td>
+              <td class="feature-name" data-i18n="geo.r4Name">Google AI Overviews &amp; GEO Hazırlığı</td>
+              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r4Manual">Yok</span></td>
+              <td><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-text" data-i18n="geo.r4Generic">Yok</span></td>
+              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-text" data-i18n="geo.r4Maya">Tam Uyumlu Anlamsal Varlık &amp; SEO Setleri</span></td>
             </tr>
             <tr>
-              <td class="feature-name">Stok Sitesi Red Oranı Risk Derecesi</td>
-              <td>Yüksek (Spam/Hatalı Keyword)</td>
-              <td>Orta (Genel Tanımlar)</td>
-              <td class="mayalisting-col">Düşük (%98.4 Kabul Başarı Oranı)</td>
+              <td class="feature-name" data-i18n="geo.r5Name">Stok Sitesi Red Oranı Risk Derecesi</td>
+              <td><span class="cell-text" data-i18n="geo.r5Manual">Yüksek (Spam/Hatalı Keyword)</span></td>
+              <td><span class="cell-text" data-i18n="geo.r5Generic">Orta (Genel Tanımlar)</span></td>
+              <td class="mayalisting-col"><span class="cell-icon" aria-hidden="true">🛡️</span><span class="cell-text" data-i18n="geo.r5Maya">Düşük (%98.4 Kabul Başarı Oranı)</span></td>
             </tr>
           </tbody>
         </table>

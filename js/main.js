@@ -438,9 +438,11 @@ const initMain = () => {
   applyTranslations();
   updateVideoSource();
 
-  // Create language switcher in nav-actions (initial setup before auth state fires)
+  // Wire up the language switcher in nav-actions (initial setup before auth state fires).
+  // index.html ships a static switcher to avoid header CLS; createLanguageSwitcher
+  // hydrates it in place instead of injecting a duplicate.
   const navActionsInitial = document.getElementById('nav-auth-actions');
-  if (navActionsInitial && !navActionsInitial.querySelector('.lang-switcher')) {
+  if (navActionsInitial) {
     createLanguageSwitcher(navActionsInitial, 'prepend');
   }
 

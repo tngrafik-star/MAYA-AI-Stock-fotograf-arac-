@@ -11,6 +11,13 @@ export function createLanguageSwitcher(container, position = 'prepend') {
   const targetEl = typeof container === 'string' ? document.querySelector(container) : container;
   if (!targetEl) return;
 
+  // Statik olarak HTML'de render edilmiş bir switcher varsa yenisini üretme —
+  // mevcut olanı hydrate et. Aksi halde DOM'a ikinci bir switcher eklenir.
+  const existing = targetEl.querySelector(':scope > .lang-switcher');
+  if (existing) {
+    return hydrateLanguageSwitcher(existing);
+  }
+
   const switcher = document.createElement('div');
   switcher.className = 'lang-switcher';
   switcher.setAttribute('role', 'radiogroup');
@@ -61,6 +68,32 @@ export function createLanguageSwitcher(container, position = 'prepend') {
   }
 
   return switcher;
+}
+
+/**
+ * Attach behaviour to a language switcher that already exists in the DOM
+ * (server-rendered / static markup). Idempotent — safe to call more than once.
+ *
+ * @param {HTMLElement} switcherEl - existing .lang-switcher element
+ */
+export function hydrateLanguageSwitcher(switcherEl) {
+  if (!switcherEl || switcherEl.dataset.hydrated === 'true') return switcherEl;
+  switcherEl.dataset.hydrated = 'true';
+
+  switcherEl.querySelectorAll('.lang-btn').forEach(btn => {
+    const lang = btn.getAttribute('data-lang');
+    if (!lang) return;
+    btn.addEventListener('click', () => {
+      if (getCurrentLanguage() !== lang) {
+        changeLanguage(lang);
+        updateAllSwitchers();
+      }
+    });
+  });
+
+  // Statik markup TR'yi aktif varsayar; gerçek dile göre düzelt
+  updateActiveState(switcherEl);
+  return switcherEl;
 }
 
 /**
