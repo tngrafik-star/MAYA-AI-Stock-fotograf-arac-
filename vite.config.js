@@ -55,7 +55,9 @@ export default defineConfig(({ mode }) => {
         blogAiStockTr: resolve(__dirname, 'blog/yapay-zeka-stok-fotograf-satma-rehberi.html'),
         blogAiStockEn: resolve(__dirname, 'blog/selling-ai-generated-stock-photos.html'),
         blogImageSeoTr: resolve(__dirname, 'blog/e-ticaret-gorsel-seo-alt-text-rehberi.html'),
-        blogImageSeoEn: resolve(__dirname, 'blog/e-commerce-image-seo-alt-text-guide.html')
+        blogImageSeoEn: resolve(__dirname, 'blog/e-commerce-image-seo-alt-text-guide.html'),
+        blogEtsySeoTr: resolve(__dirname, 'blog/etsy-urun-fotografciligi-ve-seo-rehberi.html'),
+        blogEtsySeoEn: resolve(__dirname, 'blog/etsy-product-photography-and-seo-guide.html')
       },
       output: {
         manualChunks: {

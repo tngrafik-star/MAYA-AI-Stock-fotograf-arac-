@@ -126,4 +126,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/e-commerce-image-seo-alt-text-guide"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/e-ticaret-gorsel-seo-alt-text-rehberi"/>
   </url>
+  <!-- Blog: Etsy Ürün Fotoğrafçılığı ve SEO Rehberi (TR) -->
+  <url>
+    <loc>https://mayalisting.com/blog/etsy-urun-fotografciligi-ve-seo-rehberi</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/etsy-urun-fotografciligi-ve-seo-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/etsy-product-photography-and-seo-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/etsy-urun-fotografciligi-ve-seo-rehberi"/>
+  </url>
+  <!-- Blog: Etsy Product Photography & Listing SEO Guide (EN) -->
+  <url>
+    <loc>https://mayalisting.com/blog/etsy-product-photography-and-seo-guide</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/etsy-urun-fotografciligi-ve-seo-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/etsy-product-photography-and-seo-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/etsy-urun-fotografciligi-ve-seo-rehberi"/>
+  </url>
 </urlset>
