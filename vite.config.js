@@ -57,7 +57,9 @@ export default defineConfig(({ mode }) => {
         blogImageSeoTr: resolve(__dirname, 'blog/e-ticaret-gorsel-seo-alt-text-rehberi.html'),
         blogImageSeoEn: resolve(__dirname, 'blog/e-commerce-image-seo-alt-text-guide.html'),
         blogEtsySeoTr: resolve(__dirname, 'blog/etsy-urun-fotografciligi-ve-seo-rehberi.html'),
-        blogEtsySeoEn: resolve(__dirname, 'blog/etsy-product-photography-and-seo-guide.html')
+        blogEtsySeoEn: resolve(__dirname, 'blog/etsy-product-photography-and-seo-guide.html'),
+        blogMidjourneyPromptTr: resolve(__dirname, 'blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi.html'),
+        blogMidjourneyPromptEn: resolve(__dirname, 'blog/midjourney-stock-photography-prompts-and-quality-guide.html')
       },
       output: {
         manualChunks: {

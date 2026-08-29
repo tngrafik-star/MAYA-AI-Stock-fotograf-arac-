@@ -146,4 +146,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/etsy-product-photography-and-seo-guide"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/etsy-urun-fotografciligi-ve-seo-rehberi"/>
   </url>
+  <!-- Blog: Midjourney Stok Fotoğraf Prompt ve Kalite Rehberi (TR) -->
+  <url>
+    <loc>https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/midjourney-stock-photography-prompts-and-quality-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"/>
+  </url>
+  <!-- Blog: Midjourney Stock Photography Prompts & Quality Guide (EN) -->
+  <url>
+    <loc>https://mayalisting.com/blog/midjourney-stock-photography-prompts-and-quality-guide</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/midjourney-stock-photography-prompts-and-quality-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"/>
+  </url>
 </urlset>

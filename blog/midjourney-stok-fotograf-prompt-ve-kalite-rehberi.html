@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google tag (gtag.js) - Google Ads + GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2CR46GV3VC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2CR46GV3VC');
+    gtag('config', 'AW-18308454802');
+  </script>
+
+  <title>Adobe Stock ve Shutterstock İçin Midjourney Stok Fotoğraf Prompt ve Kalite Rehberi | MayaListing Blog</title>
+  <meta name="description" content="Midjourney ile ürettiğiniz AI görsellerini Adobe Stock ve Shutterstock'ta satmak için ticari prompt formülleri, reddedilme nedenleri, upscale teknikleri ve metadata stratejisi.">
+  <meta name="keywords" content="midjourney stok fotoğraf, midjourney prompt örnekleri, adobe stock yapay zeka, shutterstock ai kabul şartları, midjourney upscale, stok fotoğraf prompt yazma, mayalisting">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi">
+  <link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi">
+  <link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/midjourney-stock-photography-prompts-and-quality-guide">
+  <link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:title" content="Adobe Stock ve Shutterstock İçin Midjourney Stok Fotoğraf Prompt ve Kalite Rehberi">
+  <meta property="og:description" content="Yapay zeka ile stok fotoğraf üretirken reddedilme riskini sıfırlayan prompt teknikleri, upscale çözümleri ve ticari görsel stratejileri.">
+  <meta property="og:image" content="https://mayalisting.com/og-image.png">
+  <meta property="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Adobe Stock ve Shutterstock İçin Midjourney Stok Fotoğraf Prompt ve Kalite Rehberi",
+    "description": "Midjourney ile ürettiğiniz AI görsellerini Adobe Stock ve Shutterstock'ta satmak için ticari prompt formülleri, reddedilme nedenleri, upscale teknikleri ve metadata stratejisi.",
+    "author": {"@type": "Organization", "name": "MayaListing"},
+    "publisher": {"@type": "Organization", "name": "MayaListing", "url": "https://mayalisting.com"},
+    "datePublished": "2026-08-29",
+    "dateModified": "2026-08-29",
+    "mainEntityOfPage": "https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"
+  }
+  </script>
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Ana Sayfa",
+            "item": "https://mayalisting.com/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://mayalisting.com/blog/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Midjourney Stok Fotoğraf Prompt ve Kalite Rehberi",
+            "item": "https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"
+        }
+    ]
+  }
+  </script>
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#FF9500">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>(function(){const t=localStorage.getItem('maya-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a>
+      <ul class="nav-links">
+        <li><a href="/#features" data-i18n="nav.features">Özellikler</a></li>
+        <li><a href="/#pricing" data-i18n="nav.pricing">Fiyatlandırma</a></li>
+        <li><a href="/blog/" style="color: var(--color-accent); font-weight: 500;">Blog</a></li>
+      </ul>
+      <div class="nav-actions" id="blog-nav-actions">
+        <button class="theme-toggle-btn" id="blog-theme-toggle" title="Temayı Değiştir" data-i18n-title="nav.changeTheme" style="margin-right: 8px;">
+          <svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+          <svg class="theme-icon sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v2.25m0 13.5V21M4.22 4.22l1.59 1.59m12.38 12.38l1.59 1.59M3 12h2.25m13.5 0H21M5.81 18.19l1.59-1.59m12.38-12.38l1.59-1.59M12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9z" /></svg>
+        </button>
+        <a href="/" class="btn btn-primary" data-i18n="blog.goToPanel">Uygulamaya Git</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+  <section class="blog-post-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Ana Sayfa</a><span class="breadcrumb-separator">/</span>
+        <a href="/blog/">Blog</a><span class="breadcrumb-separator">/</span>
+        <span>Midjourney Prompt & Kalite Rehberi</span>
+      </div>
+      <span class="blog-card-category">Stok Fotoğraf</span>
+      <h1>Adobe Stock ve Shutterstock İçin Midjourney ile Yüksek Satış Getiren Stok Fotoğraf Prompt'ları ve Kalite Standartları</h1>
+      <div class="blog-post-meta">
+        <span>📅 29 Ağustos 2026</span>
+        <span>⏱️ 12 dk okuma</span>
+        <span>✍️ MayaListing Ekibi</span>
+      </div>
+    </div>
+  </section>
+
+  <article class="blog-post-content">
+
+    <p>Stok fotoğraf ajanslarına Midjourney ile ürettiğiniz 50 görseli heyecanla yükleyip, ertesi gün panelde 45 tanesinin <strong>"Technical Quality Issues" (Teknik Kalite Hatası)</strong> veya <strong>"Non-Compliant Image" (Uyumsuz Görsel)</strong> gerekçesiyle reddedildiğini görmek oldukça moral bozucudur. Yapay zeka motorları her geçen gün daha göz alıcı sonuçlar üretse de, stok platformlarının inceleme algoritmaları ve insan denetçileri (inspectors) ticari kullanım standartlarında taviz vermez.</p>
+
+    <p>Peki Adobe Stock, Shutterstock ve Freepik gibi platformlarda <strong>reddedilme oranını %5'in altına indiren</strong>, aynı zamanda ajansların ve reklam şirketlerinin sürekli satın aldığı görselleri Midjourney ile nasıl üretebilirsiniz? Bu rehberde kulaktan dolma yapay zeka tavsiyelerini bir kenara bırakıp, sahada bizzat test edilmiş prompt formüllerini, teknik ayarları, upscale tuzaklarını ve metadata stratejilerini inceliyoruz.</p>
+
+    <h2>1. Stok Editörleri Neden AI Görsellerini Reddeder? (100 Zoom Gerçeği)</h2>
+
+    <p>Midjourney ekranınızda küçük boyutta muhteşem görünen bir görsel, stok sitelerinin denetim yazılımlarında <strong>%100 zoom (Pixel-Peeping)</strong> seviyesine getirildiğinde elenir. Stok editörlerinin ilk baktığı kritik detaylar şunlardır:</p>
+
+    <ul>
+      <li><strong>Anatomi ve Detay Çamurlaşması:</strong> İnsan elinde 6 parmak bulunması, arka plandaki insanların yüzlerinin uzaylı gibi deforme olması veya göz bebeklerinin asimetrik dağılması.</li>
+      <li><strong>Yapay Plastik Cilt Doku Hatası:</strong> Varsayılan Midjourney parametrelerinde cilt pürüzsüzleştirilerek porselen bebek etkisine girer. Stok alıcıları gerçek insan gözenekleri ve doğal ışık kırılmaları arar.</li>
+      <li><strong>Telif ve Marka İhlalleri (Trademarks):</strong> Dizüstü bilgisayar kapağında ısırılmış elmayı andıran belirsiz bir logo, ayakkabı kenarında Nike çizgisini çağrıştıran bir kıvrım veya arka plan ekranında gerçek bir yazılım arayüzü.</li>
+      <li><strong>Yetersiz Çözünürlük ve Upscale Gürültüsü (Artifacts):</strong> Midjourney ham çıktısını (örneğin ~1456x816) doğrudan JPEG yapıp yüklemek. Stok siteleri minimum 4 Megapiksel (tercihen 12-24 MP) netlik ister. Rastgele bir web upscaler ile büyütülen fotoğraflarda oluşan bloklanma (artefacting) direkt ret sebebidir.</li>
+    </ul>
+
+    <h2>2. Satış Getiren Midjourney Parametre Stratejisi</h2>
+
+    <p>Midjourney kullanırken sadece prompt yazmak yetmez; stok sitelerinin ticari yapısına uygun parametre komutlarını kullanmak zorundasınız.</p>
+
+    <div class="callout callout-tip" style="background: var(--color-bg-secondary); border-left: 4px solid var(--color-accent); padding: 16px; margin: 24px 0; border-radius: 8px;">
+      <h4 style="margin-top:0; color: var(--color-accent);">💡 Stok Satışı İçin En Kritik Parametreler</h4>
+      <p style="margin-bottom:0;"><code>--style raw</code> kullanımı, Midjourney'in kendi dramatik renk sinematografisini kapatarak stok alıcılarının serbestçe color-grade yapabileceği doğal ve yapaylıktan uzak bir kare elde etmenizi sağlar.</p>
+    </div>
+
+    <h3>A. En Boy Oranı (Aspect Ratio: <code>--ar</code>)</h3>
+    <p>Stok piyasasında kare (<code>--ar 1:1</code>) görsellerin satış oranı düşüktür. Reklam ajansları web sitesi hero banner'ları, dergi kapakları veya mobil reklamlar için görsel arar.</p>
+    <ul>
+      <li><code>--ar 16:9</code> : Web banner, YouTube kapakları ve reklam kampanyaları için altın standart.</li>
+      <li><code>--ar 3:2</code> : Geleneksel DSLR fotoğraf makinesi oranı. İlanlar ve editoryal kullanım için ideal.</li>
+      <li><code>--ar 4:5</code> veya <code>--ar 9:16</code> : Instagram, TikTok ve dikey mobil reklam içerikleri için yüksek dönüşümlü oran.</li>
+    </ul>
+
+    <h3>B. Gerçekçilik ve Stil Kontrolü</h3>
+    <ul>
+      <li><code>--style raw</code> : Yapay zeka illüstrasyonu havasını siler, kamera lensi ile çekilmiş gerçekçi doku verir.</li>
+      <li><code>--stylize 50</code> ile <code>--stylize 100</code> arası : Yüksek stylize değerleri (örneğin <code>--stylize 750</code>) görseli gerçekçilikten uzaklaştırıp fantezi atmosferine sokar. Stok için 50-100 bandı en güvenli bölgedir.</li>
+      <li><code>--v 6.1</code> : En güncel model versiyonunu zorunlu kılın. El detayları, metin okunabilirliği ve ışık fiziğinde hata oranı belirgin şekilde düşüktür.</li>
+    </ul>
+
+    <h2>3. Satış Yapan Ticari Prompt Formülü</h2>
+
+    <p>Stok sitelerinde fantastik ejderhalar veya sibernetik şehirler değil; şirketlerin sunumlarında, bloglarında ve reklam panolarında kullanabileceği <strong>günlük yaşam ve ticari konseptler</strong> satar. Başarılı bir stok prompt formülü şu yapıyı takip etmelidir:</p>
+
+    <div class="prompt-box" style="background: #1e1e2e; color: #a6adc8; padding: 18px; border-radius: 8px; font-family: monospace; margin: 20px 0;">
+      <strong>[Ana Özne]</strong> + <strong>[Eylem veya Mekan]</strong> + <strong>[Ticari İçerik/Bağlam]</strong> + <strong>[Işık & Kamera Lensi]</strong> + <strong>[Metin Alanı / Negatif Alan]</strong> + <strong>[Parametreler]</strong>
+    </div>
+
+    <h3>Örnek 1: İş Dünyası & B2B Kurumsal İletişim</h3>
+    <p>Reklam ajanslarının en çok aradığı konu: Doğal, çeşitlilik içeren ve abartısız ofis toplantısı.</p>
+    <div class="prompt-example" style="background: var(--color-bg-secondary); padding: 16px; border-left: 4px solid #10b981; border-radius: 6px; margin-bottom: 16px;">
+      <code>A modern diverse team of young professionals discussing business strategy around a table in a bright minimalist conference room, blurred glass wall background, soft natural daylight, shot on 35mm lens, f/2.8, professional commercial photography, subtle copy space on right side --ar 16:9 --style raw --stylize 75 --v 6.1</code>
+    </div>
+    <p><strong>Neden Satar?</strong> <em>"Subtle copy space on right side"</em> ifadesi sayesinde görselin sağ tarafında metin veya dergi başlığı eklenecek boş alan kalır. Reklamcılar tam olarak bu tür yerleşimli fotoğrafları tercih eder.</p>
+
+    <h3>Örnek 2: Sürdürülebilir Enerji & Yeşil Teknolojiler</h3>
+    <p>B2B raporlarında ve çevre projelerinde indirme rekoru kıran konsept.</p>
+    <div class="prompt-example" style="background: var(--color-bg-secondary); padding: 16px; border-left: 4px solid #10b981; border-radius: 6px; margin-bottom: 16px;">
+      <code>Close-up shot of an engineer inspecting solar panels on a rooftop at golden hour, blurred wind turbines on the horizon, clean eco friendly corporate photography, crisp details, natural lighting --ar 3:2 --style raw --stylize 80 --v 6.1</code>
+    </div>
+
+    <h3>Örnek 3: E-Ticaret Ürün Arka Planı (Mockup / Flatlay)</h3>
+    <p>Shopify ve Etsy satıcılarının kendi şeffaf PNG ürünlerini koymak için satın aldığı tarafsız sahneler.</p>
+    <div class="prompt-example" style="background: var(--color-bg-secondary); padding: 16px; border-left: 4px solid #10b981; border-radius: 6px; margin-bottom: 16px;">
+      <code>Minimalist cosmetic product podium background, travertine stone slab, soft organic shadows, dried palm leaf, neutral beige wall, empty copy space in center, high key studio lighting --ar 4:3 --style raw --stylize 50 --v 6.1</code>
+    </div>
+
+    <h2>4. Upscale ve İntikam Gibi Gelen Reddedilmeleri Önleme</h2>
+
+    <p>Midjourney ham çıktısını stok sitelerine doğrudan yükleyemezsiniz. Görsel çözünürlüğünü <strong>en az 4000px - 6000px genişliğe</strong> taşımanız gerekir. Ancak bu süreçte yapılan 2 büyük hata vardır:</p>
+
+    <ol>
+      <li><strong>Tarayıcı Tabanlı Basit Büyütücüler Kullanmak:</strong> Ücretsiz web siteleri görseli piksel çoğaltma ile büyütür. Bu durum fotoğrafa blurluk ve yağlı boya efekti katar. Stok denetçisi 1 saniyede reddeder.</li>
+      <li><strong>Gürültü Giderme (Denoise) Ayarını Kaçırmak:</strong> Yapay zeka büyütücülerin (örneğin Topaz Gigapixel AI, Magnific veya açık kaynak Upscayl) denoise ayarını %100 yaparsanız yüzler plastikleşir. Denoise seviyesini %10 - %20 bandında tutarak orijinal fotoğraf grenini (grain) korumalısınız.</li>
+    </ol>
+
+    <div class="callout callout-warning" style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; padding: 16px; margin: 24px 0; border-radius: 8px;">
+      <h4 style="margin-top:0; color: #ef4444;">⚠️ Yükleme Öncesi 3 Adımlı İnceleme Çeklisti</h4>
+      <p style="margin-bottom: 8px;">1. Görseli Photoshop'ta açın ve %100 ölçeğe getirin.</p>
+      <p style="margin-bottom: 8px;">2. Arka plandaki insanların parmaklarını, kulaklarını ve gözlerini kontrol edin. Bozulma varsa <strong>Spot Healing Brush (Nokta Düzeltme Fırçası)</strong> ile temizleyin.</p>
+      <p style="margin-bottom: 0;">3. Kıyafetlerde veya cihazlarda beliren sahte marka logolarını rötuşlayın.</p>
+    </div>
+
+    <h2>5. Görseliniz Ne Kadar Harika Olursa Olsun: Metadata İle Bulunma Stratejisi</h2>
+
+    <p>Kusursuz bir Midjourney görseli ürettiniz, 16 Megapiksele büyüttünüz ve pikselleri temizlediniz. Ancak dosyaya <em>"ai, photo, cool, business"</em> gibi 4 jenerik kelime yazıp yüklerseniz görseliniz milyarlarca stok dosyasının arasında kaybolur.</p>
+
+    <p>Adobe Stock ve Shutterstock arama algoritmaları, <strong>anlamsal ilişki (semantic relevance)</strong> kuran başlık ve anahtar kelimelere öncelik verir. Örneğin bir ofis görseli için sadece "office" değil, <code>"corporate teamwork", "copy space", "commercial background", "modern workplace culture", "diverse colleagues"</code> gibi ticari arama niyetlerini eklemeniz şarttır.</p>
+
+    <h3>MayaListing İle 3 Saniyede Otomatik Metadata & IPTC Gömme</h3>
+    <p>Her AI görseli için 50 tane İngilizce kelimeyi elle beyin fırtınası yaparak yazmak iş akışınızı kilitler. <a href="/">MayaListing</a>, Midjourney görselinizi Gemini 2.5 vizyon modeliyle analiz eder:</p>
+
+    <ul>
+      <li>Görseldeki nesneleri, renk paletini, ticari kullanım alanlarını ve boşluk (copy space) durumunu otomatik saptar.</li>
+      <li>Adobe Stock, Shutterstock ve Freepik arama hacmi en yüksek 40-50 anahtar kelimeyi anında üretir.</li>
+      <li>Tek tıkla metadata verilerini direkt JPEG dosyasının <strong>IPTC / EXIF başlıklarına gömer</strong> veya yükleme panelleri için hazır CSV dosyası verir.</li>
+    </ul>
+
+    <h2>Özet: Başarılı AI Stok Fotoğrafçılığı Formülü</h2>
+
+    <p>Yapay zeka ile stok fotoğrafçılık bir "tek tıkla zengin olma" yöntemi değil, <strong>doğru üretim + teknik disiplin + SEO otomasyonu</strong> sürecidir. <code>--style raw</code> parametresiyle doğal kareler yakalayın, kaliteli bir AI upscaler ile pikselleri koruyun, rötuşlarınızı yapın ve MayaListing ile metadata optimizasyonunu tamamlayarak portföyünüzü katlayın.</p>
+
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a>
+          <p>Yaratıcıların iş akışlarını yapay zeka ile optimize eden, lüks ve işlevsel metadata platformu.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Ürün</h4>
+          <ul>
+            <li><a href="/#features" data-i18n="nav.features">Özellikler</a></li>
+            <li><a href="/#pricing" data-i18n="nav.pricing">Fiyatlandırma</a></li>
+            <li><a href="/#how-it-works" data-i18n="nav.howItWorks">Çalışma Şekli</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kaynaklar</h4>
+          <ul>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/blog/adobe-stock-fotograf-nasil-satilir">Adobe Stock Rehberi</a></li>
+            <li><a href="/blog/stok-fotograf-anahtar-kelime-rehberi">SEO Rehberi</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Yasal</h4>
+          <ul>
+            <li><a href="/">Kullanım Koşulları</a></li>
+            <li><a href="/">Gizlilik Politikası</a></li>
+            <li><a href="/">KVKK Aydınlatma</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 MayaListing. Tüm Hakları Saklıdır.</p>
+        <p>İstanbul, Türkiye</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { applyTranslations, updateHtmlLang } from '/js/i18n/index.js';
+    import { createLanguageSwitcher } from '/js/languageSwitcher.js';
+
+    updateHtmlLang();
+    applyTranslations();
+
+    const navActions = document.getElementById('blog-nav-actions');
+    if (navActions) {
+      createLanguageSwitcher(navActions, 'prepend');
+    }
+
+    window.addEventListener('languageChanged', () => {
+      updateHtmlLang();
+      applyTranslations();
+    });
+
+    const toggle = document.getElementById('blog-theme-toggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('maya-theme', next);
+      });
+    }
+
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>
