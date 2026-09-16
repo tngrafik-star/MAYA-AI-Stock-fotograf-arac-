@@ -207,7 +207,7 @@
     <div class="nav-container">
       <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a>
       <ul class="nav-links">
-        <li><a href="#segments" data-i18n="nav.features">Özellikler</a></li>
+        <li><a href="#features" data-i18n="nav.features">Özellikler</a></li>
         <li><a href="#how-it-works" data-i18n="nav.howItWorks">Çalışma Şekli</a></li>
         <li><a href="#pricing" data-i18n="nav.pricing">Fiyatlandırma</a></li>
         <li><a href="#faq" data-i18n="nav.faq">SSS</a></li>
@@ -240,324 +240,78 @@
   <main>
 
   <!-- Hero Section -->
-  <section class="hero" id="hero">
+  <section class="hero">
     <div class="container">
       <div class="hero-badge">
-        <span class="hero-badge-text" data-i18n="hero.badge">AI-DESTEKLİ GÖRSEL İÇERİK ÜRETİMİ</span>
+        <span class="hero-badge-line"></span>
+        <span class="hero-badge-text" data-i18n="hero.badge">Yapay Zeka Destekli Stok Metadata Platformu</span>
+        <span class="hero-badge-line"></span>
       </div>
-      <h1 data-i18n="hero.title">Bir fotoğraf. Tüm satış kanalları.</h1>
-      <p data-i18n="hero.description">Ürün veya stock görselinizi yükleyin. Mayalisting; başlık, açıklama ve anahtar kelimeleri platformunuza uygun şekilde saniyeler içinde hazırlasın.</p>
+      <h1 data-i18n="hero.title">Ürünleri Satışa Hazır Hale Getiren Yapay Zeka</h1>
+      <p data-i18n="hero.description">MayaListing, fotoğraflarınızı analiz eder ve saniyeler içinde Trendyol, Hepsiburada, n11, Amazon, Stock, Shutterstock, Freepik ve e-ticaret siteleri için yüksek dönüşümlü başlık, açıklama ve anahtar kelimeler oluşturur.</p>
       
       <div class="hero-actions">
-        <button class="btn btn-primary" id="hero-primary-cta" data-i18n="hero.ctaTryFree">Ücretsiz Başla</button>
-        <a href="#how-it-works" class="btn btn-secondary" data-i18n="hero.ctaHowItWorks">Nasıl Çalışır?</a>
+        <button class="btn btn-primary" id="hero-primary-cta" data-i18n="hero.ctaTryFree">Ücretsiz Dene</button>
+        <a href="#how-it-works" class="btn btn-secondary" data-i18n="hero.ctaHowItWorks">Nasıl Çalışır</a>
       </div>
 
-      <div class="hero-trust-note">
-        <span class="check-icon">✓</span>
-        <span data-i18n="hero.trustBadge">5 ücretsiz görsel • Kredi kartı gerekmez</span>
-      </div>
-
-      <div class="hero-friction-note" data-i18n="hero.frictionNote">
-        ⚡ 10 saniyede kayıt • 💳 Kredi kartı gerekmez • 🎁 5 ücretsiz görsel
-      </div>
-
-      <!-- Live Interactive Product Demo Widget -->
-      <div class="demo-widget-container" id="demo">
-        <div class="demo-header-bar">
-          <div class="demo-window-controls">
-            <span class="demo-dot red"></span>
-            <span class="demo-dot yellow"></span>
-            <span class="demo-dot green"></span>
-          </div>
-          <div class="demo-platform-tabs" role="tablist" aria-label="Platform Demo Selector">
-            <button class="demo-tab-btn active" data-platform="trendyol" role="tab" aria-selected="true" data-i18n="demo.tabTrendyol">Trendyol &amp; Hepsiburada</button>
-            <button class="demo-tab-btn" data-platform="amazon" role="tab" aria-selected="false" data-i18n="demo.tabAmazon">Amazon &amp; Etsy</button>
-            <button class="demo-tab-btn" data-platform="adobe" role="tab" aria-selected="false" data-i18n="demo.tabAdobeStock">Adobe Stock</button>
-            <button class="demo-tab-btn" data-platform="shutterstock" role="tab" aria-selected="false" data-i18n="demo.tabShutterstock">Shutterstock</button>
-          </div>
-        </div>
-
-        <div class="demo-body-grid">
-          <!-- Left: Sample Input Preview -->
-          <div class="demo-input-panel">
-            <span class="demo-panel-label" data-i18n="demo.inputBadge">Girdi: Örnek Ürün / Stock Görseli</span>
-            <div class="demo-image-preview">
-              <img src="/og-image.png" alt="Mayalisting Demo Ürün Görseli" id="demo-preview-img" loading="lazy">
-              <span class="demo-image-badge">📷 1 Görsel • 4000x3000px</span>
-            </div>
-            <div class="demo-input-details">
-              <strong style="display:block; margin-bottom: 4px;">Nesne Analizi:</strong>
-              Seramik fincan seti, rustik ahşap masa, sıcak kahve, stüdyo aydınlatması.
+      <!-- Mockup Area -->
+      <div class="hero-mockup">
+        <div class="mockup-inner">
+          <!-- Styled preview mockup of the dashboard to amaze the user -->
+          <div style="width: 200px; border-right: 1px solid var(--color-border-dark); background-color: var(--color-card-bg); padding: 20px; text-align: left; display: flex; flex-direction: column; gap: 30px;">
+            <div class="logo" style="font-size: 18px;"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></div>
+            <div style="display: flex; flex-direction: column; gap: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary);">
+              <div style="color: var(--color-accent); font-weight: 600;" data-i18n="mockup.dashboard">• GÖSTERGE PANELİ</div>
+              <div data-i18n="mockup.newUpload">• YENİ YÜKLEME</div>
+              <div data-i18n="mockup.history">• GEÇMİŞ</div>
+              <div data-i18n="mockup.export">• DIŞA AKTAR</div>
+              <div data-i18n="mockup.account">• HESAP</div>
             </div>
           </div>
-
-          <!-- Right: Generated Platform Output -->
-          <div class="demo-output-panel">
-            <!-- Title Box -->
-            <div class="demo-field-card">
-              <div class="demo-field-top">
-                <span class="demo-field-label" data-i18n="demo.titleLabel">Başlık:</span>
-                <button class="demo-copy-btn" data-copy-target="demo-output-title" data-i18n="demo.copyBtn">Kopyala</button>
+          <div style="flex: 1; padding: 30px; text-align: left; display: flex; flex-direction: column; gap: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
+              <div>
+                <h4 style="font-family: var(--font-heading); font-size: 24px;" data-i18n="mockup.welcome">Hoş Geldiniz</h4>
+                <p style="font-size: 12px; color: var(--color-text-secondary);" data-i18n="mockup.welcomeDesc">Portföyünüzü ölçeklendirmeye bugün devam edin.</p>
               </div>
-              <div class="demo-field-value" id="demo-output-title">El Yapımı Rustik Seramik Kahve Fincanı &amp; Tabak Seti - 250 ml Özel Tasarım</div>
+              <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 12px; font-weight: 600;" data-i18n="mockup.proAccount">PRO HESAP</div>
             </div>
-
-            <!-- Description Box -->
-            <div class="demo-field-card">
-              <div class="demo-field-top">
-                <span class="demo-field-label" data-i18n="demo.descLabel">Açıklama:</span>
-                <button class="demo-copy-btn" data-copy-target="demo-output-desc" data-i18n="demo.copyBtn">Kopyala</button>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+              <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;" data-i18n="mockup.totalAnalysis">Toplam Analiz</div>
+                <div style="font-family: var(--font-heading); font-size: 28px;">124</div>
               </div>
-              <div class="demo-field-value multiline" id="demo-output-desc">✨ **ÖNE ÇIKAN ÖZELLİKLER** ✨
-• %100 El Yapımı: Usta seramik sanatçıları tarafından özenle şekillendirilmiştir.
-• Gıdaya Uygun: Kurşunsuz doğal sır ile sırlanmış, sağlığa zararsızdır.
-• Bulaşık Makinesi &amp; Mikrodalga: Dayanıklı stoneware çamuru ile fırınlanmıştır.
-• Hediye Paketi: Özel kraft kutusunda kırılmaya karşı korumalı paketleme.</div>
+              <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;" data-i18n="mockup.remainingCredits">Kalan Kredi</div>
+                <div style="font-family: var(--font-heading); font-size: 28px;">876</div>
+              </div>
+              <div style="background-color: var(--color-card-bg); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm);">
+                <div style="font-size: 10px; color: var(--color-text-muted); text-transform: uppercase;" data-i18n="mockup.platformIntegration">Platform Entegrasyonu</div>
+                <div style="font-family: var(--font-heading); font-size: 28px;">5+</div>
+              </div>
             </div>
-
-            <!-- Keywords / Tags Box -->
-            <div class="demo-field-card">
-              <div class="demo-field-top">
-                <span class="demo-field-label" data-i18n="demo.tagsLabel">Anahtar Kelimeler / Etiketler:</span>
-                <button class="demo-copy-btn" data-copy-target="demo-output-tags-text" data-i18n="demo.copyBtn">Kopyala</button>
+            
+            <div style="flex: 1; border: 1px dashed var(--color-border-dark); border-radius: var(--border-radius-sm); display: flex; align-items: center; justify-content: center; background-color: var(--color-card-bg);">
+              <div style="text-align: center;">
+                <span style="font-size: 28px; display: block; color: var(--color-text-muted);">📷</span>
+                <span style="font-size: 12px; color: var(--color-text-secondary);" data-i18n="mockup.dropzoneText">Görselinizi buraya sürükleyin veya göz atın</span>
               </div>
-              <div class="demo-tags-wrap" id="demo-output-tags">
-                <span class="demo-tag-chip">seramik fincan</span>
-                <span class="demo-tag-chip">kahve kupası</span>
-                <span class="demo-tag-chip">el yapımı kupa</span>
-                <span class="demo-tag-chip">hediye fincan</span>
-                <span class="demo-tag-chip">espresso fincanı</span>
-                <span class="demo-tag-chip">seramik tabak</span>
-                <span class="demo-tag-chip">rustik kupa</span>
-                <span class="demo-tag-chip">tasarım fincan</span>
-                <span class="demo-tag-chip">latte bardağı</span>
-              </div>
-              <div style="display:none;" id="demo-output-tags-text">seramik fincan, kahve kupası, el yapımı kupa, hediye fincan, espresso fincanı, seramik tabak, rustik kupa, tasarım fincan, latte bardağı</div>
             </div>
-
-          </div>
-        </div>
-      </div>
-      <p class="demo-disclaimer" data-i18n="demo.note">* Gerçek Mayalisting analiz motorunun platform kurallarına göre ürettiği canlı format örneğidir.</p>
-
-    </div>
-  </section>
-
-  <!-- Two Core Segments Section -->
-  <section class="section" id="segments">
-    <div class="container">
-      <div class="section-header">
-        <span class="micro-label" data-i18n="segments.badge">İKİ ANA KULLANIM ALANI</span>
-        <h2 data-i18n="segments.title">Tek Bir Araç. İki Güçlü Satış Çözümü.</h2>
-        <p data-i18n="segments.subtitle">İster e-ticaret mağazanızda ürün satın, ister global stok sitelerinde portföy yönetin.</p>
-      </div>
-
-      <div class="segments-grid">
-        <!-- E-Commerce Segment Card -->
-        <div class="segment-card">
-          <div class="segment-top">
-            <span class="segment-badge ecom" data-i18n="segments.ecomTitle">E-TİCARET</span>
-            <h3>E-Ticaret</h3>
-            <p class="segment-tagline" data-i18n="segments.ecomTagline">Ürün görselinden satış platformuna hazır içerik.</p>
-            <div class="segment-platforms-bar" data-i18n="segments.ecomPlatforms">Trendyol • Amazon • Etsy • Hepsiburada • n11</div>
-            <ul class="segment-features-list">
-              <li><span class="bullet-check">✓</span> <span data-i18n="segments.ecomF1">Arama hacmi yüksek, platform SEO algoritmalarına uyumlu başlıklar</span></li>
-              <li><span class="bullet-check">✓</span> <span data-i18n="segments.ecomF2">Madde imli, emojili ve müşteri ikna edici ürün açıklamaları</span></li>
-              <li><span class="bullet-check">✓</span> <span data-i18n="segments.ecomF3">Etsy ve pazaryerleri için 13'lü odak arama etiketleri</span></li>
-            </ul>
-          </div>
-          <button class="btn btn-secondary segment-cta-btn" id="segment-ecom-cta" data-i18n="segments.ecomCta">E-ticaret için keşfet</button>
-        </div>
-
-        <!-- Stock Photography Segment Card -->
-        <div class="segment-card">
-          <div class="segment-top">
-            <span class="segment-badge stock" data-i18n="segments.stockTitle">STOCK</span>
-            <h3>Stock</h3>
-            <p class="segment-tagline" data-i18n="segments.stockTagline">Stock görselleriniz için başlık, açıklama ve anahtar kelimeleri hızla hazırlayın.</p>
-            <div class="segment-platforms-bar" data-i18n="segments.stockPlatforms">Adobe Stock • Shutterstock • Freepik • Vecteezy</div>
-            <ul class="segment-features-list">
-              <li><span class="bullet-check">✓</span> <span data-i18n="segments.stockF1">İlk sıralarda öne çıkan en alakalı 30 - 50 anahtar kelime</span></li>
-              <li><span class="bullet-check">✓</span> <span data-i18n="segments.stockF2">Adobe Stock ve Shutterstock yüklemeleri için %100 uyumlu hazır CSV</span></li>
-              <li><span class="bullet-check">✓</span> <span data-i18n="segments.stockF3">Tekrarsız, spam filtresine takılmayan doğrulanabilir metadata</span></li>
-            </ul>
-          </div>
-          <button class="btn btn-secondary segment-cta-btn" id="segment-stock-cta" data-i18n="segments.stockCta">Stock için keşfet</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ChatGPT vs Mayalisting Workflow Comparison -->
-  <section class="section" id="workflow">
-    <div class="container">
-      <div class="section-header">
-        <span class="micro-label" data-i18n="workflow.badge">İŞ AKIŞI OTOMASYONU</span>
-        <h2 data-i18n="workflow.title">Tek tek prompt yazmak yerine, tüm görsel iş akışını otomatikleştirin.</h2>
-        <p data-i18n="workflow.subtitle">ChatGPT'ye her fotoğraf için ayrı ayrı prompt yazıp karakter sınırlarıyla uğraşmak yerine, e-ticaret ve stok için tasarlanmış profesyonel bir otomasyona geçin.</p>
-      </div>
-
-      <div class="workflow-table-card">
-        <table class="workflow-table">
-          <thead>
-            <tr>
-              <th data-i18n="workflow.colTask">İşlem / Görev</th>
-              <th data-i18n="workflow.colChatgpt">ChatGPT / Manuel Yöntem</th>
-              <th class="col-maya" data-i18n="workflow.colMaya">Mayalisting Otomasyonu</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="cell-task" data-i18n="workflow.row1Task">50 Görseli Etiketleme</td>
-              <td class="cell-chatgpt" data-i18n="workflow.row1Chatgpt">50 kez tek tek prompt yaz, bekle (~4.5 saat)</td>
-              <td class="cell-maya"><span class="check-lead">✓</span> <span data-i18n="workflow.row1Maya">Toplu yükle, tek tıkla arka planda tamamla (~2.5 dakika)</span></td>
-            </tr>
-            <tr>
-              <td class="cell-task" data-i18n="workflow.row2Task">Platform Formatı</td>
-              <td class="cell-chatgpt" data-i18n="workflow.row2Chatgpt">Karakter sınırlarını ve etiket formatını elle düzelt</td>
-              <td class="cell-maya"><span class="check-lead">✓</span> <span data-i18n="workflow.row2Maya">Her platformun resmi kurallarına göre hazır çıktı</span></td>
-            </tr>
-            <tr>
-              <td class="cell-task" data-i18n="workflow.row3Task">Dışa Aktarma</td>
-              <td class="cell-chatgpt" data-i18n="workflow.row3Chatgpt">Tek tek kopyala-yapıştır yap, Excel tablosu oluştur</td>
-              <td class="cell-maya"><span class="check-lead">✓</span> <span data-i18n="workflow.row3Maya">Adobe Stock &amp; Shutterstock uyumlu tek tık CSV dışa aktar</span></td>
-            </tr>
-            <tr>
-              <td class="cell-task" data-i18n="workflow.row4Task">Geçmiş &amp; Arşiv</td>
-              <td class="cell-chatgpt" data-i18n="workflow.row4Chatgpt">Eski sohbet geçmişinde kaybolur, bulunamaz</td>
-              <td class="cell-maya"><span class="check-lead">✓</span> <span data-i18n="workflow.row4Maya">Tüm üretimler panelinizde güvenle saklanır ve aranır</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- Batch Processing & CSV Showcase -->
-  <section class="section" id="batch">
-    <div class="container">
-      <div class="section-header">
-        <span class="micro-label" data-i18n="batch.badge">TOPLU İŞLEM &amp; CSV</span>
-        <h2 data-i18n="batch.title">50 görseli tek tek hazırlamayın.</h2>
-        <p data-i18n="batch.subtitle">Tek tek başlık, açıklama ve anahtar kelime yazmak yerine görsellerinizi topluca işleyin.</p>
-      </div>
-
-      <div class="batch-showcase-grid">
-        <div class="batch-card">
-          <div>
-            <h3 data-i18n="batch.card1Title">Toplu Görsel İşleme (Batch Queue)</h3>
-            <p data-i18n="batch.card1Desc">Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin. Mayalisting arka planda her görseli tek tek analiz edip platform formatına dönüştürsün.</p>
-          </div>
-          <div class="batch-stat-badge">
-            <span>⚡</span>
-            <span data-i18n="batch.card1Speed">50 görsel → yaklaşık 2,5 dakika</span>
-          </div>
-        </div>
-
-        <div class="batch-card">
-          <div>
-            <h3 data-i18n="batch.card2Title">Sonuçları platformunuza taşıyın.</h3>
-            <p data-i18n="batch.card2Desc">Platforma uygun çıktıları hazırlayın ve tek tıkla CSV olarak dışa aktarın. Adobe Stock, Shutterstock ve Freepik yükleme şablonlarıyla %100 uyumludur.</p>
-          </div>
-          <div class="batch-stat-badge">
-            <span>📊</span>
-            <span data-i18n="batch.card2Badge">CSV Formatında Dışa Aktarma</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="batch-features-row">
-        <div class="batch-feature-pill">📁 <span data-i18n="batch.f1">Çoklu dosya yükleme desteği</span></div>
-        <div class="batch-feature-pill">📋 <span data-i18n="batch.f2">Platform bazlı hazır sütun şablonları</span></div>
-        <div class="batch-feature-pill">⚡ <span data-i18n="batch.f3">Tek tıkla Excel / CSV indirme</span></div>
-        <div class="batch-feature-pill">🔄 <span data-i18n="batch.f4">Geçmiş analizleri dilediğiniz an tekrar aktarma</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How It Works (3 Steps) -->
-  <section class="section" id="how-it-works">
-    <div class="container">
-      <div class="section-header">
-        <span class="micro-label" data-i18n="howItWorks.microLabel">3 Kolay Adım</span>
-        <h2 data-i18n="howItWorks.title">Nasıl Çalışır?</h2>
-        <p data-i18n="howItWorks.description">Görsellerinizi pazaryerlerine ulaştırmanın en pratik ve hızlı yolu.</p>
-      </div>
-
-      <div class="steps-grid-3">
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <h3 data-i18n="howItWorks.step1Title">01. Görselinizi yükleyin.</h3>
-          <p data-i18n="howItWorks.step1Desc">Ürün veya stock görselinizi sürükleyip sisteme bırakın.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <h3 data-i18n="howItWorks.step2Title">02. Platformunuzu seçin.</h3>
-          <p data-i18n="howItWorks.step2Desc">E-ticaret veya stock platformunuzu belirleyin.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <h3 data-i18n="howItWorks.step3Title">03. Hazır içeriğinizi alın.</h3>
-          <p data-i18n="howItWorks.step3Desc">Başlık, açıklama, keyword ve platforma uygun çıktıları anında kopyalayın veya CSV olarak indirin.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Operational Use Cases (Replaces Fake Social Proof) -->
-  <section class="section" id="use-cases">
-    <div class="container">
-      <div class="section-header">
-        <span class="micro-label" data-i18n="useCases.microLabel">Kullanım Senaryoları</span>
-        <h2 data-i18n="useCases.title">Mayalisting ile Ne Yapabilirsiniz?</h2>
-        <p data-i18n="useCases.subtitle">Gerçek iş akışlarında zaman kazandıran doğrulanabilir çözümler.</p>
-      </div>
-
-      <div class="usecases-grid">
-        <div class="usecase-card">
-          <div>
-            <div class="usecase-badge" data-i18n="useCases.c1Badge">E-TİCARET SATICILARI</div>
-            <h3 data-i18n="useCases.c1Title">Katalog Açıklamalarını Hızlandırın</h3>
-            <p data-i18n="useCases.c1Desc">Yeni ürün fotoğraflarınızı yükleyin; Trendyol, Amazon ve Etsy için dönüşümü artıran emojili açıklamalar ve SEO başlıkları anında hazır olsun.</p>
-          </div>
-          <div class="usecase-result-box">
-            <strong>Sonuç:</strong> <span data-i18n="useCases.c1Result">Manuel veri girişi yerine dakikalar içinde pazaryerine hazır ürünler.</span>
-          </div>
-        </div>
-
-        <div class="usecase-card">
-          <div>
-            <div class="usecase-badge" data-i18n="useCases.c2Badge">STOK ÜRETİCİLERİ</div>
-            <h3 data-i18n="useCases.c2Title">Yüzlerce Görseli Tek Seferde Etiketleyin</h3>
-            <p data-i18n="useCases.c2Desc">Çekim serilerinizi yükleyin; Adobe Stock ve Shutterstock politikalarına uygun 30-50 anahtar kelimelik setleri CSV olarak tek seferde indirin.</p>
-          </div>
-          <div class="usecase-result-box">
-            <strong>Sonuç:</strong> <span data-i18n="useCases.c2Result">Saatler süren etiketleme angaryasından kurtulup üretime odaklanın.</span>
-          </div>
-        </div>
-
-        <div class="usecase-card">
-          <div>
-            <div class="usecase-badge" data-i18n="useCases.c3Badge">AJANSLAR &amp; FOTOĞRAFÇILAR</div>
-            <h3 data-i18n="useCases.c3Title">Tüm Dijital Varlıkları Arşivleyin</h3>
-            <p data-i18n="useCases.c3Desc">Müşterilerinizin ürün portföylerini tek bir panelde analiz edin, geçmiş üretimleri kaydedin ve dilediğiniz zaman tekrar erişin.</p>
-          </div>
-          <div class="usecase-result-box">
-            <strong>Sonuç:</strong> <span data-i18n="useCases.c3Result">Düzenli, ölçeklenebilir ve profesyonel varlık yönetimi.</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- GEO & Semantic AI Visibility -->
-  <section class="section" id="seo-geo">
+  <!-- GEO / Direct Answer Overview Section (AI Search Engine Ready) -->
+  <section class="section" id="geo-overview">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label" data-i18n="seoGeo.microLabel">Görünürlük Optimizasyonu</span>
-        <h2 data-i18n="seoGeo.title">SEO ve AI arama görünürlüğünü düşünerek hazırlayın.</h2>
-        <p data-i18n="seoGeo.description">Ürettiğiniz içerikler hem geleneksel arama algoritmalarında hem de Google AI Overviews ve pazaryeri AI indekslerinde öne çıkacak semantik zenginlikte hazırlanır.</p>
+        <span class="micro-label" data-i18n="geo.badge">KISACA MAYALISTING NEDİR?</span>
+        <h2 data-i18n="geo.title">Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Otomasyonu</h2>
+        <p data-i18n="geo.description">Görsellerinizi Gemini 2.5 ile analiz eder; Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon uyumlu metadata üretir.</p>
       </div>
 
       <div class="features-grid geo-cards-grid">
@@ -567,8 +321,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
           </div>
-          <h3 data-i18n="geo.hl1Title">Hızlı ve Hatasız Analiz</h3>
-          <p data-i18n="geo.hl1Desc">Saatler süren manuel etiketleme ve açıklama yazma sürecini dakikalara indirir.</p>
+          <h3 data-i18n="geo.hl1Title">3 Saniye / Görsel İşlem Hızı</h3>
+          <p data-i18n="geo.hl1Desc">Geleneksel etiketlemedeki ~4.5 saatlik manuel süreci 50 görsel için sadece 2.5 dakikaya indirir.</p>
         </div>
 
         <div class="feature-card">
@@ -578,7 +332,7 @@
             </svg>
           </div>
           <h3 data-i18n="geo.hl2Title">Google AI Overviews &amp; GEO Uyumlu</h3>
-          <p data-i18n="geo.hl2Desc">Yapay zeka arama motorları ve pazaryeri AI indeksleme sistemleri için anlamsal etiket setleri hazırlar.</p>
+          <p data-i18n="geo.hl2Desc">Yapay zeka arama motorları ve pazaryeri AI indeksleme sistemleri için anlamsal SEO ve etiket setleri hazırlar.</p>
         </div>
 
         <div class="feature-card">
@@ -588,7 +342,7 @@
             </svg>
           </div>
           <h3 data-i18n="geo.hl3Title">Platforma Özel CSV Formatları</h3>
-          <p data-i18n="geo.hl3Desc">Adobe Stock, Shutterstock ve Freepik yüklemeleri için tam uyumlu CSV dosyaları tek tıkla dışa aktarılır.</p>
+          <p data-i18n="geo.hl3Desc">Adobe Stock, Shutterstock ve Freepik yüklemeleri için %100 uyumlu CSV dosyaları tek tıkla dışa aktarılır.</p>
         </div>
 
         <div class="feature-card">
@@ -598,7 +352,183 @@
             </svg>
           </div>
           <h3 data-i18n="geo.hl4Title">E-Ticaret &amp; Pazaryeri Desteği</h3>
-          <p data-i18n="geo.hl4Desc">Trendyol, Etsy, Amazon, Hepsiburada ve n11 için dönüşümü yüksek başlık ve emojili açıklama metinleri üretir.</p>
+          <p data-i18n="geo.hl4Desc">Trendyol, Etsy, Amazon, Hepsiburada ve n11 için dönüşümü yüksek Türkçe başlık ve emojili açıklama metinleri üretir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label" data-i18n="howItWorks.microLabel">Adım Adım</span>
+        <h2 data-i18n="howItWorks.title">Nasıl Çalışır?</h2>
+        <p data-i18n="howItWorks.description">Görsellerinizi pazaryerlerine ulaştırmanın en hızlı ve akıllıca yolu.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 data-i18n="howItWorks.step1Title">Fotoğrafı Yükle</h3>
+          <p data-i18n="howItWorks.step1Desc">Yüksek çözünürlüklü stok fotoğrafınızı veya ürün görselinizi sürükleyip platforma bırakın.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 data-i18n="howItWorks.step2Title">Yapay Zeka Analiz Etsin</h3>
+          <p data-i18n="howItWorks.step2Desc">Gelişmiş görsel işleme modelimiz renkleri, kompozisyonu, nesneleri ve potansiyel SEO değerlerini çözsün.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 data-i18n="howItWorks.step3Title">Metadata Oluştur</h3>
+          <p data-i18n="howItWorks.step3Desc">Saniyeler içinde E-ticaret ve Stock platformlarına özel Türkçe metadata setleri üretilsin.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <h3 data-i18n="howItWorks.step4Title">Platformlara Yükle</h3>
+          <p data-i18n="howItWorks.step4Desc">Dışa aktarılan CSV dosyaları veya hızlı kopyalama araçlarıyla saniyeler içinde yüklemenizi tamamlayın.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label" data-i18n="features.microLabel">Özellikler</span>
+        <h2 data-i18n="features.title">Profesyonel Çözümler</h2>
+        <p data-i18n="features.description">Stok üreticileri ve ticari markalar için özel olarak tasarlanmış gelişmiş araçlar.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-8.982m-8.982 0L15 3v8.196M9.813 15.904L4.5 10.5m5.313 5.404L15 11.25" />
+            </svg>
+          </div>
+          <h3 data-i18n="features.f1Title">Yapay Zeka Metadata Üretici</h3>
+          <p data-i18n="features.f1Desc">Yüklenen fotoğrafa uygun, arama hacmi yüksek Türkçe başlık ve pazaryeri uyumlu açıklamalar oluşturur.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581a2.25 2.25 0 003.182 0l4.318-4.318a2.25 2.25 0 000-3.182L11.16 3.659A2.25 2.25 0 009.568 3z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+            </svg>
+          </div>
+          <h3 data-i18n="features.f2Title">Akıllı Anahtar Kelime Motoru</h3>
+          <p data-i18n="features.f2Desc">Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ kelimelik etiket havuzları üretir.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+          </div>
+          <h3 data-i18n="features.f3Title">Toplu İşlem (Batch Processing)</h3>
+          <p data-i18n="features.f3Desc">Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          </div>
+          <h3 data-i18n="features.f4Title">Gelişmiş Dışa Aktarım</h3>
+          <p data-i18n="features.f4Desc">Adobe Stock, Shutterstock, Freepik veya Etsy gibi online satış kanallarına özel CSV formatlarında çıktı alın.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+          </div>
+          <h3 data-i18n="features.f5Title">Geçmiş ve Arşiv Yönetimi</h3>
+          <p data-i18n="features.f5Desc">Daha önce yaptığınız tüm analiz ve üretimleri güvenle saklayın, dilediğiniz an tekrar arayın ve kopyalayın.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110 21a3.745 3.745 0 01-3.068-1.593 3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0114 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+            </svg>
+          </div>
+          <h3 data-i18n="features.f6Title">Çoklu Platform Uyumluluğu</h3>
+          <p data-i18n="features.f6Desc">Tek bir tıklamayla hem popüler stok siteleri hem de online satış kanalları (Etsy, Trendyol vs.) için etiket oluşturun.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="section" id="benefits">
+    <div class="container">
+      <div class="benefits-split">
+        <div class="benefits-content">
+          <span class="micro-label" data-i18n="benefits.microLabel">Avantajlar</span>
+          <h2 data-i18n-html="benefits.title">Daha Fazla Üretin,<br>Daha Hızlı Satın.</h2>
+          <p data-i18n="benefits.description">MayaListing, yaratıcı iş akışınızdaki en sıkıcı ve zaman alan süreci tamamen otomatikleştirerek asıl işinize odaklanmanızı sağlar.</p>
+          
+          <div class="benefits-list">
+            <div class="benefit-item">
+              <h4 data-i18n="benefits.b1Title">Zaman Tasarrufu</h4>
+              <p data-i18n="benefits.b1Desc">Her görsel için tek tek anahtar kelime girmeyi bırakın. Zamandan %90 tasarruf edin.</p>
+            </div>
+            <div class="benefit-item">
+              <h4 data-i18n="benefits.b2Title">Maksimum Keşif</h4>
+              <p data-i18n="benefits.b2Desc">SEO uyumlu algoritmalar sayesinde görsellerinizin pazaryerlerindeki görünürlüğünü katlayın.</p>
+            </div>
+            <div class="benefit-item">
+              <h4 data-i18n="benefits.b3Title">Metadata Kalitesi</h4>
+              <p data-i18n="benefits.b3Desc">Hatalı ve alakasız etiketlerden kurtulun, arama sonuçlarıyla birebir örtüşen veriler sunun.</p>
+            </div>
+            <div class="benefit-item">
+              <h4 data-i18n="benefits.b4Title">Portföy Büyüme Hızı</h4>
+              <p data-i18n="benefits.b4Desc">Toplu dışa aktarım sayesinde yeni stok ürünlerinizi günler yerine saatler içinde satışa açın.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="benefits-image" style="padding: 0;">
+          <video
+            id="promo-video"
+            src="/MayaListing_Sunum.mp4?v=20260628"
+            poster="/og-image.png"
+            preload="none"
+            loop
+            muted
+            autoplay
+            playsinline
+          ></video>
+          <div class="video-overlay">
+            <button class="video-control-btn" id="video-play-btn" title="Oynat / Durdur" data-i18n-title="common.playPause">
+              <!-- Play Icon (hidden initially because of autoplay) -->
+              <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" style="display: none;">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <!-- Pause Icon (shown initially because of autoplay) -->
+              <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+            <button class="video-mute-btn" id="video-mute-btn" title="Sesi Aç / Kapat" data-i18n-title="common.muteUnmute">
+              <!-- Mute Icon (speaker with slash, shown by default since video is muted on load) -->
+              <svg id="mute-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              </svg>
+              <!-- Unmute Icon (speaker with waves, hidden by default) -->
+              <svg id="unmute-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" style="display: none;">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -610,7 +540,7 @@
       <div class="section-header">
         <span class="micro-label" data-i18n="pricing.microLabel">Fiyatlandırma</span>
         <h2 data-i18n="pricing.title">Esnek ve Şeffaf Planlar</h2>
-        <p data-i18n="pricing.description">İhtiyacınıza en uygun paketi seçin, dilediğiniz zaman iptal edin veya değiştirin.</p>
+        <p data-i18n="pricing.description">Bireysel üreticilerden büyük ajanslara kadar her ölçeğe uygun üyelik paketleri.</p>
       </div>
 
       <div class="toggle-row">
@@ -627,12 +557,11 @@
             <h3 data-i18n="pricing.freePlan">Ücretsiz</h3>
             <div class="pricing-price">0 $</div>
           </div>
-          <div class="pricing-quota" data-i18n="pricing.freePlanLimitNote">5 Görsel Analiz Hakkı</div>
+          <div class="pricing-quota" data-i18n="pricing.freePlanLimitNote">Aylık 5 Görsel Analizi</div>
           <ul class="pricing-features">
-            <li data-i18n="pricing.free.f1">5 Ücretsiz Görsel Analizi</li>
-            <li data-i18n="pricing.free.f2">Trendyol, Amazon, Etsy, Stock Uyumlu</li>
-            <li data-i18n="pricing.free.f3">Standart Anahtar Kelime ve Açıklama</li>
-            <li data-i18n="pricing.free.f4">Kredi Kartı Gerekmez</li>
+            <li data-i18n="pricing.free.f1">Trendyol, Hepsiburada, n11, Amazon, Stock Uyumlu</li>
+            <li data-i18n="pricing.free.f2">Standart Anahtar Kelimeler</li>
+            <li data-i18n="pricing.free.f3">Kredi Kartı Gerekmez</li>
           </ul>
           <button class="btn btn-secondary pricing-cta-btn" data-plan="free" data-i18n="pricing.startFree">Ücretsiz Başla</button>
         </div>
@@ -645,15 +574,15 @@
           </div>
           <div class="pricing-quota"><span class="quota-val" data-m="300" data-y="300">300</span> <span data-i18n="pricing.analysesPerMonth">Görsel Analizi / Ay</span></div>
           <ul class="pricing-features">
-            <li data-i18n="pricing.starter.f2">Etsy, Amazon, Trendyol &amp; Stock Uyumlu</li>
-            <li data-i18n="pricing.starter.f3">SEO Uyumlu Başlık ve Açıklamalar</li>
+            <li data-i18n="pricing.starter.f2">Etsy, Amazon, e-commerce, Stock Uyumlu</li>
+            <li data-i18n="pricing.starter.f3">Standart Anahtar Kelimeler</li>
             <li data-i18n="pricing.starter.f4">Geçmiş Arşivine Erişim</li>
             <li data-i18n="pricing.starter.f5">Bireysel Kullanıcı Lisansı</li>
           </ul>
           <button class="btn btn-secondary pricing-cta-btn" data-plan="starter" data-i18n="pricing.buyNow">Satın Al</button>
         </div>
 
-        <!-- Pro Plan (Most Popular) -->
+        <!-- Pro Plan -->
         <div class="pricing-card popular">
           <span class="pricing-badge" data-i18n="pricing.mostPopular">En Popüler</span>
           <div class="pricing-header">
@@ -662,9 +591,9 @@
           </div>
           <div class="pricing-quota"><span class="quota-val" data-m="1,000" data-y="1,000">1,000</span> <span data-i18n="pricing.analysesPerMonth">Görsel Analizi / Ay</span></div>
           <ul class="pricing-features">
-            <li style="font-weight: 700; color: var(--color-accent);" data-i18n="pricing.pro.f2">Toplu İşlem (Batch Processing)</li>
-            <li style="font-weight: 700; color: var(--color-accent);" data-i18n="pricing.pro.f3">CSV Formatında Dışa Aktarma</li>
-            <li data-i18n="pricing.pro.f4">Tüm E-Ticaret ve Stock Platformları</li>
+            <li data-i18n="pricing.pro.f2">Çoklu Platform & E-Ticaret Uyumluluğu</li>
+            <li data-i18n="pricing.pro.f3">Toplu İşlem (Batch Processing)</li>
+            <li data-i18n="pricing.pro.f4">CSV formatında Dışa Aktarma</li>
             <li data-i18n="pricing.pro.f5">Öncelikli İşlem Kuyruğu</li>
           </ul>
           <button class="btn btn-primary pricing-cta-btn" data-plan="pro" data-i18n="pricing.buyNow">Satın Al</button>
@@ -679,9 +608,9 @@
           <div class="pricing-quota" data-i18n="pricing.unlimitedAnalyses">Sınırsız Görsel Analizi</div>
           <ul class="pricing-features">
             <li data-i18n="pricing.studio.f2">Gelişmiş Takım Erişimi (5 Kullanıcı)</li>
-            <li data-i18n="pricing.studio.f3">Gelişmiş Dışa Aktarma &amp; Entegrasyon</li>
+            <li data-i18n="pricing.studio.f3">Gelişmiş Dışa Aktarma & Entegrasyon</li>
             <li data-i18n="pricing.studio.f4">7/24 Özel Destek Hattı</li>
-            <li data-i18n="pricing.studio.f5">Özel API Lisansı Erişimi</li>
+            <li data-i18n="pricing.studio.f5">Özel API Erişimi Lisansı</li>
           </ul>
           <div class="pricing-extra-note" data-i18n="pricing.extraUserNote">+ Ek kullanıcı başına 9.99 $ / ay</div>
           <button class="btn btn-secondary pricing-cta-btn" data-plan="studio" data-i18n="pricing.buyNow">Satın Al</button>
@@ -690,106 +619,107 @@
 
       <div class="pricing-footnote">
         <span class="ic">ℹ</span>
-        <p data-i18n="pricing.pricingFootnote">Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar. Kullanılmayan analiz kredileri aboneliğiniz aktif kaldığı sürece aydan aya devreder.</p>
+        <p data-i18n="pricing.pricingFootnote">Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Kullanılmayan analiz kredileri, aboneliğiniz aktif kaldığı sürece aydan aya devreder.</p>
       </div>
     </div>
   </section>
 
-  <!-- FAQ Section (Honest, 10 Questions, Accurate) -->
+  <!-- Testimonials -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="micro-label" data-i18n="testimonials.microLabel">Görüşler</span>
+        <h2 data-i18n="testimonials.title">Yaratıcıların Tercihi</h2>
+        <p data-i18n="testimonials.description">Dünya standartlarında stok portföyü yöneten Türk yaratıcıların MayaListing hakkındaki yorumları.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote" data-i18n="testimonials.t1Quote">"MayaListing sayesinde her hafta sisteme yüklediğim 200'den fazla stok fotoğrafının etiketleme süresi 4 saatten 15 dakikaya düştü. Üstelik satışlarımda gözle görülür bir artış var."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" data-i18n="testimonials.t1Initials">EY</div>
+            <div class="author-info">
+              <h4 data-i18n="testimonials.t1Name">Emre Yıldız</h4>
+              <p data-i18n="testimonials.t1Role">Bağımsız Stok Fotoğrafçısı</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote" data-i18n="testimonials.t2Quote">"Etsy ve Amazon üzerinden sattığımız el yapımı ahşap ürünlerin etiketleme ve SEO açıklamalarını MayaListing ile yapıyoruz. Türkçe ve İngilizce sonuçlardaki doğruluk ve şıklık mükemmel."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" data-i18n="testimonials.t2Initials">SC</div>
+            <div class="author-info">
+              <h4 data-i18n="testimonials.t2Name">Selin Çelik</h4>
+              <p data-i18n="testimonials.t2Role">E-Ticaret Marka Sahibi</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote" data-i18n="testimonials.t3Quote">"Bir görsel ajans olarak yüzlerce müşterimizin ürün görsellerini arşivliyor ve katalogluyoruz. MayaListing'ın sunduğu CSV toplu dışa aktarma ve geçmiş paneli tam aradığımız profesyonel çözüm."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" data-i18n="testimonials.t3Initials">BA</div>
+            <div class="author-info">
+              <h4 data-i18n="testimonials.t3Name">Barış Arslan</h4>
+              <p data-i18n="testimonials.t3Role">Kreatif Direktör, Studio Piks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
   <section class="section" id="faq">
     <div class="container">
       <div class="section-header">
-        <span class="micro-label" data-i18n="faq.microLabel">Sorular &amp; Cevaplar</span>
+        <span class="micro-label" data-i18n="faq.microLabel">Sorular</span>
         <h2 data-i18n="faq.title">Sıkça Sorulan Sorular</h2>
-        <p data-i18n="faq.description">Mayalisting'in çalışma prensipleri ve özellikleri hakkında bilmek istedikleriniz.</p>
+        <p data-i18n="faq.description">MayaListing hakkında merak ettiğiniz temel konular ve yanıtları.</p>
       </div>
 
       <div class="faq-list">
         <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q1">Mayalisting nedir?</button>
+          <button class="faq-question" data-i18n="faq.q1">Yapay zeka metadata üretim doğruluğu nedir?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a1">Mayalisting; ürün ve stok fotoğraflarınızı analiz ederek Trendyol, Amazon, Etsy, Adobe Stock ve Shutterstock gibi platformlar için başlık, açıklama ve anahtar kelimeleri saniyeler içinde hazırlayan yapay zeka destekli bir otomasyon aracıdır.</p>
+            <p data-i18n="faq.a1">MayaListing, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q2">Hangi platformları destekliyor?</button>
+          <button class="faq-question" data-i18n="faq.q2">Hangi platformları destekliyorsunuz?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a2">E-ticarette Trendyol, Amazon, Etsy, Hepsiburada ve n11; stok fotoğrafçılığında ise Adobe Stock, Shutterstock, Freepik ve Vecteezy platformlarını doğrudan destekler.</p>
+            <p data-i18n="faq.a2">Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q3">Stock fotoğraflarında kullanılabilir mi?</button>
+          <button class="faq-question" data-i18n="faq.q3">Yüklediğim görsellerin gizliliği nasıl korunuyor?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a3">Evet. Fotoğrafınızı yüklediğinizde stok platformlarının arama algoritmalarına ve spam kurallarına uygun 30 ila 50 anahtar kelime üretir; Adobe Stock ve Shutterstock için hazır CSV formatında dışa aktarabilirsiniz.</p>
+            <p data-i18n="faq.a3">Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz.</p>
           </div>
         </div>
 
         <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q4">E-ticaret ürünlerinde kullanılabilir mi?</button>
+          <button class="faq-question" data-i18n="faq.q4">İstediğim zaman aboneliğimi iptal edebilir miyim?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a4">Evet. Ürün görselinizi analiz ederek Trendyol için emojili ve madde imli satış açıklamaları, Amazon ve Etsy için ise SEO odaklı başlıklar ve 13'lü odak arama etiketleri hazırlar.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q5">Birden fazla görseli aynı anda işleyebilir miyim?</button>
-          <div class="faq-answer">
-            <p data-i18n="faq.a5">Evet. Pro ve Studio planlarımızda bulunan Toplu İşlem (Batch Processing) özelliği sayesinde onlarca fotoğrafı aynı anda yükleyebilir, arka planda tüm metadata setlerini tek seferde oluşturabilirsiniz.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q6">CSV dışa aktarabilir miyim?</button>
-          <div class="faq-answer">
-            <p data-i18n="faq.a6">Evet. Stok platformlarının resmi toplu yükleme şablonlarıyla %100 uyumlu CSV dosyalarını tek tıkla indirebilirsiniz.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q7">Ücretsiz deneyebilir miyim?</button>
-          <div class="faq-answer">
-            <p data-i18n="faq.a7">Evet. Kredi kartı bilgisi vermeden hemen ücretsiz hesap açabilir ve 5 görselinizi sistemde anında analiz edebilirsiniz.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q8">ChatGPT'den farkı nedir?</button>
-          <div class="faq-answer">
-            <p data-i18n="faq.a8">ChatGPT'ye her fotoğraf için tek tek prompt yazmanız, karakter sınırlarını elle saymanız ve sonuçları Excel'e manuel kopyalamanız gerekir. Mayalisting ise tek tıkla onlarca görseli işler, platform kurallarına göre optimize eder ve doğrudan yüklenebilir CSV verir.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q9">Üretilen içerikleri düzenleyebilir miyim?</button>
-          <div class="faq-answer">
-            <p data-i18n="faq.a9">Elbette. Oluşturulan tüm başlık, açıklama ve anahtar kelimeleri kopyalamadan veya indirmeden önce panelinizden dilediğiniz gibi düzenleyebilirsiniz.</p>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-question" data-i18n="faq.q10">Yüklediğim görsellerin gizliliği nasıl korunuyor?</button>
-          <div class="faq-answer">
-            <p data-i18n="faq.a10">Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir. Kesinlikle üçüncü taraflarla paylaşılmaz ve yapay zeka modellerinin genel eğitimi için veri seti olarak kullanılmaz. Telif hakları tamamen size aittir.</p>
+            <p data-i18n="faq.a4">Evet, dilediğiniz an taahhüt olmadan aboneliğinizi panelinizdeki faturalandırma sayfasından iptal edebilir veya planlar arasında geçiş yapabilirsiniz. İptal durumunda haklarınız fatura kesim tarihine kadar devam eder.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Final CTA & Trust Strip -->
-  <section class="final-cta" id="final-cta">
+  <!-- Final CTA -->
+  <section class="final-cta">
     <div class="container">
-      <h2 data-i18n="cta.title">Portföyünüzü ve Satışlarınızı Büyütmeye Başlayın</h2>
-      <p data-i18n="cta.description">5 ücretsiz görsel analiziyle Mayalisting'i hemen deneyin. Kredi kartı gerekmez.</p>
-      <button class="btn" id="final-cta-btn" data-i18n="cta.button">Ücretsiz Başla</button>
-
-      <div class="trust-strip">
-        <div class="trust-item"><span class="trust-icon">🔒</span> <span data-i18n="trust.b1">SSL 256-bit Şifreli İletişim</span></div>
-        <div class="trust-item"><span class="trust-icon">🛡️</span> <span data-i18n="trust.b2">AI Eğitimi İçin Veri Kullanılmaz</span></div>
-        <div class="trust-item"><span class="trust-icon">✨</span> <span data-i18n="trust.b3">İstediğiniz Zaman İptal Edin</span></div>
-      </div>
+      <h2 data-i18n="cta.title">Portföyünüzü Büyütmeye Bugün Başlayın</h2>
+      <p data-i18n="cta.description">Hemen ücretsiz hesabınızı oluşturun ve ilk 5 görselinizi saniyeler içinde analiz edin.</p>
+      <button class="btn" id="final-cta-btn" data-i18n="cta.button">Ücretsiz Hesap Oluştur</button>
     </div>
   </section>
 
@@ -806,7 +736,7 @@
         <div class="footer-col">
           <h4 data-i18n="footer.product">Ürün</h4>
           <ul>
-            <li><a href="#segments" data-i18n="nav.features">Özellikler</a></li>
+            <li><a href="#features" data-i18n="nav.features">Özellikler</a></li>
             <li><a href="#pricing" data-i18n="nav.pricing">Fiyatlandırma</a></li>
             <li><a href="#how-it-works" data-i18n="nav.howItWorks">Çalışma Şekli</a></li>
             <li><a href="/blog/">Blog</a></li>
