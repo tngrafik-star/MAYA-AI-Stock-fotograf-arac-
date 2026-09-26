@@ -1,0 +1,32 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Runs every 2 days at 05:00 UTC (08:00 TRT) to prevent Supabase 7-day inactivity pause
+    - cron: '0 5 */2 * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  keep-alive:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send keep-alive query
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://fdfeavvdrcutzpsaygjw.supabase.co' }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkZmVhdnZkcmN1dHpwc2F5Z2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNDYxNTksImV4cCI6MjA5NzYyMjE1OX0.ctjMv-5ZV3S3oHGko72dCC3mwWgqqOQfjwigw_pWzr8' }}
+        run: |
+          echo "Sending keep-alive query to Supabase REST API..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/profiles?select=id&limit=1")
+
+          echo "Response code: $HTTP_STATUS"
+
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 204 ]; then
+            echo "✅ Supabase database successfully pinged! Inactivity timer reset."
+          else
+            echo "❌ Keep-alive failed with HTTP code: $HTTP_STATUS"
+            exit 1
+          fi
