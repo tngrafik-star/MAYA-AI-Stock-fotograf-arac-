@@ -150,3 +150,5 @@ CREATE POLICY "Kullanıcılar etkinlik geçmişi ekleyebilir"
 -- dosyasını da çalıştırın. Plan/kredi alanlarını istemciye kapatır, webhook_events
 -- için RLS'i açar ve sunucunun kullandığı consume_generation / refund_generation
 -- fonksiyonlarını oluşturur. Bu adım atlanırsa /api/generate çalışmaz.
+-- Ardından supabase/migrations/20261022_product_data_private_images.sql
+-- dosyasını çalıştırın (orijinal dosya adı, platform verisi, özel görsel deposu).

@@ -178,7 +178,7 @@
                 <h3 data-i18n="dashboard.home.dropzoneTitle">Görselinizi Buraya Sürükleyin</h3>
                 <p data-i18n="dashboard.home.dropzoneFormats">PNG, JPG veya WEBP • 20MB'a kadar</p>
                 <button class="btn btn-secondary" data-i18n="dashboard.home.browseBtn" onclick="document.getElementById('quick-file-input').click()">Bilgisayardan Seç</button>
-                <input type="file" id="quick-file-input" class="file-input" accept="image/*">
+                <input type="file" id="quick-file-input" class="file-input" accept="image/*" multiple>
               </div>
             </div>
           </div>
@@ -236,9 +236,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
             </svg>
             <h3 data-i18n="upload.dropzoneTitle">Analiz Edilecek Görseli Yükleyin</h3>
-            <p data-i18n="upload.dropzoneDesc">Sürükleyip bırakın veya bilgisayarınızdan bir dosya seçin.</p>
+            <p data-i18n="upload.dropzoneDesc">Sürükleyip bırakın veya bilgisayarınızdan bir ya da birden çok görsel seçin.</p>
             <button class="btn btn-primary" data-i18n="upload.selectImage" onclick="document.getElementById('main-file-input').click()">Görsel Seç</button>
-            <input type="file" id="main-file-input" class="file-input" accept="image/*">
+            <input type="file" id="main-file-input" class="file-input" accept="image/*" multiple>
           </div>
           
           <!-- Loading Screen -->
@@ -246,6 +246,7 @@
             <div class="spinner"></div>
             <h4 data-i18n="upload.loadingTitle">Yapay Zeka Analiz Ediyor...</h4>
             <p data-i18n="upload.loadingDesc">Görsel renkleri, kompozisyon ögeleri ve anahtar kelime hacimleri hesaplanıyor.</p>
+            <p id="generator-progress" style="font-size: 13px; color: var(--color-text-muted);"></p>
           </div>
         </div>
 
@@ -253,12 +254,10 @@
         <div class="generator-results-wrapper" id="generator-results">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; border-bottom: 1px solid var(--color-border); padding-bottom: 16px;">
             <h3 style="font-family: var(--font-heading); font-size: 28px;" data-i18n="results.title">Analiz Sonucu</h3>
-            <button class="btn btn-secondary" id="reset-generator-btn" data-i18n="results.newUpload">Yeni Görsel Yükle</button>
-          </div>
-
-          <!-- Simulation Mode Warning Banner -->
-          <div id="simulation-warning-banner" style="display: none; background-color: rgba(239, 68, 68, 0.1); border-left: 4px solid #EF4444; padding: 16px; margin-bottom: 24px; font-size: 13px; color: var(--color-text-primary); border-radius: 4px; line-height: 1.5;" data-i18n-html="results.simulationWarning">
-            ⚠️ <strong>Simülasyon Modu Aktif:</strong> Google Gemini API Anahtarınız eksik veya geçersiz olduğu için örnek veriler gösterilmektedir. Gerçek yapay zeka analizi yapmak için lütfen sol menüdeki <strong>Hesap Bilgileri</strong> sekmesine gidin ve geçerli bir <strong>Gemini API Key</strong> tanımlayın.
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-primary" id="download-with-metadata-btn" data-i18n="results.downloadWithMetadata" style="display: none;">Metadata'lı JPG İndir</button>
+              <button class="btn btn-secondary" id="reset-generator-btn" data-i18n="results.newUpload">Yeni Görsel Yükle</button>
+            </div>
           </div>
 
           <div class="results-grid">

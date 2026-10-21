@@ -843,7 +843,8 @@ JSON Structure and Rules:
   },
   
   "shutterstock": {
-    "title": "The title with ' - Stock Photo' appended at the end.",
+    "title": "Same as the stock title.",
+    "description": "A single descriptive sentence of at most 200 characters (Shutterstock uses only the description as the title).",
     "keywords": "Up to 50 keywords selected and expanded from the keywords list, separated by commas."
   },
   
@@ -881,24 +882,25 @@ JSON Yapısı ve Kurallar:
   "tags": "E-Ticaret için optimize edilmiş, en fazla 20 karakter uzunluğunda 13 adet ürün etiketi, aralarında virgül ve boşluk olacak şekilde tek bir satırda yazılmalıdır. Tamamı küçük harf olmalıdır.",
   
   "adobe": {
-    "title": "Stok başlığı ile aynı veya çok benzer bir başlık.",
-    "keywords": "Yukarıdaki keywords listesinden seçilen en alakalı 30 anahtar kelime, aralarında virgülle ayrılmış şekilde."
+    "title": "İNGİLİZCE: Görseli en iyi anlatan, en fazla 70 karakterlik İngilizce stok başlığı (Adobe Stock İngilizce metadata ister).",
+    "keywords": "İNGİLİZCE: En alakalı 30 İngilizce anahtar kelime, en önemlisi başta, aralarında virgülle ayrılmış, tamamı küçük harf."
   },
   
   "shutterstock": {
-    "title": "Başlığın sonuna ' - Stok Fotoğrafı' eklenmiş hali.",
-    "keywords": "Keywords listesinden seçilen ve genişletilen en fazla 50 anahtar kelime, aralarında virgülle ayrılmış şekilde."
+    "title": "İNGİLİZCE: Adobe başlığı ile aynı İngilizce başlık.",
+    "description": "İNGİLİZCE: En fazla 200 karakterlik tek cümlelik İngilizce açıklama (Shutterstock başlık olarak yalnızca açıklamayı kullanır).",
+    "keywords": "İNGİLİZCE: En fazla 50 İngilizce anahtar kelime, aralarında virgülle ayrılmış, tamamı küçük harf."
   },
   
   "freepik": {
-    "title": "Başlığın tamamen küçük harflerle yazılmış hali.",
-    "keywords": "Keywords listesinden seçilen en fazla 25 anahtar kelime, tamamen küçük harflerle yazılmış ve aralarında virgülle ayrılmış şekilde."
+    "title": "İNGİLİZCE: Adobe başlığının tamamen küçük harfli hali.",
+    "keywords": "İNGİLİZCE: En fazla 25 İngilizce anahtar kelime, tamamen küçük harf, aralarında virgülle ayrılmış."
   },
   
   "vecteezy": {
-    "title": "Stok başlığı ile aynı.",
-    "description": "Stok açıklaması ile aynı.",
-    "keywords": "Keywords listesinden seçilen en fazla 20 anahtar kelime, aralarında virgülle ayrılmış şekilde."
+    "title": "İNGİLİZCE: Adobe başlığı ile aynı.",
+    "description": "İNGİLİZCE: Görselin kompozisyonunu anlatan 1-2 cümlelik İngilizce açıklama.",
+    "keywords": "İNGİLİZCE: En fazla 20 İngilizce anahtar kelime, aralarında virgülle ayrılmış."
   },
   
   "ecommerce": {
@@ -907,6 +909,8 @@ JSON Yapısı ve Kurallar:
     "tags": "Etsy/Trendyol uyumlu, aralarında virgülle ayrılmış tam olarak 13 adet küçük harfli etiket."
   }
 }
+
+ÖNEMLİ: "adobe", "shutterstock", "freepik" ve "vecteezy" alanları stok ajanslarına yüklenecektir ve MUTLAKA İNGİLİZCE olmalıdır. Diğer tüm alanlar Türkçe olmalıdır.
 
 ÇIKTI SADECE YUKARIDAKİ JSON ŞABLONUNA UYGUN BİR JSON OLMALIDIR. Başka açıklama veya kod bloğu içermemelidir.`;
 

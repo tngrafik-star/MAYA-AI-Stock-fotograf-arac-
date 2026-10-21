@@ -146,7 +146,7 @@ function base64ToBlob(base64, mimeType) {
 }
 
 // Upload & Results methods
-export async function saveGeneration(userId, imageUrl, metadata) {
+export async function saveGeneration(userId, imageUrl, metadata, originalFilename = null) {
   try {
     if (supabase.isDummy) {
       const uploadId = `upload_${Date.now()}`;
@@ -157,6 +157,8 @@ export async function saveGeneration(userId, imageUrl, metadata) {
         upload_id: uploadId,
         user_id: userId,
         image_url: imageUrl,
+        original_filename: originalFilename,
+        platform_data: metadata,
         upload_date: new Date().toISOString(),
         title: metadata.title,
         description: metadata.description,
@@ -185,6 +187,7 @@ export async function saveGeneration(userId, imageUrl, metadata) {
     }
 
     let finalImageUrl = imageUrl;
+    let imagePath = null;
 
     // If it's a base64 string, upload it to Supabase Storage
     if (imageUrl.startsWith('data:')) {
@@ -201,11 +204,9 @@ export async function saveGeneration(userId, imageUrl, metadata) {
       if (uploadError) {
         console.error('Storage upload error, using raw URL/base64 instead:', uploadError);
       } else {
-        // Get public URL
-        const { data: urlData } = supabase.storage
-          .from('images')
-          .getPublicUrl(fileName);
-        finalImageUrl = urlData.publicUrl;
+        // The bucket is private: keep the path and sign a URL when showing it
+        imagePath = fileName;
+        finalImageUrl = '';
       }
     }
 
@@ -214,7 +215,9 @@ export async function saveGeneration(userId, imageUrl, metadata) {
       .from('uploads')
       .insert({
         user_id: userId,
-        image_url: finalImageUrl
+        image_url: finalImageUrl,
+        image_path: imagePath,
+        original_filename: originalFilename
       })
       .select()
       .single();
@@ -231,7 +234,8 @@ export async function saveGeneration(userId, imageUrl, metadata) {
         description: metadata.description,
         keywords: metadata.keywords,
         tags: metadata.tags,
-        category: metadata.category || 'general'
+        category: metadata.category || 'general',
+        platform_data: metadata
       })
       .select()
       .single();
@@ -267,9 +271,12 @@ export async function getUserHistory(userId) {
         keywords,
         tags,
         category,
+        platform_data,
         created_at,
         uploads:upload_id (
           image_url,
+          image_path,
+          original_filename,
           upload_date
         )
       `)
@@ -278,10 +285,28 @@ export async function getUserHistory(userId) {
 
     if (error) throw error;
 
+    // Images live in a private bucket: sign every path in one request
+    const paths = [...new Set((data || []).map(item => item.uploads?.image_path).filter(Boolean))];
+    const signedUrls = {};
+    if (paths.length > 0) {
+      const { data: signed, error: signError } = await supabase.storage
+        .from('images')
+        .createSignedUrls(paths, 60 * 60);
+      if (signError) {
+        console.error('Signed URL error:', signError);
+      } else {
+        (signed || []).forEach(entry => {
+          if (entry.signedUrl) signedUrls[entry.path] = entry.signedUrl;
+        });
+      }
+    }
+
     return (data || []).map(item => ({
       id: item.id,
       upload_id: item.upload_id,
-      image_url: item.uploads?.image_url || '',
+      image_url: signedUrls[item.uploads?.image_path] || item.uploads?.image_url || '',
+      original_filename: item.uploads?.original_filename || null,
+      platform_data: item.platform_data || null,
       upload_date: item.uploads?.upload_date || item.created_at,
       title: item.title,
       description: item.description,

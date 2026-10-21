@@ -247,10 +247,11 @@
     "description": "Görselinizi yükleyin ve yapay zeka ile profesyonel metadata setleri üretin.",
     "categoryLabel": "Görsel Kategorisi (Üretimi optimize eder)",
     "dropzoneTitle": "Analiz Edilecek Görseli Yükleyin",
-    "dropzoneDesc": "Sürükleyip bırakın veya bilgisayarınızdan bir dosya seçin.",
+    "dropzoneDesc": "Sürükleyip bırakın veya bilgisayarınızdan bir ya da birden çok görsel seçin.",
     "selectImage": "Görsel Seç",
     "loadingTitle": "Yapay Zeka Analiz Ediyor...",
-    "loadingDesc": "Görsel renkleri, kompozisyon ögeleri ve anahtar kelime hacimleri hesaplanıyor."
+    "loadingDesc": "Görsel renkleri, kompozisyon ögeleri ve anahtar kelime hacimleri hesaplanıyor.",
+    "batchProgress": "{{current}} / {{total}} analiz ediliyor: {{name}}"
   },
   "results": {
     "title": "Analiz Sonucu",
@@ -282,7 +283,8 @@
     "highResCommercial": "Yüksek çözünürlüklü ticari kullanım için ideal görsel.",
     "stockKeyword": "stok görsel",
     "highRes": "yüksek çözünürlük",
-    "ecommerceProductSuffix": "E-Ticaret Ürünü"
+    "ecommerceProductSuffix": "E-Ticaret Ürünü",
+    "downloadWithMetadata": "Metadata'lı JPG İndir"
   },
   "history": {
     "title": "Geçmiş Üretimler",
@@ -384,7 +386,12 @@
     "paymentRedirect": "Ödeme sayfasına yönlendiriliyorsunuz...",
     "paymentSessionError": "Ödeme oturumu oluşturulamadı.",
     "invalidPaymentUrl": "Geçersiz ödeme yönlendirme URL'i.",
-    "loginRequired": "Oturum bulunamadı. Lütfen giriş yapın."
+    "loginRequired": "Oturum bulunamadı. Lütfen giriş yapın.",
+    "batchInProgress": "Önceki görseller hâlâ analiz ediliyor. Bitince tekrar deneyin.",
+    "batchComplete": "{{done}} görsel analiz edildi, {{failed}} başarısız.",
+    "analysisFailed": "{{name}} analiz edilemedi: {{error}}",
+    "metadataDownloaded": "Başlık ve anahtar kelimeler görselin içine yazıldı. Dosyayı doğrudan stok sitesine yükleyebilirsiniz.",
+    "metadataDownloadFailed": "Metadata görsele yazılamadı. Yalnızca JPG dosyaları destekleniyor."
   },
   "common": {
     "copy": "Kopyala",

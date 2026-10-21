@@ -1,6 +1,7 @@
 import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs, syncUsage } from './db.js';
 import { logout, updateProfile, cancelSubscription } from './auth.js';
-import { getCategories, generateAIData, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
+import { getCategories, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
+import { embedXmpInJpeg } from './xmp.js';
 import { supabase } from './supabase.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage, translateActivityLog } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
@@ -21,6 +22,24 @@ const escapeHTML = (str) => {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+};
+
+// Our categories mapped to Shutterstock's fixed category names
+const SHUTTERSTOCK_CATEGORIES = {
+  decor: 'Interiors',
+  cosmetics: 'Beauty/Fashion',
+  tech: 'Technology',
+  food: 'Food and drink',
+  landscape: 'Nature',
+  fashion: 'Beauty/Fashion',
+  fitness: 'Sports/Recreation',
+  business: 'Business/Finance',
+  architecture: 'Buildings/Landmarks',
+  animals: 'Animals/Wildlife',
+  travel: 'Buildings/Landmarks',
+  automotive: 'Transportation',
+  portrait: 'People',
+  other: 'Miscellaneous'
 };
 
 // Helper function to convert Turkish strings to lowercase safely for search comparisons
@@ -126,7 +145,8 @@ const initApp = async () => {
   }
 
   // State Variables
-  let selectedFile = null;
+  let isProcessing = false;
+  let activeFile = null; // Original file of the result on screen (for metadata download)
   let activeMetadata = null; // Holds currently active generation metadata
 
   // 2. DOM Elements & Navigation Toggles
@@ -405,9 +425,8 @@ const initApp = async () => {
     if (dropzone) {
       dropzone.addEventListener('drop', (e) => {
         const dt = e.dataTransfer;
-        const files = dt.files;
-        if (files.length > 0) {
-          handleSelectedFile(files[0]);
+        if (dt.files.length > 0) {
+          handleSelectedFiles(dt.files);
         }
       });
     }
@@ -416,34 +435,34 @@ const initApp = async () => {
   // File Inputs
   if (quickFileInput) {
     quickFileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) handleSelectedFile(e.target.files[0]);
+      if (e.target.files.length > 0) handleSelectedFiles(e.target.files);
+      e.target.value = '';
     });
   }
   if (mainFileInput) {
     mainFileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) handleSelectedFile(e.target.files[0]);
+      if (e.target.files.length > 0) handleSelectedFiles(e.target.files);
+      e.target.value = '';
     });
   }
 
-  function handleSelectedFile(file) {
-    console.log('📂 [Debug] handleSelectedFile called for file:', file ? file.name : 'null', 'Type:', file ? file.type : 'unknown');
-    if (!file.type.startsWith('image/')) {
+  function handleSelectedFiles(fileList) {
+    if (isProcessing) {
+      showToast(t('toast.batchInProgress'), 'warning');
+      return;
+    }
+
+    const files = Array.from(fileList).filter(file => file.type.startsWith('image/'));
+    if (files.length === 0) {
       showToast(t('toast.onlyImages'), 'warning');
       return;
     }
-    
-    selectedFile = file;
-    
-    // Auto-detect category from filename and set the dropdown value
-    if (categorySelector && file.name) {
-      const detectedCat = detectCategoryFromFilename(file.name);
-      console.log('📂 [Debug] Auto-detected category:', detectedCat, 'for file:', file.name);
-      categorySelector.value = detectedCat;
+    if (files.length < fileList.length) {
+      showToast(t('toast.onlyImages'), 'warning');
     }
 
-    // Auto-switch to Upload view to process
     switchView('upload');
-    startSimulatedGeneration();
+    processFiles(files);
   }
 
   // Helper to resize/compress base64 image client-side before sending/saving
@@ -483,127 +502,156 @@ const initApp = async () => {
     });
   }
 
-  // Real or Simulated AI Analyzer Flow
-  function startSimulatedGeneration() {
-    console.log('📂 [Debug] startSimulatedGeneration triggered, selectedFile:', selectedFile ? selectedFile.name : 'null');
-    if (!selectedFile) return;
+  const readAsDataURL = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 
+  // Category from the filename when it says something, else the dropdown choice
+  function categoryFor(file) {
+    const detected = file.name ? detectCategoryFromFilename(file.name) : null;
+    return detected && detected !== 'other' ? detected : categorySelector.value;
+  }
+
+  // Analyze one or more images in sequence. Each success is saved to history;
+  // the last one is shown. Nothing is invented when the AI call fails.
+  async function processFiles(files) {
     const user = getCurrentUser();
-    console.log('📂 [Debug] Current User retrieved:', user);
-
     if (!user) {
-      console.error('📂 [Debug] User object is null! Checking session...');
       showToast(t('toast.sessionNotFound'), 'error');
-      return;
-    }
-
-    // Check credits (the server enforces this too; a passed reset date means a fresh month)
-    const periodRenewed = user.usage_reset_at && new Date(user.usage_reset_at) <= new Date();
-    if (!periodRenewed && user.generations_used >= user.generations_limit) {
-      showToast(t('toast.limitReached'), 'warning');
-      switchView('billing');
       return;
     }
 
     const dropzone = document.getElementById('main-dropzone');
     const loading = document.getElementById('generator-loading');
     const results = document.getElementById('generator-results');
+    const progress = document.getElementById('generator-progress');
 
-    // Show loading spinner
+    isProcessing = true;
     dropzone.style.display = 'none';
     loading.style.display = 'flex';
     results.style.display = 'none';
 
-    // Parse image file to display preview
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const rawBase64 = e.target.result;
-      document.getElementById('result-preview-img').src = rawBase64;
-      
-      resizeImage(rawBase64, 1024, 1024).then(compressedBase64 => {
-        const categoryKey = categorySelector.value;
+    let lastResult = null;
+    let done = 0;
+    let failed = 0;
+    let stopReason = null;
 
-        // Real API call via secure backend proxy (relying strictly on server-side .env keys)
-        generateGeminiMetadata(compressedBase64, categoryKey, null, user.plan, getCurrentLanguage())
-          .then(generatedData => {
-            syncUsage(generatedData.usage);
-            updateSidebarProfile();
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const current = getCurrentUser() || user;
 
-            // Save to Database
-            saveGeneration(user.id, compressedBase64, generatedData).then(() => {
-              // Load details to display
-              activeMetadata = generatedData;
-              populateResultsView(generatedData);
-              
-              // Hide simulation warning banner
-              const warningBanner = document.getElementById('simulation-warning-banner');
-              if (warningBanner) warningBanner.style.display = 'none';
+      // The server enforces credits too; a passed reset date means a fresh month
+      const periodRenewed = current.usage_reset_at && new Date(current.usage_reset_at) <= new Date();
+      if (!periodRenewed && current.generations_used >= current.generations_limit) {
+        stopReason = 'limit';
+        break;
+      }
 
-              // Adjust screens
-              loading.style.display = 'none';
-              results.style.display = 'block';
-              
-              showToast(t('toast.analysisComplete'), 'success');
-            }).catch(dbErr => {
-              showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
-              loading.style.display = 'none';
-              dropzone.style.display = 'flex';
-            });
-          })
-          .catch(err => {
-            if (err.status === 402 || err.status === 401) {
-              loading.style.display = 'none';
-              dropzone.style.display = 'flex';
-              if (err.status === 402) {
-                showToast(t('toast.limitReached'), 'warning');
-                switchView('billing');
-              } else {
-                showToast(t('toast.sessionNotFound'), 'error');
-              }
-              return;
-            }
+      if (progress) {
+        progress.textContent = files.length > 1
+          ? t('upload.batchProgress', { current: i + 1, total: files.length, name: file.name })
+          : file.name;
+      }
 
-            console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
-            
-            const errMsg = err.message || '';
-            const lowerMsg = errMsg.toLowerCase();
+      try {
+        const rawBase64 = await readAsDataURL(file);
+        const compressedBase64 = await resizeImage(rawBase64, 1024, 1024);
+        const categoryKey = categoryFor(file);
 
-            if (lowerMsg.includes('quota') || lowerMsg.includes('limit') || lowerMsg.includes('exhausted') || lowerMsg.includes('429')) {
-              showToast(t('toast.quotaExceeded'), 'warning');
-            } else if (lowerMsg.includes('api key not valid') || lowerMsg.includes('invalid') || lowerMsg.includes('api_key_invalid') || lowerMsg.includes('key not found') || lowerMsg.includes('api key')) {
-              showToast(t('toast.invalidApiKey'), 'warning');
-            } else {
-              showToast(t('toast.noApiKey'), 'warning');
-            }
-            
-            setTimeout(() => {
-              const generatedData = generateAIData(categoryKey, selectedFile.name, user.plan, getCurrentLanguage());
-              
-              // Save to Database
-              saveGeneration(user.id, compressedBase64, generatedData).then(() => {
-                // Load details to display
-                activeMetadata = generatedData;
-                populateResultsView(generatedData);
-                
-                // Show simulation warning banner
-                const warningBanner = document.getElementById('simulation-warning-banner');
-                if (warningBanner) warningBanner.style.display = 'block';
+        const generatedData = await generateGeminiMetadata(compressedBase64, categoryKey, null, current.plan, getCurrentLanguage());
+        syncUsage(generatedData.usage);
+        updateSidebarProfile();
 
-                // Adjust screens
-                loading.style.display = 'none';
-                results.style.display = 'block';
-                
-                showToast(t('toast.simulationComplete'), 'success');
-              }).catch(dbErr => {
-                showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
-                loading.style.display = 'none';
-                dropzone.style.display = 'flex';
-              });
-            }, 1500);
-          });
-      });
-    };
-    reader.readAsDataURL(selectedFile);
+        const { usage, ...metadata } = generatedData;
+        metadata.category = metadata.category || categoryKey;
+
+        try {
+          await saveGeneration(current.id, compressedBase64, metadata, file.name);
+        } catch (dbErr) {
+          // The analysis succeeded and its credit is spent: still show it
+          showToast(t('toast.dbSaveError', { error: dbErr.message }), 'error');
+        }
+
+        lastResult = { file, preview: rawBase64, metadata };
+        done++;
+      } catch (err) {
+        if (err.status === 402) {
+          stopReason = 'limit';
+          break;
+        }
+        if (err.status === 401) {
+          stopReason = 'session';
+          break;
+        }
+        failed++;
+        showToast(t('toast.analysisFailed', { name: file.name, error: err.message || '' }), 'error');
+      }
+    }
+
+    isProcessing = false;
+    loading.style.display = 'none';
+    if (progress) progress.textContent = '';
+
+    if (lastResult) {
+      activeFile = lastResult.file;
+      activeMetadata = lastResult.metadata;
+      document.getElementById('result-preview-img').src = lastResult.preview;
+      populateResultsView(lastResult.metadata);
+      updateMetadataDownloadButton();
+      results.style.display = 'block';
+    } else {
+      dropzone.style.display = 'flex';
+    }
+
+    if (stopReason === 'limit') {
+      showToast(t('toast.limitReached'), 'warning');
+      switchView('billing');
+    } else if (stopReason === 'session') {
+      showToast(t('toast.sessionNotFound'), 'error');
+    } else if (files.length > 1) {
+      showToast(t('toast.batchComplete', { done, failed }), failed ? 'warning' : 'success');
+    } else if (done === 1) {
+      showToast(t('toast.analysisComplete'), 'success');
+    }
+  }
+
+  // Download the original JPEG with the Adobe Stock metadata embedded (XMP)
+  const metadataDownloadBtn = document.getElementById('download-with-metadata-btn');
+
+  function updateMetadataDownloadButton() {
+    if (!metadataDownloadBtn) return;
+    // .btn sets display, so toggle it directly instead of the hidden attribute
+    const isJpeg = activeFile && /^image\/jpe?g$/i.test(activeFile.type);
+    metadataDownloadBtn.style.display = isJpeg ? '' : 'none';
+  }
+
+  if (metadataDownloadBtn) {
+    metadataDownloadBtn.addEventListener('click', async () => {
+      if (!activeFile || !activeMetadata) return;
+      try {
+        const stock = activeMetadata.adobe || activeMetadata;
+        const bytes = await activeFile.arrayBuffer();
+        const tagged = embedXmpInJpeg(bytes, {
+          title: stock.title,
+          description: activeMetadata.shutterstock?.description || activeMetadata.description,
+          keywords: stock.keywords
+        });
+        const url = URL.createObjectURL(new Blob([tagged], { type: 'image/jpeg' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = activeFile.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast(t('toast.metadataDownloaded'), 'success');
+      } catch (err) {
+        showToast(t('toast.metadataDownloadFailed'), 'error');
+      }
+    });
   }
 
   // Fill in the metadata boxes on results page
@@ -651,7 +699,7 @@ const initApp = async () => {
     if (!container) return;
     container.innerHTML = '';
     
-    commaString.split(',').forEach(tag => {
+    String(commaString || '').split(',').filter(tag => tag.trim()).forEach(tag => {
       const span = document.createElement('span');
       span.className = 'keyword-tag';
       span.textContent = tag.trim();
@@ -679,8 +727,9 @@ const initApp = async () => {
   const resetBtn = document.getElementById('reset-generator-btn');
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      selectedFile = null;
+      activeFile = null;
       activeMetadata = null;
+      updateMetadataDownloadButton();
       document.getElementById('main-dropzone').style.display = 'flex';
       document.getElementById('generator-loading').style.display = 'none';
       document.getElementById('generator-results').style.display = 'none';
@@ -726,8 +775,9 @@ const initApp = async () => {
     // Set UI preview
     document.getElementById('result-preview-img').src = item.image_url;
     
-    // Reconstruct full platform datasets for displaying
-    const fullData = {
+    // Newer results store every platform's output; older ones are rebuilt
+    // from the base title/description/keywords
+    const fullData = item.platform_data ? { category: item.category, ...item.platform_data } : {
       category: item.category,
       title: item.title,
       description: item.description,
@@ -759,8 +809,10 @@ const initApp = async () => {
       }
     };
     
+    activeFile = null; // only the compressed preview is stored, not the original
     activeMetadata = fullData;
     populateResultsView(fullData);
+    updateMetadataDownloadButton();
     
     // Toggle screens
     document.getElementById('main-dropzone').style.display = 'none';
@@ -928,54 +980,50 @@ const initApp = async () => {
       const itemsToExport = history.filter(h => selectedExportIds.includes(h.id));
       
       const format = document.querySelector('input[name="export-format"]:checked').value;
+      const csvCell = (value) => `"${String(value || '').replace(/"/g, '""')}"`;
+      const firstN = (keywords, n) => String(keywords || '').split(',').map(k => k.trim()).filter(Boolean).slice(0, n).join(', ');
+      // Stock sites match CSV rows to uploaded files by name
+      const fileNameOf = (item) => item.original_filename || `image_${item.id}.jpg`;
+      const platform = (item, key) => item.platform_data?.[key] || {};
       let csvContent = "";
-      
+
       // Determine CSV structures based on target marketplaces
       if (format === 'adobe') {
-        // Adobe Stock format: Filename,Title,Keywords
         csvContent += "Filename,Title,Keywords\r\n";
         itemsToExport.forEach(item => {
-          const rowTitle = `"${item.title.replace(/"/g, '""')}"`;
-          const rowKeywords = `"${item.keywords.split(', ').slice(0, 30).join(', ').replace(/"/g, '""')}"`;
-          csvContent += `image_${item.id}.jpg,${rowTitle},${rowKeywords}\r\n`;
+          const p = platform(item, 'adobe');
+          csvContent += `${csvCell(fileNameOf(item))},${csvCell(p.title || item.title)},${csvCell(firstN(p.keywords || item.keywords, 49))}\r\n`;
         });
-      } 
+      }
       else if (format === 'shutterstock') {
-        // Shutterstock format: Filename,Description,Keywords,Categories
-        csvContent += "Filename,Description,Keywords,Categories\r\n";
+        csvContent += "Filename,Description,Keywords,Categories,Editorial,Mature content,illustration\r\n";
         itemsToExport.forEach(item => {
-          const rowDesc = `"${item.description.replace(/"/g, '""')}"`;
-          const rowKeywords = `"${item.keywords.replace(/"/g, '""')}"`;
-          csvContent += `image_${item.id}.jpg,${rowDesc},${rowKeywords},Technology\r\n`;
+          const p = platform(item, 'shutterstock');
+          const category = SHUTTERSTOCK_CATEGORIES[item.category] || 'Miscellaneous';
+          csvContent += `${csvCell(fileNameOf(item))},${csvCell(p.description || item.description)},${csvCell(firstN(p.keywords || item.keywords, 50))},${csvCell(category)},no,no,no\r\n`;
         });
-      } 
+      }
       else if (format === 'freepik') {
-        // Freepik format: Title,Keywords
-        csvContent += "Title,Keywords\r\n";
+        csvContent += "Filename,Title,Keywords\r\n";
         itemsToExport.forEach(item => {
-          const rowTitle = `"${item.title.toLowerCase().replace(/"/g, '""')}"`;
-          const rowKeywords = `"${item.keywords.toLowerCase().replace(/"/g, '""')}"`;
-          csvContent += `${rowTitle},${rowKeywords}\r\n`;
+          const p = platform(item, 'freepik');
+          csvContent += `${csvCell(fileNameOf(item))},${csvCell((p.title || item.title).toLowerCase())},${csvCell(firstN(p.keywords || item.keywords, 25).toLowerCase())}\r\n`;
         });
-      } 
+      }
       else if (format === 'vecteezy') {
-        // Vecteezy format: Title,Description,Keywords
-        csvContent += "Title,Description,Keywords\r\n";
+        csvContent += "Filename,Title,Description,Keywords\r\n";
         itemsToExport.forEach(item => {
-          const rowTitle = `"${item.title.replace(/"/g, '""')}"`;
-          const rowDesc = `"${item.description.replace(/"/g, '""')}"`;
-          const rowKeywords = `"${item.keywords.replace(/"/g, '""')}"`;
-          csvContent += `${rowTitle},${rowDesc},${rowKeywords}\r\n`;
+          const p = platform(item, 'vecteezy');
+          csvContent += `${csvCell(fileNameOf(item))},${csvCell(p.title || item.title)},${csvCell(p.description || item.description)},${csvCell(firstN(p.keywords || item.keywords, 20))}\r\n`;
         });
-      } 
+      }
       else if (format === 'ecommerce') {
-        // Ecommerce / Online product sales format: Title,Description,Tags,Price,SKU
-        csvContent += "Title,Description,Tags,Price,SKU\r\n";
+        // Price is left empty for the seller to fill in
+        csvContent += "Filename,Title,Description,Tags,Price,SKU\r\n";
         itemsToExport.forEach(item => {
-          const rowTitle = `"${(item.title + ' | ' + t('results.ecommerceProductSuffix')).replace(/"/g, '""')}"`;
-          const rowDesc = `"${item.description.replace(/"/g, '""')}"`;
-          const rowTags = `"${item.tags.replace(/"/g, '""')}"`;
-          csvContent += `${rowTitle},${rowDesc},${rowTags},299.90,SKU_${item.id}\r\n`;
+          const p = platform(item, 'ecommerce');
+          const title = p.title || `${item.title} | ${t('results.ecommerceProductSuffix')}`;
+          csvContent += `${csvCell(fileNameOf(item))},${csvCell(title)},${csvCell(p.description || item.description)},${csvCell(firstN(p.tags || item.tags, 13))},,SKU_${item.id}\r\n`;
         });
       }
 

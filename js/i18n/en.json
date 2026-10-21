@@ -248,10 +248,11 @@
     "description": "Upload your image and generate professional metadata sets with AI.",
     "categoryLabel": "Image Category (Optimizes generation)",
     "dropzoneTitle": "Upload Image for Analysis",
-    "dropzoneDesc": "Drag and drop or select a file from your computer.",
+    "dropzoneDesc": "Drag and drop, or choose one or more images from your computer.",
     "selectImage": "Select Image",
     "loadingTitle": "AI is Analyzing...",
-    "loadingDesc": "Processing image colors, composition elements, and keyword volumes."
+    "loadingDesc": "Processing image colors, composition elements, and keyword volumes.",
+    "batchProgress": "Analyzing {{current}} of {{total}}: {{name}}"
   },
   "results": {
     "title": "Analysis Results",
@@ -283,7 +284,8 @@
     "highResCommercial": "High-resolution image ideal for commercial use.",
     "stockKeyword": "stock image",
     "highRes": "high resolution",
-    "ecommerceProductSuffix": "E-Commerce Product"
+    "ecommerceProductSuffix": "E-Commerce Product",
+    "downloadWithMetadata": "Download JPG with Metadata"
   },
   "history": {
     "title": "Generation History",
@@ -385,7 +387,12 @@
     "paymentRedirect": "Redirecting to payment page...",
     "paymentSessionError": "Failed to create payment session.",
     "invalidPaymentUrl": "Invalid payment redirect URL.",
-    "loginRequired": "Session not found. Please sign in."
+    "loginRequired": "Session not found. Please sign in.",
+    "batchInProgress": "Earlier images are still being analyzed. Try again when they finish.",
+    "batchComplete": "{{done}} images analyzed, {{failed}} failed.",
+    "analysisFailed": "Could not analyze {{name}}: {{error}}",
+    "metadataDownloaded": "Title and keywords are written into the image. You can upload the file straight to a stock site.",
+    "metadataDownloadFailed": "Could not write metadata into the image. Only JPG files are supported."
   },
   "common": {
     "copy": "Copy",
