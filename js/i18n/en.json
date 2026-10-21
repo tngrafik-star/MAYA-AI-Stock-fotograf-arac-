@@ -370,6 +370,7 @@
     "onlyImages": "Please upload image files only.",
     "sessionNotFound": "Session not found. Please sign in again.",
     "limitReached": "You've reached your usage limit! Please upgrade your subscription.",
+    "subscriptionCancelScheduled": "Your subscription has been cancelled. You can keep using your current plan until {{date}}.",
     "analysisComplete": "AI metadata analysis completed!",
     "dbSaveError": "Failed to save to database: {{error}}",
     "noApiKey": "Personal Gemini API Key not found. Running in simulation mode.",

@@ -369,6 +369,7 @@
     "onlyImages": "Lütfen sadece resim dosyası yükleyin.",
     "sessionNotFound": "Oturum bulunamadı. Lütfen tekrar giriş yapın.",
     "limitReached": "Kullanım limitinize ulaştınız! Lütfen aboneliğinizi yükseltin.",
+    "subscriptionCancelScheduled": "Aboneliğiniz iptal edildi. {{date}} tarihine kadar mevcut planınızı kullanmaya devam edebilirsiniz.",
     "analysisComplete": "Yapay zeka metadata analizi tamamlandı!",
     "dbSaveError": "Veritabanına kaydedilemedi: {{error}}",
     "noApiKey": "Kişisel Gemini API Anahtarınız bulunamadı. Simülasyon modunda çalışılıyor.",

@@ -144,3 +144,9 @@ CREATE POLICY "Kullanıcılar kendi etkinlik geçmişini görebilir"
 CREATE POLICY "Kullanıcılar etkinlik geçmişi ekleyebilir" 
     ON public.activity_history FOR INSERT 
     WITH CHECK (auth.uid() = user_id);
+
+-- 8. Güvenlik & Faturalandırma
+-- Bu scriptten SONRA supabase/migrations/20261021_security_and_billing.sql
+-- dosyasını da çalıştırın. Plan/kredi alanlarını istemciye kapatır, webhook_events
+-- için RLS'i açar ve sunucunun kullandığı consume_generation / refund_generation
+-- fonksiyonlarını oluşturur. Bu adım atlanırsa /api/generate çalışmaz.

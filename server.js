@@ -79,14 +79,54 @@ if (process.env.STRIPE_SECRET_KEY) {
   stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 }
 
+const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+
 // Initialize Supabase Admin Client
+// Only the service_role key works here: plan/credit columns are closed to the
+// anon key by RLS, so falling back to it would silently break billing.
 const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const supabaseAdmin = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: false
   }
 }) : null;
+if (!supabaseAdmin) {
+  console.warn('⚠️ SUPABASE_SERVICE_ROLE_KEY not set - credit checks and payment webhooks are disabled.');
+}
+
+// Supabase client used only to validate user access tokens (auth.getUser)
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseAuth = (supabaseUrl && supabaseAnonKey) ? createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false
+  }
+}) : null;
+
+const PLAN_LIMITS = {
+  free: 5,
+  starter: 300,
+  pro: 1000,
+  studio: 999999
+};
+
+// Map a Lemon Squeezy variant id (monthly or yearly) back to our plan name
+const planFromVariant = (variantId) => {
+  if (!variantId) return null;
+  const variants = {
+    starter: [process.env.LEMON_SQUEEZY_VARIANT_STARTER, process.env.LEMON_SQUEEZY_VARIANT_STARTER_YEARLY],
+    pro: [process.env.LEMON_SQUEEZY_VARIANT_PRO, process.env.LEMON_SQUEEZY_VARIANT_PRO_YEARLY],
+    studio: [process.env.LEMON_SQUEEZY_VARIANT_STUDIO, process.env.LEMON_SQUEEZY_VARIANT_STUDIO_YEARLY]
+  };
+  return Object.keys(variants).find(plan => variants[plan].includes(String(variantId))) || null;
+};
+
+const nextMonth = () => {
+  const date = new Date();
+  date.setMonth(date.getMonth() + 1);
+  return date.toISOString();
+};
 
 // Initialize Nodemailer SMTP Transporter
 let emailTransporter = null;
@@ -185,7 +225,7 @@ const rateLimiter = (limitCount, windowMs, label = 'API') => {
 };
 
 // JWT Authentication Middleware
-const verifyAuth = (req, res, next) => {
+const verifyAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
@@ -194,26 +234,53 @@ const verifyAuth = (req, res, next) => {
   }
 
   const token = authHeader.slice(7); // Remove "Bearer " prefix
+  let userId = null;
 
   try {
-    // Verify with Supabase JWT secret
-    const jwtSecret = process.env.SUPABASE_JWT_SECRET || process.env.VITE_SUPABASE_JWT_SECRET;
-    if (!jwtSecret) {
-      console.warn('⚠️ SUPABASE_JWT_SECRET not set, skipping verification in development');
-      // In development, if secret not available, extract user ID from token payload
-      const decoded = jwt.decode(token);
-      req.userId = decoded?.sub;
-      return next();
+    if (supabaseAuth) {
+      // Supabase Auth validates signature, expiry and revocation (works for both
+      // legacy HS256 and new asymmetric signing keys)
+      const { data, error } = await supabaseAuth.auth.getUser(token);
+      if (error || !data?.user) {
+        throw new Error(error?.message || 'User not found for token');
+      }
+      userId = data.user.id;
+    } else {
+      const jwtSecret = process.env.SUPABASE_JWT_SECRET || process.env.VITE_SUPABASE_JWT_SECRET;
+      if (jwtSecret) {
+        userId = jwt.verify(token, jwtSecret).sub; // Supabase uses 'sub' for user ID
+      } else if (!IS_PRODUCTION) {
+        console.warn('⚠️ Supabase auth not configured, skipping token verification in development');
+        userId = jwt.decode(token)?.sub;
+      } else {
+        console.error('❌ Token verification is not configured in production.');
+        return res.status(503).json({
+          error: { message: "Kimlik doğrulama servisi yapılandırılmamış." }
+        });
+      }
     }
-
-    const decoded = jwt.verify(token, jwtSecret);
-    req.userId = decoded.sub; // Supabase uses 'sub' for user ID
-    next();
   } catch (error) {
     console.error('JWT verification error:', error.message);
     return res.status(401).json({
       error: { message: "Geçersiz veya süresi dolmuş token." }
     });
+  }
+
+  if (!userId) {
+    return res.status(401).json({
+      error: { message: "Geçersiz veya süresi dolmuş token." }
+    });
+  }
+
+  req.userId = userId;
+  next();
+};
+
+const refundGeneration = async (userId) => {
+  if (!supabaseAdmin || !userId) return;
+  const { error } = await supabaseAdmin.rpc('refund_generation', { p_user_id: userId });
+  if (error) {
+    console.error(`❌ refund_generation failed for ${userId}:`, error.message);
   }
 };
 
@@ -422,7 +489,9 @@ app.post('/api/payment/webhook', rateLimiter(100, 60 * 1000, 'Stripe Webhook'), 
           .from('profiles')
           .update({
             plan: plan,
-            generations_limit: limit
+            generations_limit: limit,
+            generations_used: 0,
+            usage_reset_at: nextMonth()
           })
           .eq('id', userId);
 
@@ -475,8 +544,9 @@ app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeez
 
     if (secret && signature) {
       const hmac = crypto.createHmac('sha256', secret);
-      const digest = hmac.update(rawBody).digest('hex');
-      if (digest !== signature) {
+      const digest = Buffer.from(hmac.update(rawBody).digest('hex'), 'utf8');
+      const received = Buffer.from(String(signature), 'utf8');
+      if (digest.length !== received.length || !crypto.timingSafeEqual(digest, received)) {
         console.error('❌ Lemon Squeezy Webhook signature verification failed.');
         return res.status(401).send('Signature verification failed');
       }
@@ -498,79 +568,154 @@ app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeez
   }
 
   const eventName = event.meta?.event_name;
-  const eventId = event.meta?.event_id;
-  const customData = event.meta?.custom_data;
+  const customData = event.meta?.custom_data || {};
+  const data = event.data || {};
+  const attrs = data.attributes || {};
+  // Lemon Squeezy has no per-delivery event id; resource id + updated_at identifies a state change
+  const eventId = `lemonsqueezy:${eventName}:${data.type}:${data.id}:${attrs.updated_at || attrs.created_at || ''}`;
 
-  console.log(`🔔 Lemon Squeezy Webhook received: ${eventName} (ID: ${eventId})`);
+  console.log(`🔔 Lemon Squeezy Webhook received: ${eventName} (${data.type} ${data.id})`);
 
-  // Handle subscription_created / order_created
-  if (eventName === 'order_created' || eventName === 'subscription_created') {
-    const userId = customData?.userId || customData?.user_id;
-    const plan = customData?.plan;
+  const handledEvents = [
+    'subscription_created',
+    'subscription_updated',
+    'subscription_cancelled',
+    'subscription_resumed',
+    'subscription_expired',
+    'subscription_paused',
+    'subscription_unpaused',
+    'subscription_payment_success'
+  ];
+  if (!handledEvents.includes(eventName)) {
+    // order_created is followed by subscription_created for subscriptions; nothing to do here
+    return res.json({ received: true });
+  }
 
-    const planLimits = {
-      free: 5,
-      starter: 300,
-      pro: 1000,
-      studio: 999999
-    };
+  if (!supabaseAdmin) {
+    console.error("❌ Supabase admin client not initialized. Cannot update user profile.");
+    return res.status(500).json({ error: { message: 'Billing backend not configured' } });
+  }
 
-    const limit = planLimits[plan] || 5;
+  const { data: existingEvent } = await supabaseAdmin
+    .from('webhook_events')
+    .select('id')
+    .eq('event_id', eventId)
+    .maybeSingle();
 
-    if (userId && plan) {
-      console.log(`✅ Lemon Squeezy Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
+  if (existingEvent) {
+    console.log(`⏭️  Webhook ${eventId} already processed. Skipping.`);
+    return res.json({ received: true });
+  }
 
-      if (supabaseAdmin) {
-        // Check if webhook was already processed (idempotency)
-        if (eventId) {
-          const { data: existingEvent } = await supabaseAdmin
-            .from('webhook_events')
-            .select('id')
-            .eq('event_id', eventId)
-            .maybeSingle();
+  const subscriptionId = String(
+    eventName === 'subscription_payment_success' ? attrs.subscription_id : data.id
+  );
 
-          if (existingEvent) {
-            console.log(`⏭️  Webhook ${eventId} already processed. Skipping.`);
-            return res.json({ received: true });
-          }
-        }
+  // Resolve the user: checkout custom data first, then the stored subscription id
+  let profile = null;
+  const customUserId = customData.userId || customData.user_id;
+  if (customUserId) {
+    const { data: found } = await supabaseAdmin
+      .from('profiles')
+      .select('id, lemon_subscription_id')
+      .eq('id', customUserId)
+      .maybeSingle();
+    profile = found;
+  }
+  if (!profile && subscriptionId) {
+    const { data: found } = await supabaseAdmin
+      .from('profiles')
+      .select('id, lemon_subscription_id')
+      .eq('lemon_subscription_id', subscriptionId)
+      .maybeSingle();
+    profile = found;
+  }
 
-        // Process the webhook
-        const { error: updateError } = await supabaseAdmin
-          .from('profiles')
-          .update({
-            plan: plan,
-            generations_limit: limit
-          })
-          .eq('id', userId);
+  if (!profile) {
+    console.warn(`⚠️ Lemon Squeezy Webhook: No profile for subscription ${subscriptionId}`, customData);
+    return res.json({ received: true });
+  }
 
-        if (updateError) {
-          console.error(`❌ Supabase update error: ${updateError.message}`);
-        } else {
-          console.log(`🎉 User ${userId} successfully upgraded to ${plan.toUpperCase()} plan via Lemon Squeezy.`);
+  // Events about an older subscription must not touch the user's current one
+  // (e.g. the previous plan expiring after an upgrade created a new subscription)
+  const isCurrentSubscription = !profile.lemon_subscription_id || profile.lemon_subscription_id === subscriptionId;
+  const plan = planFromVariant(attrs.variant_id) || customData.plan;
+  const downgrade = {
+    plan: 'free',
+    generations_limit: PLAN_LIMITS.free,
+    generations_used: 0,
+    usage_reset_at: nextMonth(),
+    subscription_status: 'expired',
+    subscription_ends_at: null
+  };
 
-          // Record webhook event to prevent duplicate processing
-          if (eventId) {
-            const { error: logError } = await supabaseAdmin
-              .from('webhook_events')
-              .insert({
-                event_id: eventId,
-                event_type: eventName,
-                provider: 'lemonsqueezy',
-                payload: event
-              });
+  let updates = null;
 
-            if (logError) {
-              console.warn(`⚠️ Failed to log webhook event: ${logError.message}`);
-            }
-          }
-        }
-      } else {
-        console.warn("⚠️ Supabase admin client not initialized. Cannot update user profile.");
-      }
-    } else {
-      console.warn("⚠️ Lemon Squeezy Webhook: Missing custom metadata userId or plan", customData);
+  if (eventName === 'subscription_created') {
+    if (!PLAN_LIMITS[plan]) {
+      console.error(`❌ Lemon Squeezy Webhook: Unknown plan for variant ${attrs.variant_id}`);
+      return res.status(400).json({ error: { message: 'Unknown plan' } });
     }
+    updates = {
+      plan,
+      generations_limit: PLAN_LIMITS[plan],
+      generations_used: 0,
+      usage_reset_at: nextMonth(),
+      subscription_status: attrs.status,
+      subscription_ends_at: null,
+      lemon_subscription_id: subscriptionId,
+      lemon_customer_id: attrs.customer_id ? String(attrs.customer_id) : null
+    };
+  } else if (!isCurrentSubscription) {
+    console.log(`⏭️  Ignoring ${eventName} for old subscription ${subscriptionId}`);
+  } else if (eventName === 'subscription_payment_success') {
+    // New billing period paid: give the full monthly quota again
+    updates = {
+      generations_used: 0,
+      usage_reset_at: nextMonth()
+    };
+  } else if (eventName === 'subscription_expired' || attrs.status === 'expired') {
+    updates = downgrade;
+  } else {
+    // updated / cancelled / resumed / paused / unpaused: cancelled subscriptions keep
+    // access until ends_at, then subscription_expired downgrades them
+    updates = {
+      subscription_status: attrs.status,
+      subscription_ends_at: attrs.ends_at || null,
+      lemon_subscription_id: subscriptionId
+    };
+    if ((attrs.status === 'active' || attrs.status === 'on_trial') && PLAN_LIMITS[plan]) {
+      // Plan changes made in the customer portal arrive as subscription_updated
+      updates.plan = plan;
+      updates.generations_limit = PLAN_LIMITS[plan];
+    }
+  }
+
+  if (updates) {
+    const { error: updateError } = await supabaseAdmin
+      .from('profiles')
+      .update(updates)
+      .eq('id', profile.id);
+
+    if (updateError) {
+      console.error(`❌ Supabase update error: ${updateError.message}`);
+      // Non-2xx makes Lemon Squeezy retry the delivery
+      return res.status(500).json({ error: { message: 'Profile update failed' } });
+    }
+    console.log(`🎉 User ${profile.id} updated via Lemon Squeezy ${eventName}:`, Object.keys(updates).join(', '));
+  }
+
+  const { error: logError } = await supabaseAdmin
+    .from('webhook_events')
+    .insert({
+      event_id: eventId,
+      event_type: eventName,
+      provider: 'lemonsqueezy',
+      payload: event
+    });
+
+  if (logError) {
+    console.warn(`⚠️ Failed to log webhook event: ${logError.message}`);
   }
 
   res.json({ received: true });
@@ -582,8 +727,10 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 
 // Endpoint for metadata generation (Rate limited: max 30 per 15 minutes)
 app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
+  // Set once a credit is consumed so every failure path below can give it back
+  let creditUserId = null;
   try {
-    const { base64DataUrl, categoryKey, customApiKey, plan, language } = req.body;
+    const { base64DataUrl, categoryKey, language } = req.body;
 
     if (!base64DataUrl) {
       return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
@@ -611,7 +758,6 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
       });
     }
 
-    const userPlan = plan || 'starter';
     const isEnglish = language === 'en';
 
     // 1. Get Category Name
@@ -656,6 +802,45 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
     }
     const mimeType = matches[1];
     const base64Data = matches[2];
+
+    // Consume one credit atomically on the server; the plan comes from the
+    // database, never from the request body
+    let userPlan = 'starter';
+    let usage = null;
+    if (supabaseAdmin) {
+      const { data: consumed, error: consumeError } = await supabaseAdmin
+        .rpc('consume_generation', { p_user_id: req.userId });
+
+      if (consumeError) {
+        console.error('❌ consume_generation error:', consumeError.message);
+        return res.status(500).json({
+          error: { message: "Kredi kontrolü yapılamadı. Lütfen tekrar deneyin.", type: 'QUOTA_CHECK_FAILED', retriable: true }
+        });
+      }
+
+      const profile = consumed?.[0];
+      if (!profile) {
+        return res.status(402).json({
+          error: { message: "Kullanım limitinize ulaştınız. Lütfen aboneliğinizi yükseltin.", type: 'LIMIT_REACHED', retriable: false }
+        });
+      }
+
+      creditUserId = req.userId;
+      userPlan = profile.plan === 'free' ? 'starter' : profile.plan;
+      usage = {
+        plan: profile.plan,
+        generations_used: profile.generations_used,
+        generations_limit: profile.generations_limit,
+        usage_reset_at: profile.usage_reset_at
+      };
+    } else if (IS_PRODUCTION) {
+      console.error('❌ SUPABASE_SERVICE_ROLE_KEY missing in production - refusing to generate without credit check.');
+      return res.status(503).json({
+        error: { message: "Sunucu hatası: Kredi sistemi yapılandırılmamış. Sistem yöneticisine başvurunuz.", type: 'QUOTA_CHECK_FAILED', retriable: false }
+      });
+    } else {
+      console.warn('⚠️ Development: skipping credit check (SUPABASE_SERVICE_ROLE_KEY not set).');
+    }
 
     // Select Gemini model based on user plan
     let modelName = 'gemini-2.5-flash';
@@ -828,6 +1013,7 @@ JSON Yapısı ve Kurallar:
       }
 
       const error = handleGeminiError(response.status, errorData);
+      await refundGeneration(creditUserId);
       console.error(`❌ Gemini API Error (${error.type}):`, errorData.error?.message);
 
       return res.status(error.status).json({
@@ -843,6 +1029,7 @@ JSON Yapısı ve Kurallar:
     const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) {
       console.error('❌ Gemini API returned empty response');
+      await refundGeneration(creditUserId);
       return res.status(500).json({
         error: {
           message: "AI servisi boş yanıt döndürdü. Lütfen tekrar deneyin.",
@@ -855,9 +1042,10 @@ JSON Yapısı ve Kurallar:
     // Parse AI response as JSON
     try {
       const parsedJson = JSON.parse(rawText.trim());
-      return res.json(parsedJson);
+      return res.json({ ...parsedJson, usage });
     } catch (parseErr) {
       console.error('❌ Failed to parse AI response as JSON:', parseErr);
+      await refundGeneration(creditUserId);
       return res.status(500).json({
         error: {
           message: "AI yanıtı işlenemedi. Lütfen tekrar deneyin.",
@@ -869,6 +1057,7 @@ JSON Yapısı ve Kurallar:
 
   } catch (err) {
     console.error('❌ Unexpected error in /api/generate:', err);
+    await refundGeneration(creditUserId);
     return res.status(500).json({
       error: {
         message: err.message || "Bilinmeyen sunucu hatası oluştu.",
@@ -1072,6 +1261,66 @@ app.post('/api/payment/lemon/create-checkout-session', verifyAuth, validateReque
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: { message: err.message || "Lemon Squeezy oturumu oluşturulurken hata oluştu." } });
+  }
+});
+
+// Cancel the user's Lemon Squeezy subscription (access continues until the
+// period ends; the subscription_expired webhook then downgrades to free)
+app.post('/api/payment/lemon/cancel-subscription', verifyAuth, async (req, res) => {
+  try {
+    const apiKey = process.env.LEMON_SQUEEZY_API_KEY;
+    if (!supabaseAdmin || !apiKey) {
+      return res.status(503).json({ error: { message: "Abonelik servisi yapılandırılmamış." } });
+    }
+
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from('profiles')
+      .select('plan, lemon_subscription_id, subscription_status, subscription_ends_at')
+      .eq('id', req.userId)
+      .maybeSingle();
+
+    if (profileError || !profile) {
+      return res.status(404).json({ error: { message: "Profil bulunamadı." } });
+    }
+
+    if (!profile.lemon_subscription_id) {
+      return res.status(400).json({ error: { message: "İptal edilecek aktif bir abonelik bulunamadı. Lütfen destek ile iletişime geçin." } });
+    }
+
+    if (profile.subscription_status === 'cancelled') {
+      return res.json({ status: 'cancelled', endsAt: profile.subscription_ends_at });
+    }
+
+    const response = await fetch(`https://api.lemonsqueezy.com/v1/subscriptions/${encodeURIComponent(profile.lemon_subscription_id)}`, {
+      method: 'DELETE',
+      headers: {
+        "Accept": "application/vnd.api+json",
+        "Content-Type": "application/vnd.api+json",
+        "Authorization": `Bearer ${apiKey}`
+      }
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error(`❌ Lemon Squeezy cancel error (${response.status}):`, errText);
+      return res.status(502).json({ error: { message: "Abonelik iptal edilemedi. Lütfen tekrar deneyin." } });
+    }
+
+    const result = await response.json();
+    const attrs = result.data?.attributes || {};
+
+    await supabaseAdmin
+      .from('profiles')
+      .update({
+        subscription_status: attrs.status || 'cancelled',
+        subscription_ends_at: attrs.ends_at || null
+      })
+      .eq('id', req.userId);
+
+    return res.json({ status: attrs.status || 'cancelled', endsAt: attrs.ends_at || null });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: { message: err.message || "Abonelik iptal edilirken hata oluştu." } });
   }
 });
 

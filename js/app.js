@@ -1,5 +1,5 @@
-import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs } from './db.js';
-import { logout, updateProfile, updateSubscription } from './auth.js';
+import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs, syncUsage } from './db.js';
+import { logout, updateProfile, cancelSubscription } from './auth.js';
 import { getCategories, generateAIData, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
 import { supabase } from './supabase.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage, translateActivityLog } from './i18n/index.js';
@@ -93,7 +93,9 @@ const initApp = async () => {
           plan: profile.plan,
           generations_limit: profile.generations_limit,
           generations_used: profile.generations_used,
-          gemini_api_key: profile.gemini_api_key,
+          usage_reset_at: profile.usage_reset_at,
+          subscription_status: profile.subscription_status,
+          subscription_ends_at: profile.subscription_ends_at,
           created_at: profile.created_at
         };
       } else {
@@ -236,7 +238,9 @@ const initApp = async () => {
             plan: profile.plan,
             generations_limit: profile.generations_limit,
             generations_used: profile.generations_used,
-            gemini_api_key: profile.gemini_api_key,
+            usage_reset_at: profile.usage_reset_at,
+            subscription_status: profile.subscription_status,
+            subscription_ends_at: profile.subscription_ends_at,
             created_at: profile.created_at
           };
           localStorage.setItem('maya_current_user', JSON.stringify(currentUser));
@@ -493,8 +497,9 @@ const initApp = async () => {
       return;
     }
 
-    // Check credits
-    if (user.generations_used >= user.generations_limit) {
+    // Check credits (the server enforces this too; a passed reset date means a fresh month)
+    const periodRenewed = user.usage_reset_at && new Date(user.usage_reset_at) <= new Date();
+    if (!periodRenewed && user.generations_used >= user.generations_limit) {
       showToast(t('toast.limitReached'), 'warning');
       switchView('billing');
       return;
@@ -521,6 +526,9 @@ const initApp = async () => {
         // Real API call via secure backend proxy (relying strictly on server-side .env keys)
         generateGeminiMetadata(compressedBase64, categoryKey, null, user.plan, getCurrentLanguage())
           .then(generatedData => {
+            syncUsage(generatedData.usage);
+            updateSidebarProfile();
+
             // Save to Database
             saveGeneration(user.id, compressedBase64, generatedData).then(() => {
               // Load details to display
@@ -543,6 +551,18 @@ const initApp = async () => {
             });
           })
           .catch(err => {
+            if (err.status === 402 || err.status === 401) {
+              loading.style.display = 'none';
+              dropzone.style.display = 'flex';
+              if (err.status === 402) {
+                showToast(t('toast.limitReached'), 'warning');
+                switchView('billing');
+              } else {
+                showToast(t('toast.sessionNotFound'), 'error');
+              }
+              return;
+            }
+
             console.warn('📂 [Debug] Gemini API failed, using simulation fallback:', err);
             
             const errMsg = err.message || '';
@@ -1101,12 +1121,12 @@ const initApp = async () => {
 
     if (plan === 'free') {
       try {
-        const { updateSubscription } = await import('./auth.js');
-        await updateSubscription('free');
-        showToast(t('toast.planUpdatedSuccess') || 'Planınız başarıyla güncellendi.', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        const result = await cancelSubscription();
+        const endsAt = result.endsAt
+          ? new Date(result.endsAt).toLocaleDateString(getDateLocale(), { day: 'numeric', month: 'long', year: 'numeric' })
+          : '-';
+        showToast(t('toast.subscriptionCancelScheduled', { date: endsAt }), 'success');
+        loadBillingSettings();
       } catch (err) {
         showToast(err.message, 'error');
       }

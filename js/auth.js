@@ -105,7 +105,7 @@ export async function resetPassword(email) {
   return true;
 }
 
-export async function updateProfile(name, email, password = null, geminiApiKey = null) {
+export async function updateProfile(name, email, password = null) {
   const user = getCurrentUser();
   if (!user) throw new Error(t('validation.sessionNotFound'));
   
@@ -113,10 +113,6 @@ export async function updateProfile(name, email, password = null, geminiApiKey =
     name: name,
     email: email
   };
-  
-  if (geminiApiKey !== null) {
-    profileUpdates.gemini_api_key = geminiApiKey.trim();
-  }
   
   // 1. Update Profiles table
   const { error: profileError } = await supabase
@@ -143,8 +139,7 @@ export async function updateProfile(name, email, password = null, geminiApiKey =
   const updatedUser = {
     ...user,
     name,
-    email,
-    ...(geminiApiKey !== null ? { gemini_api_key: geminiApiKey.trim() } : {})
+    email
   };
   setCurrentUser(updatedUser);
   await logActivity(user.id, 'Profil Bilgileri Güncellendi');
@@ -152,33 +147,32 @@ export async function updateProfile(name, email, password = null, geminiApiKey =
   return updatedUser;
 }
 
-export async function updateSubscription(plan) {
+// Plan/credit columns are server-only; downgrading to free cancels the paid
+// subscription at the end of the current period.
+export async function cancelSubscription() {
   const user = getCurrentUser();
   if (!user) throw new Error(t('validation.sessionNotFound'));
-  
-  let limit = 300;
-  if (plan === 'free') limit = 5;
-  if (plan === 'pro') limit = 1000;
-  if (plan === 'studio') limit = 999999; // Unlimited
-  
-  const { error } = await supabase
-    .from('profiles')
-    .update({
-      plan: plan,
-      generations_limit: limit
-    })
-    .eq('id', user.id);
-    
-  if (error) throw error;
-  
-  // Update cache
-  const updatedUser = {
+
+  const { data: { session } } = await supabase.auth.getSession();
+  const response = await fetch('/api/payment/lemon/cancel-subscription', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
+    }
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error?.message || t('toast.paymentSessionError'));
+  }
+
+  setCurrentUser({
     ...user,
-    plan: plan,
-    generations_limit: limit
-  };
-  setCurrentUser(updatedUser);
-  await logActivity(user.id, `Abonelik Güncellendi: ${plan.toUpperCase()}`);
-  
-  return updatedUser;
+    subscription_status: data.status,
+    subscription_ends_at: data.endsAt
+  });
+  await logActivity(user.id, 'Abonelik Güncellendi: CANCELLED');
+
+  return data;
 }

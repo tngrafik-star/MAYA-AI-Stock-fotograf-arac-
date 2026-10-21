@@ -22,7 +22,9 @@ supabase.auth.onAuthStateChange((event, session) => {
             plan: profile.plan,
             generations_limit: profile.generations_limit,
             generations_used: profile.generations_used,
-            gemini_api_key: profile.gemini_api_key,
+            usage_reset_at: profile.usage_reset_at,
+            subscription_status: profile.subscription_status,
+            subscription_ends_at: profile.subscription_ends_at,
             created_at: profile.created_at
           }));
         } else {
@@ -103,6 +105,9 @@ export async function getCurrentUserVerified() {
       plan: profile?.plan || 'free',
       generations_limit: profile?.generations_limit || 5,
       generations_used: profile?.generations_used || 0,
+      usage_reset_at: profile?.usage_reset_at || null,
+      subscription_status: profile?.subscription_status || null,
+      subscription_ends_at: profile?.subscription_ends_at || null,
       created_at: profile?.created_at || authUser.created_at
     };
 
@@ -112,6 +117,13 @@ export async function getCurrentUserVerified() {
     console.error('getCurrentUserVerified error:', error);
     return null;
   }
+}
+
+// Update cached credit info from the usage block returned by /api/generate
+export function syncUsage(usage) {
+  const user = getCurrentUser();
+  if (!user || !usage) return;
+  setCurrentUser({ ...user, ...usage });
 }
 
 export function setCurrentUser(user) {
@@ -226,20 +238,7 @@ export async function saveGeneration(userId, imageUrl, metadata) {
 
     if (resultDbError) throw resultDbError;
 
-    // 3. Increment generations_used in profile
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      const newUsed = (currentUser.generations_used || 0) + 1;
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ generations_used: newUsed })
-        .eq('id', userId);
-      
-      if (!profileError) {
-        currentUser.generations_used = newUsed;
-        setCurrentUser(currentUser);
-      }
-    }
+    // 3. Credits are consumed by the server in /api/generate (see syncUsage)
 
     // 4. Log activity
     await logActivity(userId, `Metadata Oluşturuldu: ${metadata.title.substring(0, 15)}...`);

@@ -1119,8 +1119,6 @@ export async function generateGeminiMetadata(base64DataUrl, categoryKey, customA
     body: JSON.stringify({
       base64DataUrl,
       categoryKey,
-      customApiKey, // Keep for backward compatibility if user provides their own key
-      plan: userPlan,
       language
     })
   });
@@ -1132,7 +1130,9 @@ export async function generateGeminiMetadata(base64DataUrl, categoryKey, customA
       const errJson = JSON.parse(errText);
       errMsg = errJson.error?.message || errMsg;
     } catch (e) {}
-    throw new Error(errMsg);
+    const error = new Error(errMsg);
+    error.status = response.status;
+    throw error;
   }
 
   const result = await response.json();
