@@ -1,41 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import Joi from 'joi';
 
-// Test schemas (imported from server.js logic)
-const generateSchema = Joi.object({
-  imageData: Joi.string().base64().required().messages({
-    'string.empty': 'Görsel verisi gerekli',
-    'string.base64': 'Görsel verisi geçerli base64 formatında olmalıdır'
-  }),
-  categoryKey: Joi.string().required().messages({
-    'string.empty': 'Kategori gerekli'
-  }),
-  customApiKey: Joi.string().allow(null, '').optional(),
-  plan: Joi.string().valid('free', 'starter', 'pro', 'studio').default('starter').messages({
-    'any.only': 'Plan türü geçersiz'
-  }),
-  language: Joi.string().valid('en', 'tr').default('tr').messages({
-    'any.only': 'Dil geçersiz'
-  })
-});
+import { generateSchema, checkoutSessionSchema } from '../lib/api.js';
 
-const checkoutSessionSchema = Joi.object({
-  plan: Joi.string().valid('free', 'starter', 'pro', 'studio').required().messages({
-    'any.only': 'Plan türü geçersiz',
-    'string.empty': 'Plan gerekli'
-  }),
-  userId: Joi.string().uuid().required().messages({
-    'string.guid': 'Kullanıcı ID geçersiz'
-  }),
-  billingCycle: Joi.string().valid('monthly', 'yearly').optional(),
-  successUrl: Joi.string().uri().optional(),
-  cancelUrl: Joi.string().uri().optional()
-});
+const IMAGE = 'data:image/jpeg;base64,/9j/4AAQSkZJRg==';
 
 describe('Input Validation - generateSchema', () => {
   it('should accept valid generate request', () => {
     const validRequest = {
-      imageData: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDA...',
+      base64DataUrl: IMAGE,
       categoryKey: 'decor',
       plan: 'starter',
       language: 'tr'
@@ -45,7 +17,7 @@ describe('Input Validation - generateSchema', () => {
     expect(error).toBeUndefined();
   });
 
-  it('should reject missing imageData', () => {
+  it('should reject missing image data', () => {
     const invalidRequest = {
       categoryKey: 'decor',
       plan: 'starter'
@@ -58,7 +30,7 @@ describe('Input Validation - generateSchema', () => {
 
   it('should reject invalid plan', () => {
     const invalidRequest = {
-      imageData: 'data:image/jpeg;base64,ABC123',
+      base64DataUrl: IMAGE,
       categoryKey: 'decor',
       plan: 'invalid_plan'
     };
@@ -70,7 +42,7 @@ describe('Input Validation - generateSchema', () => {
 
   it('should reject invalid language', () => {
     const invalidRequest = {
-      imageData: 'data:image/jpeg;base64,ABC123',
+      base64DataUrl: IMAGE,
       categoryKey: 'decor',
       language: 'es'
     };
@@ -82,7 +54,7 @@ describe('Input Validation - generateSchema', () => {
 
   it('should default to starter plan and tr language', () => {
     const request = {
-      imageData: 'data:image/jpeg;base64,ABC123',
+      base64DataUrl: IMAGE,
       categoryKey: 'decor'
     };
 
@@ -94,7 +66,7 @@ describe('Input Validation - generateSchema', () => {
 
   it('should allow null customApiKey', () => {
     const validRequest = {
-      imageData: 'data:image/jpeg;base64,ABC123',
+      base64DataUrl: IMAGE,
       categoryKey: 'decor',
       customApiKey: null
     };

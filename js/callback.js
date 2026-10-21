@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js';
+import { safeRedirectPath } from './redirect.js';
 
 const initCallback = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -13,18 +14,7 @@ const initCallback = () => {
     return;
   }
 
-  // Only allow same-origin paths to prevent open redirects / javascript: URLs
-  const safeRedirectPath = (value) => {
-    if (!value) return '/app/';
-    try {
-      const target = new URL(value, window.location.origin);
-      if (target.origin !== window.location.origin) return '/app/';
-      return target.pathname + target.search + target.hash;
-    } catch (e) {
-      return '/app/';
-    }
-  };
-  const redirectPath = safeRedirectPath(urlParams.get('redirect'));
+  const redirectPath = safeRedirectPath(urlParams.get('redirect'), window.location.origin);
 
   // Listen for auth state changes (e.g. SIGNED_IN)
   const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {

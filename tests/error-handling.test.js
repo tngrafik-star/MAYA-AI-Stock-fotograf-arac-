@@ -1,52 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-// Simulate error handler (from server.js)
-const handleGeminiError = (status, errorData) => {
-  const message = errorData?.error?.message || '';
-
-  if (status === 429) {
-    return {
-      status: 429,
-      userMessage: 'Çok fazla istek gönderdiniz. Lütfen birkaç saniye sonra tekrar deneyin.',
-      type: 'RATE_LIMIT',
-      retriable: true
-    };
-  }
-
-  if (status === 403 || message.includes('quota')) {
-    return {
-      status: 403,
-      userMessage: 'API quota aşılmıştır. Lütfen daha sonra tekrar deneyin.',
-      type: 'QUOTA_EXCEEDED',
-      retriable: false
-    };
-  }
-
-  if (status === 400 || message.includes('invalid')) {
-    return {
-      status: 400,
-      userMessage: 'Görsel biçimi veya içeriği geçersiz. Lütfen PNG/JPG görseli deneyin.',
-      type: 'INVALID_INPUT',
-      retriable: false
-    };
-  }
-
-  if (status === 500 || status === 503) {
-    return {
-      status: status,
-      userMessage: 'AI servisi geçici olarak unavailable. Lütfen birkaç saniye sonra tekrar deneyin.',
-      type: 'SERVICE_ERROR',
-      retriable: true
-    };
-  }
-
-  return {
-    status: status || 500,
-    userMessage: message || 'AI API hatası oluştu. Lütfen tekrar deneyin.',
-    type: 'UNKNOWN_ERROR',
-    retriable: false
-  };
-};
+import { handleGeminiError } from '../lib/api.js';
 
 describe('Gemini Error Classification', () => {
   it('should classify rate limit errors (429)', () => {
@@ -74,6 +28,14 @@ describe('Gemini Error Classification', () => {
 
     expect(error.type).toBe('QUOTA_EXCEEDED');
     expect(error.retriable).toBe(false);
+  });
+
+  it('should classify RESOURCE_EXHAUSTED as quota', () => {
+    const error = handleGeminiError(400, {
+      error: { message: 'RESOURCE_EXHAUSTED: daily limit' }
+    });
+
+    expect(error.type).toBe('QUOTA_EXCEEDED');
   });
 
   it('should classify invalid input errors (400)', () => {

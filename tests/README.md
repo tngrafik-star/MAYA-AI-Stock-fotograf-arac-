@@ -4,53 +4,24 @@ Comprehensive unit tests for critical functionality.
 
 ## Test Coverage
 
+Tests import the real modules the server and app use (no copies of the logic).
+
 ### validation.test.js
-- Input validation for `/api/generate` endpoint
-- Input validation for checkout endpoints
-- Plan validation (free, starter, pro, studio)
-- Language validation (en, tr)
-- User ID format validation (UUID)
-- URL validation for callback URLs
-- 26 test cases
-
-### auth.test.js
-- JWT token creation and verification
-- Authorization header parsing
-- Token expiration handling
-- Token verification with wrong secret
-- User ID extraction from tokens
-- Session security practices
-- 13 test cases
-
-### rate-limiter.test.js
-- Rate limiting enforcement
-- Blocking requests over limit
-- Tracking remaining requests
-- Window reset after expiration
-- Multiple IP handling
-- Memory leak prevention
-- Proxy IP (x-forwarded-for) handling
-- Different limit configurations
-- 16 test cases
+- Request validation for `/api/generate` and checkout (`lib/api.js`)
 
 ### error-handling.test.js
-- Gemini API error classification (429, 403, 400, 500, 503)
-- Rate limit vs quota vs invalid input identification
-- Retry guidance for clients
-- Error message sanitization
-- Edge case handling
-- 14 test cases
+- Gemini error classification (`lib/api.js`), including capitalized quota messages
 
-### webhook-idempotency.test.js
-- Webhook event processing and deduplication
-- Prevention of duplicate payment processing
-- Event ID tracking
-- Race condition handling
-- Multiple webhook scenarios
-- User plan updates
-- 13 test cases
+### billing.test.js
+- Lemon Squeezy variant → plan mapping and webhook decisions (`lib/billing.js`):
+  activation, monthly reset, cancellation, expiry, plan change, stale subscriptions
 
-**Total: 82 test cases**
+### xmp-and-redirect.test.js
+- XMP metadata embedding into JPEG (`js/xmp.js`)
+- Same-origin redirect guard after sign-in (`js/redirect.js`)
+
+### auth.test.js
+- JWT basics (library behaviour)
 
 ## Running Tests
 
@@ -58,7 +29,7 @@ Comprehensive unit tests for critical functionality.
 
 ```bash
 # Install dependencies
-npm install --save-dev vitest
+npm install
 
 # Run all tests
 npm test
