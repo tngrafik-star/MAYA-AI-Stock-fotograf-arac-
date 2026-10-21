@@ -288,10 +288,24 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com'],
+      // The app's file pickers use inline onclick handlers
+      scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'", 'https://generativelanguage.googleapis.com', 'https://api.stripe.com', 'https://app.lemonsqueezy.com']
+      imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
+      // Supabase (auth, database, signed image URLs) and Google Analytics/Ads
+      connectSrc: [
+        "'self'",
+        ...(process.env.VITE_SUPABASE_URL ? [process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_URL.replace(/^https:/, 'wss:')] : []),
+        'https://*.google-analytics.com',
+        'https://*.analytics.google.com',
+        'https://*.googletagmanager.com',
+        'https://www.google.com',
+        'https://pagead2.googlesyndication.com',
+        'https://*.googleadservices.com',
+        'https://*.doubleclick.net',
+        'https://app.lemonsqueezy.com'
+      ]
     }
   },
   hsts: {
