@@ -166,4 +166,34 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/midjourney-stock-photography-prompts-and-quality-guide"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mayalisting.com/blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi"/>
   </url>
+  <url>
+    <loc>https://mayalisting.com/legal/gizlilik/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mayalisting.com/legal/kullanim-kosullari/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mayalisting.com/legal/kvkk/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mayalisting.com/legal/en/privacy/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mayalisting.com/legal/en/terms/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://mayalisting.com/legal/en/kvkk/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

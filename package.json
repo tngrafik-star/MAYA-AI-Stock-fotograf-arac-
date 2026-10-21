@@ -9,8 +9,9 @@
     "dev:backend": "node server.js",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "start": "node server.js",
-    "build": "node write-env.js && vite build",
-    "preview": "vite preview"
+    "build": "node write-env.js && node scripts/build-legal-pages.js && vite build",
+    "preview": "vite preview",
+    "build:legal": "node scripts/build-legal-pages.js"
   },
   "devDependencies": {
     "concurrently": "^10.0.3",
