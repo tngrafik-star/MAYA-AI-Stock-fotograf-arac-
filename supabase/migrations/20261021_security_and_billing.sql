@@ -31,6 +31,16 @@ CREATE POLICY "Kullanıcılar kendi profillerini güncelleyebilir"
 
 -- 3. webhook_events: ödeme payload'ları (müşteri e-postası vb.) içerir,
 -- istemciye tamamen kapalı olmalı. service_role RLS'i bypass eder.
+-- Bazı canlı veritabanlarında bu tablo hiç oluşturulmamış; webhook
+-- idempotency kontrolü için gerekli.
+CREATE TABLE IF NOT EXISTS public.webhook_events (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_id TEXT NOT NULL UNIQUE,
+    event_type TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    payload JSONB NOT NULL,
+    processed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 ALTER TABLE public.webhook_events ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.webhook_events FROM anon, authenticated;
 
@@ -70,5 +80,11 @@ REVOKE EXECUTE ON FUNCTION public.refund_generation(UUID) FROM PUBLIC, anon, aut
 GRANT EXECUTE ON FUNCTION public.consume_generation(UUID) TO service_role;
 GRANT EXECUTE ON FUNCTION public.refund_generation(UUID) TO service_role;
 
--- 5. SECURITY DEFINER tetikleyicisine sabit search_path
-ALTER FUNCTION public.handle_new_user() SET search_path = public;
+-- 5. SECURITY DEFINER tetikleyicisine sabit search_path (fonksiyon varsa)
+DO $$
+BEGIN
+    IF to_regprocedure('public.handle_new_user()') IS NOT NULL THEN
+        ALTER FUNCTION public.handle_new_user() SET search_path = public;
+    END IF;
+END;
+$$;
