@@ -89,8 +89,7 @@
     "freePlanLimitNote": "Aylık 5 Görsel Analizi",
     "analysesPerMonth": "Görsel Analizi / Ay",
     "unlimitedAnalyses": "Sınırsız Görsel Analizi",
-    "extraUserNote": "+ Ek kullanıcı başına 9.99 $ / ay",
-    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Kullanılmayan analiz kredileri, aboneliğiniz aktif kaldığı sürece aydan aya devreder.",
+    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Analiz krediniz her ay yenilenir; kullanılmayan krediler bir sonraki aya devretmez.",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Uyumlu",
       "f2": "Standart Anahtar Kelimeler",
@@ -108,14 +107,14 @@
       "f2": "Çoklu Platform & E-Ticaret Uyumluluğu",
       "f3": "Toplu İşlem (Batch Processing)",
       "f4": "CSV formatında Dışa Aktarma",
-      "f5": "Öncelikli İşlem Kuyruğu"
+      "f5": "Gelişmiş AI Modeli (Gemini Pro)"
     },
     "studio": {
       "f1": "Sınırsız Görsel Analizi",
-      "f2": "Gelişmiş Takım Erişimi (5 Kullanıcı)",
-      "f3": "Gelişmiş Dışa Aktarma & Entegrasyon",
-      "f4": "7/24 Özel Destek Hattı",
-      "f5": "Özel API Erişimi Lisansı"
+      "f2": "Stüdyo Kalitesi E-Ticaret Metinleri",
+      "f3": "Metadata Gömülü Görsel İndirme",
+      "f4": "Öncelikli E-posta Desteği",
+      "f5": "En Detaylı Anahtar Kelime Setleri (45-50)"
     }
   },
   "testimonials": {
@@ -332,7 +331,7 @@
     "changePlan": "Abonelik Planını Değiştir",
     "currentPlanBtn": "Mevcut Planınız",
     "switchToPlan": "{{plan}} Planına Geç",
-    "vipSupport": "✉ 7/24 VIP Mail Desteği",
+    "vipSupport": "✉ Öncelikli E-posta Desteği",
     "starterFeatures": {
       "f1": "Aylık 300 Görsel Analizi",
       "f2": "Temel Metadata Setleri",
@@ -350,8 +349,8 @@
     },
     "studioFeatures": {
       "f1": "Sınırsız Görsel Analizi",
-      "f2": "5 Kişilik Takım Erişimi",
-      "f3": "7/24 Öncelikli Destek"
+      "f2": "Stüdyo Kalitesi E-Ticaret Metinleri",
+      "f3": "Öncelikli E-posta Desteği"
     },
     "vipMailtoSubject": "MayaListing - Studio VIP Destek Talebi",
     "vipMailtoBody": "Merhaba, MayaListing Studio planı kullanıcısıyım. Destek istediğim konu:"

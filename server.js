@@ -11,6 +11,7 @@ import nodemailer from 'nodemailer';
 import WebSocket from 'ws';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
+import { planFromVariant, nextMonth, decideLemonUpdate } from './lib/billing.js';
 
 // Polyfill WebSocket for Supabase Realtime in older Node versions
 if (typeof globalThis.WebSocket === 'undefined') {
@@ -103,30 +104,6 @@ const supabaseAuth = (supabaseUrl && supabaseAnonKey) ? createClient(supabaseUrl
     autoRefreshToken: false
   }
 }) : null;
-
-const PLAN_LIMITS = {
-  free: 5,
-  starter: 300,
-  pro: 1000,
-  studio: 999999
-};
-
-// Map a Lemon Squeezy variant id (monthly or yearly) back to our plan name
-const planFromVariant = (variantId) => {
-  if (!variantId) return null;
-  const variants = {
-    starter: [process.env.LEMON_SQUEEZY_VARIANT_STARTER, process.env.LEMON_SQUEEZY_VARIANT_STARTER_YEARLY],
-    pro: [process.env.LEMON_SQUEEZY_VARIANT_PRO, process.env.LEMON_SQUEEZY_VARIANT_PRO_YEARLY],
-    studio: [process.env.LEMON_SQUEEZY_VARIANT_STUDIO, process.env.LEMON_SQUEEZY_VARIANT_STUDIO_YEARLY]
-  };
-  return Object.keys(variants).find(plan => variants[plan].includes(String(variantId))) || null;
-};
-
-const nextMonth = () => {
-  const date = new Date();
-  date.setMonth(date.getMonth() + 1);
-  return date.toISOString();
-};
 
 // Initialize Nodemailer SMTP Transporter
 let emailTransporter = null;
@@ -636,59 +613,15 @@ app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeez
     return res.json({ received: true });
   }
 
-  // Events about an older subscription must not touch the user's current one
-  // (e.g. the previous plan expiring after an upgrade created a new subscription)
-  const isCurrentSubscription = !profile.lemon_subscription_id || profile.lemon_subscription_id === subscriptionId;
   const plan = planFromVariant(attrs.variant_id) || customData.plan;
-  const downgrade = {
-    plan: 'free',
-    generations_limit: PLAN_LIMITS.free,
-    generations_used: 0,
-    usage_reset_at: nextMonth(),
-    subscription_status: 'expired',
-    subscription_ends_at: null
-  };
+  const { updates, error: decideError } = decideLemonUpdate({ eventName, attrs, subscriptionId, profile, plan });
 
-  let updates = null;
-
-  if (eventName === 'subscription_created') {
-    if (!PLAN_LIMITS[plan]) {
-      console.error(`❌ Lemon Squeezy Webhook: Unknown plan for variant ${attrs.variant_id}`);
-      return res.status(400).json({ error: { message: 'Unknown plan' } });
-    }
-    updates = {
-      plan,
-      generations_limit: PLAN_LIMITS[plan],
-      generations_used: 0,
-      usage_reset_at: nextMonth(),
-      subscription_status: attrs.status,
-      subscription_ends_at: null,
-      lemon_subscription_id: subscriptionId,
-      lemon_customer_id: attrs.customer_id ? String(attrs.customer_id) : null
-    };
-  } else if (!isCurrentSubscription) {
+  if (decideError) {
+    console.error(`❌ Lemon Squeezy Webhook: ${decideError}`);
+    return res.status(400).json({ error: { message: decideError } });
+  }
+  if (!updates) {
     console.log(`⏭️  Ignoring ${eventName} for old subscription ${subscriptionId}`);
-  } else if (eventName === 'subscription_payment_success') {
-    // New billing period paid: give the full monthly quota again
-    updates = {
-      generations_used: 0,
-      usage_reset_at: nextMonth()
-    };
-  } else if (eventName === 'subscription_expired' || attrs.status === 'expired') {
-    updates = downgrade;
-  } else {
-    // updated / cancelled / resumed / paused / unpaused: cancelled subscriptions keep
-    // access until ends_at, then subscription_expired downgrades them
-    updates = {
-      subscription_status: attrs.status,
-      subscription_ends_at: attrs.ends_at || null,
-      lemon_subscription_id: subscriptionId
-    };
-    if ((attrs.status === 'active' || attrs.status === 'on_trial') && PLAN_LIMITS[plan]) {
-      // Plan changes made in the customer portal arrive as subscription_updated
-      updates.plan = plan;
-      updates.generations_limit = PLAN_LIMITS[plan];
-    }
   }
 
   if (updates) {
@@ -1189,6 +1122,50 @@ app.post('/api/payment/lemon/create-checkout-session', verifyAuth, validateReque
         variantId === 'your_pro_yearly_variant_id_here' || 
         variantId === 'your_studio_yearly_variant_id_here') {
       return res.status(400).json({ error: { message: `Geçersiz plan veya varyasyon ID tanımlanmamış: ${plan} (${cycle})` } });
+    }
+
+    // A user who already pays switches plans on the existing subscription;
+    // a second checkout would leave the old subscription billing as well
+    if (supabaseAdmin) {
+      const { data: profile } = await supabaseAdmin
+        .from('profiles')
+        .select('lemon_subscription_id, subscription_status')
+        .eq('id', req.userId)
+        .maybeSingle();
+
+      const switchable = ['active', 'on_trial', 'past_due', 'cancelled'];
+      if (profile?.lemon_subscription_id && switchable.includes(profile.subscription_status)) {
+        const attributes = { variant_id: Number(variantId) };
+        if (profile.subscription_status === 'cancelled') {
+          // Choosing a paid plan again undoes a pending cancellation
+          attributes.cancelled = false;
+        }
+
+        const patchResponse = await fetch(`https://api.lemonsqueezy.com/v1/subscriptions/${encodeURIComponent(profile.lemon_subscription_id)}`, {
+          method: "PATCH",
+          headers: {
+            "Accept": "application/vnd.api+json",
+            "Content-Type": "application/vnd.api+json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            data: {
+              type: "subscriptions",
+              id: String(profile.lemon_subscription_id),
+              attributes
+            }
+          })
+        });
+
+        if (!patchResponse.ok) {
+          const errText = await patchResponse.text();
+          console.error(`❌ Lemon Squeezy plan change error (${patchResponse.status}):`, errText);
+          return res.status(502).json({ error: { message: "Plan değiştirilemedi. Lütfen tekrar deneyin." } });
+        }
+
+        // The subscription_updated webhook applies the new plan and limit
+        return res.json({ updated: true, plan, cycle });
+      }
     }
 
     // Prepare redirect URL

@@ -89,9 +89,8 @@
     "freePlanLimitNote": "5 Image Analyses / Month",
     "analysesPerMonth": "Image Analyses / Month",
     "unlimitedAnalyses": "Unlimited Image Analyses",
-    "extraUserNote": "+ 9.99 $ / month per additional user",
     "startFree": "Start Free",
-    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Unused analysis credits roll over month to month as long as your subscription stays active.",
+    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Your analysis credits renew every month; unused credits do not roll over.",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Compatible",
       "f2": "Standard Keywords",
@@ -109,14 +108,14 @@
       "f2": "Multi-Platform & E-Commerce Compatible",
       "f3": "Batch Processing",
       "f4": "CSV Export",
-      "f5": "Priority Processing Queue"
+      "f5": "Advanced AI Model (Gemini Pro)"
     },
     "studio": {
       "f1": "Unlimited Image Analyses",
-      "f2": "Advanced Team Access (5 Users)",
-      "f3": "Advanced Export & Integration",
-      "f4": "24/7 Dedicated Support",
-      "f5": "Custom API Access License"
+      "f2": "Studio-Grade E-Commerce Copy",
+      "f3": "Download Images with Embedded Metadata",
+      "f4": "Priority Email Support",
+      "f5": "Most Detailed Keyword Sets (45-50)"
     }
   },
   "testimonials": {
@@ -333,7 +332,7 @@
     "changePlan": "Change Subscription Plan",
     "currentPlanBtn": "Current Plan",
     "switchToPlan": "Switch to {{plan}}",
-    "vipSupport": "✉ 24/7 VIP Email Support",
+    "vipSupport": "✉ Priority Email Support",
     "starterFeatures": {
       "f1": "300 Image Analyses / Month",
       "f2": "Basic Metadata Sets",
@@ -351,8 +350,8 @@
     },
     "studioFeatures": {
       "f1": "Unlimited Image Analyses",
-      "f2": "5-Member Team Access",
-      "f3": "24/7 Priority Support"
+      "f2": "Studio-Grade E-Commerce Copy",
+      "f3": "Priority Email Support"
     },
     "vipMailtoSubject": "MayaListing - Studio VIP Support Request",
     "vipMailtoBody": "Hello, I am a MayaListing Studio plan user. The support topic I need help with is:"

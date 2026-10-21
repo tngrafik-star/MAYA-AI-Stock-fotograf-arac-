@@ -1178,7 +1178,10 @@ const initApp = async () => {
         throw new Error(data.error?.message || t('toast.paymentSessionError'));
       }
 
-      if (data.url) {
+      if (data.updated) {
+        // Existing subscription switched in place; the success view waits for the webhook
+        window.location.href = '/app/?payment=success';
+      } else if (data.url) {
         window.location.href = data.url;
       } else {
         throw new Error(t('toast.invalidPaymentUrl'));
