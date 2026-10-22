@@ -326,6 +326,19 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  /* Same compact header as the landing page: the nav links overlapped the logo */
+  .nav-links { display: none; }
+  .nav-container { padding: 0 16px; gap: 8px; }
+  .nav-container .logo { font-size: 24px; }
+  .nav-actions .btn { padding: 8px 14px; font-size: 13px; white-space: nowrap; }
+  .nav-actions { display: flex; align-items: center; flex: none; }
+}
+
+@media (max-width: 480px) {
+  .nav-container .logo { font-size: 20px; }
+  .nav-actions .theme-toggle-btn { display: none; }
+  .nav-actions .lang-switcher { margin: 0; }
+
   .blog-hero h1 {
     font-size: 32px;
   }

@@ -675,3 +675,11 @@ footer {
   }
 }
 
+/* Phones: keep the sign-up button on screen (it was pushed past the right edge at 375px) */
+@media (max-width: 480px) {
+  .nav-container .logo { font-size: 20px; }
+  .nav-actions { gap: 8px; }
+  .nav-actions .theme-toggle-btn { display: none; }
+  .nav-actions .lang-switcher { margin: 0; }
+  .nav-actions .btn { padding: 7px 12px; font-size: 13px; white-space: nowrap; }
+}
