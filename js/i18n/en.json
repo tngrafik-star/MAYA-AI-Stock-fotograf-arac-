@@ -258,7 +258,6 @@
   "results": {
     "title": "Analysis Results",
     "newUpload": "Upload New Image",
-    "simulationWarning": "⚠️ <strong>Simulation Mode Active:</strong> Sample data is being displayed because your Google Gemini API Key is missing or invalid. To perform real AI analysis, please go to <strong>Account Settings</strong> in the sidebar and enter a valid <strong>Gemini API Key</strong>.",
     "categoryPrefix": "CATEGORY",
     "ecommerceTab": "E-Commerce / Product Sales",
     "stockTab": "Stock Sales",
@@ -317,9 +316,6 @@
     "changePassword": "Change Password (Optional)",
     "newPassword": "NEW PASSWORD",
     "confirmPassword": "CONFIRM NEW PASSWORD",
-    "geminiSettings": "Gemini API Settings",
-    "geminiKeyLabel": "GEMINI API KEY",
-    "geminiKeyHelp": "Enter your Gemini API Key from Google AI Studio to analyze images and generate real SEO data. This key is stored securely only in your browser (locally).",
     "saveBtn": "Save Changes"
   },
   "billing": {
@@ -375,10 +371,6 @@
     "subscriptionCancelScheduled": "Your subscription has been cancelled. You can keep using your current plan until {{date}}.",
     "analysisComplete": "AI metadata analysis completed!",
     "dbSaveError": "Failed to save to database: {{error}}",
-    "noApiKey": "Personal Gemini API Key not found. Running in simulation mode.",
-    "invalidApiKey": "Gemini API Key is invalid! Please check your Account Settings. Running in simulation mode.",
-    "quotaExceeded": "Gemini API quota exceeded! Running in simulation mode.",
-    "simulationComplete": "Simulated sample metadata generated!",
     "copiedToClipboard": "Copied to clipboard!",
     "copyFailed": "Copy failed.",
     "selectExportItems": "Please select at least one image to export.",

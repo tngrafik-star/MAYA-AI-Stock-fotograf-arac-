@@ -561,7 +561,7 @@ const initApp = async () => {
         const compressedBase64 = await resizeImage(rawBase64, 1024, 1024);
         const categoryKey = categoryFor(file);
 
-        const generatedData = await generateGeminiMetadata(compressedBase64, categoryKey, null, current.plan, getCurrentLanguage());
+        const generatedData = await generateGeminiMetadata(compressedBase64, categoryKey, getCurrentLanguage());
         syncUsage(generatedData.usage);
         updateSidebarProfile();
 

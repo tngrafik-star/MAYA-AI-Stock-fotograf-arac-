@@ -257,7 +257,6 @@
   "results": {
     "title": "Analiz Sonucu",
     "newUpload": "Yeni Görsel Yükle",
-    "simulationWarning": "⚠️ <strong>Simülasyon Modu Aktif:</strong> Google Gemini API Anahtarınız eksik veya geçersiz olduğu için örnek veriler gösterilmektedir. Gerçek yapay zeka analizi yapmak için lütfen sol menüdeki <strong>Hesap Bilgileri</strong> sekmesine gidin ve geçerli bir <strong>Gemini API Key</strong> tanımlayın.",
     "categoryPrefix": "KATEGORİ",
     "ecommerceTab": "E-Ticaret / Ürün Satış",
     "stockTab": "Stock Satış",
@@ -316,9 +315,6 @@
     "changePassword": "Şifre Değiştir (İsteğe Bağlı)",
     "newPassword": "YENİ ŞİFRE",
     "confirmPassword": "YENİ ŞİFRE TEKRAR",
-    "geminiSettings": "Gemini API Ayarları",
-    "geminiKeyLabel": "GEMINI API KEY (ANAHTARI)",
-    "geminiKeyHelp": "Görsellerinizi analiz etmek ve gerçek SEO verileri üretmek için Google AI Studio'dan aldığınız Gemini API Anahtarını girin. Bu anahtar sadece tarayıcınızda (yerel olarak) güvenle saklanır.",
     "saveBtn": "Değişiklikleri Kaydet"
   },
   "billing": {
@@ -374,10 +370,6 @@
     "subscriptionCancelScheduled": "Aboneliğiniz iptal edildi. {{date}} tarihine kadar mevcut planınızı kullanmaya devam edebilirsiniz.",
     "analysisComplete": "Yapay zeka metadata analizi tamamlandı!",
     "dbSaveError": "Veritabanına kaydedilemedi: {{error}}",
-    "noApiKey": "Kişisel Gemini API Anahtarınız bulunamadı. Simülasyon modunda çalışılıyor.",
-    "invalidApiKey": "Gemini API Anahtarı geçersiz! Lütfen Hesap Ayarlarından kontrol edin. Simülasyon modunda çalışılıyor.",
-    "quotaExceeded": "Gemini API kotası doldu! Simülasyon modunda çalışılıyor.",
-    "simulationComplete": "Simüle edilmiş örnek metadata üretildi!",
     "copiedToClipboard": "Panoya kopyalandı!",
     "copyFailed": "Kopyalama başarısız oldu.",
     "selectExportItems": "Lütfen dışa aktarılacak en az bir görsel seçin.",
