@@ -59,7 +59,9 @@ export default defineConfig(({ mode }) => {
         blogEtsySeoTr: resolve(import.meta.dirname, 'blog/etsy-urun-fotografciligi-ve-seo-rehberi.html'),
         blogEtsySeoEn: resolve(import.meta.dirname, 'blog/etsy-product-photography-and-seo-guide.html'),
         blogMidjourneyPromptTr: resolve(import.meta.dirname, 'blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi.html'),
-        blogMidjourneyPromptEn: resolve(import.meta.dirname, 'blog/midjourney-stock-photography-prompts-and-quality-guide.html')
+        blogMidjourneyPromptEn: resolve(import.meta.dirname, 'blog/midjourney-stock-photography-prompts-and-quality-guide.html'),
+        toolMetadataCheckerTr: resolve(import.meta.dirname, 'araclar/metadata-kontrol/index.html'),
+        toolMetadataCheckerEn: resolve(import.meta.dirname, 'en/tools/metadata-checker/index.html')
       },
       output: {
         manualChunks(id) {

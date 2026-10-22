@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="/consent.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2CR46GV3VC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2CR46GV3VC');
+    gtag('config', 'AW-18308454802');
+  </script>
+
+  <title>Ücretsiz Stok Fotoğraf ve Etsy Metadata Kontrol Aracı | MayaListing</title>
+  <meta name="description" content="Adobe Stock, Shutterstock ve Etsy için başlık ve anahtar kelimelerinizi ücretsiz kontrol edin: karakter sınırları, kelime sayısı, tekrarlar ve İngilizce uyumu.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mayalisting.com/araclar/metadata-kontrol/">
+  <link rel="alternate" hreflang="tr" href="https://mayalisting.com/araclar/metadata-kontrol/">
+  <link rel="alternate" hreflang="en" href="https://mayalisting.com/en/tools/metadata-checker/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mayalisting.com/araclar/metadata-kontrol/">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:title" content="Stok & Etsy Metadata Kontrol Aracı">
+  <meta property="og:description" content="Adobe Stock, Shutterstock ve Etsy için başlık ve anahtar kelimelerinizi ücretsiz kontrol edin: karakter sınırları, kelime sayısı, tekrarlar ve İngilizce uyumu.">
+  <meta property="og:image" content="https://mayalisting.com/og-image.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Stok & Etsy Metadata Kontrol Aracı", "url": "https://mayalisting.com/araclar/metadata-kontrol/", "applicationCategory": "BusinessApplication", "operatingSystem": "All", "inLanguage": "tr", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "MayaListing", "url": "https://mayalisting.com/"}}</script>
+
+  <meta name="theme-color" content="#FF9500">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>(function(){try{const t=localStorage.getItem('maya-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/blog.css">
+  <link rel="stylesheet" href="/css/tools.css">
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a>
+      <ul class="nav-links">
+        <li><a href="/#features">Özellikler</a></li>
+        <li><a href="/#pricing">Fiyatlandırma</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/en/tools/metadata-checker/" hreflang="en" style="margin-right: 12px; font-size: 14px;">English</a>
+        <button class="theme-toggle-btn" id="blog-theme-toggle" title="Temayı Değiştir" aria-label="Temayı Değiştir" style="margin-right: 8px;"><svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg></button>
+        <a href="/" class="btn btn-primary">Uygulamaya Git</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="blog-post-hero">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/">Ana Sayfa</a><span class="breadcrumb-separator">/</span>
+          <span>Metadata Kontrol</span>
+        </div>
+        <span class="blog-card-category">Ücretsiz Araç</span>
+        <h1>Stok & Etsy Metadata Kontrol Aracı</h1>
+        <p style="max-width: 65ch; margin: 12px auto 0; color: var(--color-text-secondary);">Başlığınızı ve anahtar kelimelerinizi yapıştırın; platformun sınırlarına uyup uymadığını anında görün. Kayıt gerekmez, hiçbir veri sunucuya gönderilmez.</p>
+      </div>
+    </section>
+
+    <div class="tool-wrap">
+      <form class="tool-card" id="checker-form" novalidate>
+        <div class="platform-switch" role="group" aria-label="Platform">
+          <button type="button" data-platform="adobe" data-title-label="Başlık" aria-pressed="true">Adobe Stock</button>
+          <button type="button" data-platform="shutterstock" data-title-label="Açıklama (başlık)" aria-pressed="false">Shutterstock</button>
+          <button type="button" data-platform="etsy" data-title-label="Ürün başlığı" aria-pressed="false">Etsy</button>
+        </div>
+
+        <div class="tool-field">
+          <div class="tool-field-head"><label for="checker-title" id="checker-title-label">Başlık</label><output id="checker-title-count" for="checker-title"></output></div>
+          <input id="checker-title" type="text" autocomplete="off" value="Ceramic coffee mug on wooden table with morning light">
+        </div>
+
+        <div class="tool-field">
+          <div class="tool-field-head"><label for="checker-keywords">Anahtar kelimeler / etiketler</label><output id="checker-keyword-count" for="checker-keywords"></output></div>
+          <textarea id="checker-keywords" aria-describedby="checker-keywords-hint">coffee, mug, ceramic, morning, breakfast, table, wooden, cup, hot drink, cozy, kitchen, coffee, kahve fincanı</textarea>
+          <p class="tool-note" id="checker-keywords-hint">Virgül, noktalı virgül veya satır başıyla ayırın.</p>
+        </div>
+
+        <ul class="findings" id="checker-results" aria-live="polite"></ul>
+
+        <div class="tool-actions">
+          <button type="button" class="btn btn-secondary" id="checker-clean">Temizle ve kopyala</button>
+          <p class="tool-note">Tekrarları ve fazlalıkları atar, küçük harfe çevirir.</p>
+        </div>
+        <p class="clean-output" id="checker-clean-output" hidden></p>
+        <p class="tool-note" id="checker-clean-note" aria-live="polite"></p>
+      </form>
+
+      <section class="tool-cta">
+        <h2>Bunları görselinizden otomatik üretin</h2>
+        <p>MayaListing görselinizi analiz eder; Adobe Stock, Shutterstock, Etsy ve Trendyol için kurallara uygun başlık, açıklama ve anahtar kelimeleri saniyeler içinde hazırlar. İlk 5 analiz ücretsiz.</p>
+        <a href="/?lang=tr#pricing" class="btn btn-primary">Ücretsiz dene</a>
+      </section>
+
+      <section class="tool-rules">
+        <h2>Platform sınırları</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th scope="col">Platform</th><th scope="col">Başlık</th><th scope="col">Anahtar kelime</th><th scope="col">Not</th></tr></thead>
+            <tbody><tr><th scope="row">Adobe Stock</th><td>En fazla 200 karakter, 70 altı önerilir</td><td>En fazla 49; ilk 10 en önemlisi</td><td>İngilizce</td></tr><tr><th scope="row">Shutterstock</th><td>Açıklama en fazla 200 karakter</td><td>7 ile 50 arası</td><td>İngilizce</td></tr><tr><th scope="row">Etsy</th><td>En fazla 140 karakter</td><td>Tam 13 etiket, her biri en fazla 20 karakter</td><td>Harf, rakam, boşluk, - ' ™ © ®</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a><p>Yaratıcıların iş akışlarını yapay zeka ile optimize eden metadata platformu.</p></div>
+        <div class="footer-col"><h4>Ürün</h4><ul><li><a href="/#features">Özellikler</a></li><li><a href="/#pricing">Fiyatlandırma</a></li></ul></div>
+        <div class="footer-col"><h4>Kaynaklar</h4><ul><li><a href="/blog/">Blog</a></li><li><a href="/araclar/metadata-kontrol/">Metadata Kontrol</a></li></ul></div>
+        <div class="footer-col"><h4>Yasal</h4><ul><li><a href="/legal/kullanim-kosullari/">Kullanım Koşulları</a></li><li><a href="/legal/gizlilik/">Gizlilik Politikası</a></li><li><a href="/legal/kvkk/">KVKK Aydınlatma</a></li><li><a href="#" data-cookie-settings>Çerez Tercihleri</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 MayaListing. Tüm Hakları Saklıdır.</p><p>İstanbul, Türkiye</p></div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('blog-theme-toggle');
+    if (toggle) { toggle.addEventListener('click', () => { const c = document.documentElement.getAttribute('data-theme'); const n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('maya-theme', n); } catch (e) {} }); }
+    const header = document.querySelector('header'); window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 10); });
+  </script>
+  <script type="module" src="/js/tools/metadata-checker.js"></script>
+</body>
+</html>

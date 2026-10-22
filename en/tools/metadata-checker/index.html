@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="/consent.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2CR46GV3VC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2CR46GV3VC');
+    gtag('config', 'AW-18308454802');
+  </script>
+
+  <title>Free Stock Photo & Etsy Metadata Checker | MayaListing</title>
+  <meta name="description" content="Check your Adobe Stock, Shutterstock and Etsy titles and keywords for free: character limits, keyword counts, duplicates and English-only rules.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mayalisting.com/en/tools/metadata-checker/">
+  <link rel="alternate" hreflang="tr" href="https://mayalisting.com/araclar/metadata-kontrol/">
+  <link rel="alternate" hreflang="en" href="https://mayalisting.com/en/tools/metadata-checker/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mayalisting.com/en/tools/metadata-checker/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Stock & Etsy Metadata Checker">
+  <meta property="og:description" content="Check your Adobe Stock, Shutterstock and Etsy titles and keywords for free: character limits, keyword counts, duplicates and English-only rules.">
+  <meta property="og:image" content="https://mayalisting.com/og-image.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Stock & Etsy Metadata Checker", "url": "https://mayalisting.com/en/tools/metadata-checker/", "applicationCategory": "BusinessApplication", "operatingSystem": "All", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "MayaListing", "url": "https://mayalisting.com/"}}</script>
+
+  <meta name="theme-color" content="#FF9500">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>(function(){try{const t=localStorage.getItem('maya-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/blog.css">
+  <link rel="stylesheet" href="/css/tools.css">
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a>
+      <ul class="nav-links">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/araclar/metadata-kontrol/" hreflang="tr" style="margin-right: 12px; font-size: 14px;">Türkçe</a>
+        <button class="theme-toggle-btn" id="blog-theme-toggle" title="Toggle theme" aria-label="Toggle theme" style="margin-right: 8px;"><svg class="theme-icon moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg></button>
+        <a href="/" class="btn btn-primary">Open the App</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="blog-post-hero">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/">Home</a><span class="breadcrumb-separator">/</span>
+          <span>Metadata Checker</span>
+        </div>
+        <span class="blog-card-category">Free Tool</span>
+        <h1>Stock & Etsy Metadata Checker</h1>
+        <p style="max-width: 65ch; margin: 12px auto 0; color: var(--color-text-secondary);">Paste your title and keywords and see right away whether they fit the platform rules. No sign-up, and nothing is sent to a server.</p>
+      </div>
+    </section>
+
+    <div class="tool-wrap">
+      <form class="tool-card" id="checker-form" novalidate>
+        <div class="platform-switch" role="group" aria-label="Platform">
+          <button type="button" data-platform="adobe" data-title-label="Title" aria-pressed="true">Adobe Stock</button>
+          <button type="button" data-platform="shutterstock" data-title-label="Description (title)" aria-pressed="false">Shutterstock</button>
+          <button type="button" data-platform="etsy" data-title-label="Listing title" aria-pressed="false">Etsy</button>
+        </div>
+
+        <div class="tool-field">
+          <div class="tool-field-head"><label for="checker-title" id="checker-title-label">Title</label><output id="checker-title-count" for="checker-title"></output></div>
+          <input id="checker-title" type="text" autocomplete="off" value="Ceramic coffee mug on wooden table with morning light">
+        </div>
+
+        <div class="tool-field">
+          <div class="tool-field-head"><label for="checker-keywords">Keywords / tags</label><output id="checker-keyword-count" for="checker-keywords"></output></div>
+          <textarea id="checker-keywords" aria-describedby="checker-keywords-hint">coffee, mug, ceramic, morning, breakfast, table, wooden, cup, hot drink, cozy, kitchen, coffee, kahve fincanı</textarea>
+          <p class="tool-note" id="checker-keywords-hint">Separate with commas, semicolons or new lines.</p>
+        </div>
+
+        <ul class="findings" id="checker-results" aria-live="polite"></ul>
+
+        <div class="tool-actions">
+          <button type="button" class="btn btn-secondary" id="checker-clean">Clean and copy</button>
+          <p class="tool-note">Removes repeats and extras, lowercases everything.</p>
+        </div>
+        <p class="clean-output" id="checker-clean-output" hidden></p>
+        <p class="tool-note" id="checker-clean-note" aria-live="polite"></p>
+      </form>
+
+      <section class="tool-cta">
+        <h2>Generate all of this from your image</h2>
+        <p>MayaListing analyzes your photo and writes rule-compliant titles, descriptions and keywords for Adobe Stock, Shutterstock, Etsy and more in seconds. Your first 5 analyses are free.</p>
+        <a href="/?lang=en#pricing" class="btn btn-primary">Try it free</a>
+      </section>
+
+      <section class="tool-rules">
+        <h2>Platform limits</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th scope="col">Platform</th><th scope="col">Title</th><th scope="col">Keywords</th><th scope="col">Note</th></tr></thead>
+            <tbody><tr><th scope="row">Adobe Stock</th><td>Up to 200 characters, under 70 recommended</td><td>Up to 49; the first 10 matter most</td><td>English</td></tr><tr><th scope="row">Shutterstock</th><td>Description up to 200 characters</td><td>Between 7 and 50</td><td>English</td></tr><tr><th scope="row">Etsy</th><td>Up to 140 characters</td><td>Exactly 13 tags, each up to 20 characters</td><td>Letters, numbers, spaces, - ' ™ © ®</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-maya">MAYA</span><span class="logo-listing">LISTING</span></a><p>The metadata platform that streamlines creators’ workflows with AI.</p></div>
+        <div class="footer-col"><h4>Product</h4><ul><li><a href="/#features">Features</a></li><li><a href="/#pricing">Pricing</a></li></ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul><li><a href="/blog/">Blog</a></li><li><a href="/en/tools/metadata-checker/">Metadata Checker</a></li></ul></div>
+        <div class="footer-col"><h4>Legal</h4><ul><li><a href="/legal/en/terms/">Terms of Use</a></li><li><a href="/legal/en/privacy/">Privacy Policy</a></li><li><a href="/legal/en/kvkk/">KVKK Notice</a></li><li><a href="#" data-cookie-settings>Cookie Preferences</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 MayaListing. All rights reserved.</p><p>Istanbul, Türkiye</p></div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('blog-theme-toggle');
+    if (toggle) { toggle.addEventListener('click', () => { const c = document.documentElement.getAttribute('data-theme'); const n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('maya-theme', n); } catch (e) {} }); }
+    const header = document.querySelector('header'); window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 10); });
+  </script>
+  <script type="module" src="/js/tools/metadata-checker.js"></script>
+</body>
+</html>
