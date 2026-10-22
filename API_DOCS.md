@@ -25,7 +25,6 @@ curl http://localhost:3001/health
   "environment": "production",
   "services": {
     "supabase": { "status": "healthy" },
-    "stripe": { "status": "healthy" },
     "email": { "status": "healthy" },
     "gemini": { "status": "healthy" }
   }
@@ -114,49 +113,6 @@ curl -X POST http://localhost:3001/api/generate \
 
 ## 💳 Payments
 
-### POST /api/payment/create-checkout-session (Stripe)
-Create a checkout session for plan upgrade.
-
-**Authentication:** Required (Bearer token)
-
-**Rate Limit:** Unlimited (JWT-protected)
-
-**Request:**
-```json
-{
-  "plan": "pro",
-  "userId": "550e8400-e29b-41d4-a716-446655440000",
-  "billingCycle": "monthly",
-  "successUrl": "https://mayalisting.com/app?payment=success",
-  "cancelUrl": "https://mayalisting.com/app?payment=cancel"
-}
-```
-
-**Parameters:**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| plan | string | ✓ | Plan: `free`, `starter`, `pro`, `studio` |
-| userId | string (UUID) | ✓ | Current user's ID |
-| billingCycle | string | | `monthly` (default) or `yearly` |
-| successUrl | string | | Redirect URL after successful payment |
-| cancelUrl | string | | Redirect URL if user cancels |
-
-**Response (200 OK):**
-```json
-{
-  "id": "cs_test_123456",
-  "url": "https://checkout.stripe.com/pay/cs_test_123456"
-}
-```
-
-**Errors:**
-- 401: Unauthorized
-- 403: Forbidden (user trying to update another user's plan)
-- 400: Invalid plan or user ID
-- 500: Stripe API error
-
----
-
 ### POST /api/payment/lemon/create-checkout-session (Lemon Squeezy)
 Create a checkout session with Lemon Squeezy payment processor.
 
@@ -213,38 +169,6 @@ Content-Type: application/json
 ---
 
 ## 🪝 Webhooks
-
-### Stripe Webhook: POST /api/payment/webhook
-Receives payment events from Stripe.
-
-**Signature Verification:** Required in production
-
-**Headers:**
-```
-stripe-signature: t=...,v1=...
-```
-
-**Events Handled:**
-- `checkout.session.completed`: User purchased a plan
-
-**Payload:**
-```json
-{
-  "id": "evt_123456",
-  "type": "checkout.session.completed",
-  "data": {
-    "object": {
-      "metadata": {
-        "userId": "550e8400-e29b-41d4-a716-446655440000",
-        "plan": "pro",
-        "limit": "1000"
-      }
-    }
-  }
-}
-```
-
----
 
 ### Lemon Squeezy Webhook: POST /api/payment/lemon/webhook
 Receives payment events from Lemon Squeezy.

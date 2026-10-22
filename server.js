@@ -4,13 +4,12 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import WebSocket from 'ws';
 import jwt from 'jsonwebtoken';
-import { planFromVariant, nextMonth, decideLemonUpdate } from './lib/billing.js';
+import { planFromVariant, decideLemonUpdate } from './lib/billing.js';
 import { generateSchema, checkoutSessionSchema, handleGeminiError } from './lib/api.js';
 
 // Polyfill WebSocket for Supabase Realtime in older Node versions
@@ -73,12 +72,6 @@ validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-
-// Initialize Stripe
-let stripe = null;
-if (process.env.STRIPE_SECRET_KEY) {
-  stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-}
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
 
@@ -340,96 +333,6 @@ app.use((req, res, next) => {
   // Log the path only: query strings can carry secrets (e.g. the inbound email ?secret=)
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
-});
-
-// Stripe Webhook Endpoint (needs raw body parser, must be defined before express.json)
-app.post('/api/payment/webhook', rateLimiter(100, 60 * 1000, 'Stripe Webhook'), express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-  let event;
-
-  try {
-    const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
-    
-    if (isProduction && (!stripe || !endpointSecret || !sig)) {
-      throw new Error("Stripe webhook signature verification is mandatory in production.");
-    }
-
-    if (stripe && endpointSecret && sig) {
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    } else {
-      // Development bypass fallback if signing secret is missing or stripe is uninitialized
-      console.warn("⚠️ Stripe Webhook signature verification bypassed. Check STRIPE_WEBHOOK_SECRET in production.");
-      const rawBody = req.body.toString('utf8');
-      event = JSON.parse(rawBody);
-    }
-  } catch (err) {
-    console.error(`❌ Webhook Error: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle checkout.session.completed event
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    const userId = session.metadata?.userId;
-    const plan = session.metadata?.plan;
-    const limit = parseInt(session.metadata?.limit || '300', 10);
-    const eventId = event.id;
-
-    if (userId && plan) {
-      console.log(`✅ Webhook: Payment successful for User: ${userId}, Plan: ${plan}, Limit: ${limit}`);
-
-      if (supabaseAdmin) {
-        // Check if webhook was already processed (idempotency)
-        const { data: existingEvent } = await supabaseAdmin
-          .from('webhook_events')
-          .select('id')
-          .eq('event_id', eventId)
-          .maybeSingle();
-
-        if (existingEvent) {
-          console.log(`⏭️  Webhook ${eventId} already processed. Skipping.`);
-          return res.json({ received: true });
-        }
-
-        // Process the webhook
-        const { error: updateError } = await supabaseAdmin
-          .from('profiles')
-          .update({
-            plan: plan,
-            generations_limit: limit,
-            generations_used: 0,
-            usage_reset_at: nextMonth()
-          })
-          .eq('id', userId);
-
-        if (updateError) {
-          console.error(`❌ Supabase update error: ${updateError.message}`);
-        } else {
-          console.log(`🎉 User ${userId} successfully upgraded to ${plan.toUpperCase()} plan.`);
-
-          // Record webhook event to prevent duplicate processing
-          const { error: logError } = await supabaseAdmin
-            .from('webhook_events')
-            .insert({
-              event_id: eventId,
-              event_type: event.type,
-              provider: 'stripe',
-              payload: session
-            });
-
-          if (logError) {
-            console.warn(`⚠️ Failed to log webhook event: ${logError.message}`);
-          }
-        }
-      } else {
-        console.warn("⚠️ Supabase admin client not initialized. Cannot update user profile.");
-      }
-    }
-  }
-
-  res.json({ received: true });
 });
 
 // Lemon Squeezy Webhook Endpoint (needs raw body parser, must be defined before express.json)
@@ -937,76 +840,6 @@ JSON Yapısı ve Kurallar:
   }
 });
 
-// Endpoint to create a Stripe Checkout Session
-app.post('/api/payment/create-checkout-session', verifyAuth, validateRequest(checkoutSessionSchema), async (req, res) => {
-  try {
-    const { plan, userId, successUrl, cancelUrl } = req.body;
-
-    if (!plan || !userId) {
-      return res.status(400).json({ error: { message: "Plan ve Kullanıcı ID gereklidir." } });
-    }
-
-    // Verify user owns this checkout session (prevent creating checkout for other users)
-    if (req.userId !== userId) {
-      console.warn(`⚠️ Security: User ${req.userId} attempted to create checkout for user ${userId}`);
-      return res.status(403).json({
-        error: { message: "Bu işlemi gerçekleştirme izniniz yoktur." }
-      });
-    }
-
-    if (!stripe) {
-      return res.status(400).json({
-        error: { message: "Stripe API anahtarı tanımlanmamış. Lütfen .env dosyasında STRIPE_SECRET_KEY tanımlayın." }
-      });
-    }
-
-    const planDetails = {
-      free: { name: 'Free Planı', price: 0, currency: 'usd', limit: 5 },
-      starter: { name: 'Starter Planı', price: 999, currency: 'usd', limit: 300 },
-      pro: { name: 'Pro Planı', price: 2999, currency: 'usd', limit: 1000 },
-      studio: { name: 'Studio Planı', price: 4999, currency: 'usd', limit: 999999 }
-    };
-
-    const details = planDetails[plan];
-    if (!details) {
-      return res.status(400).json({ error: { message: "Geçersiz plan seçildi." } });
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: details.currency,
-            product_data: {
-              name: details.name,
-              description: `Aylık ${details.limit === 999999 ? 'Sınırsız' : details.limit} Görsel Analiz`,
-            },
-            unit_amount: details.price,
-            recurring: {
-              interval: 'month',
-            },
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'subscription',
-      success_url: successUrl || `${req.headers.origin}/app/?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${req.headers.origin}/app/?payment=cancel`,
-      metadata: {
-        userId: userId,
-        plan: plan,
-        limit: details.limit.toString()
-      }
-    });
-
-    return res.json({ id: session.id, url: session.url });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: { message: err.message || "Stripe oturumu oluşturulurken hata oluştu." } });
-  }
-});
-
 // Endpoint to create a Lemon Squeezy Checkout Session
 app.post('/api/payment/lemon/create-checkout-session', verifyAuth, validateRequest(checkoutSessionSchema), async (req, res) => {
   try {
@@ -1401,9 +1234,6 @@ app.get(['/api/health', '/health'], async (req, res) => {
   checks.services.supabase = (process.env.VITE_SUPABASE_URL && process.env.VITE_SUPABASE_ANON_KEY)
     ? { status: 'healthy' }
     : { status: 'unconfigured' };
-
-  // Check Stripe
-  checks.services.stripe = stripe ? { status: 'healthy' } : { status: 'unconfigured' };
 
   // Check Email
   checks.services.email = emailTransporter ? { status: 'healthy' } : { status: 'unconfigured' };

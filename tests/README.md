@@ -167,7 +167,7 @@ describe('Feature Name', () => {
 
 The following require a real environment and should be tested separately:
 
-- **Integration Tests**: Full API flows with Supabase, Stripe, Lemon Squeezy
+- **Integration Tests**: Full API flows with Supabase and Lemon Squeezy
 - **E2E Tests**: Complete user signup → generation → payment flows
 - **Load Tests**: Rate limiter under 100+ concurrent requests
 - **Security Tests**: OWASP ZAP, SQL injection, XSS attempts

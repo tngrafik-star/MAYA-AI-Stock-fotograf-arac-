@@ -60,7 +60,7 @@ CREATE TABLE public.activity_history (
 );
 
 -- 6. "webhook_events" Tablosunun Oluşturulması
--- Stripe ve Lemon Squeezy webhook'larının idempotency'sini sağlamak için
+-- Lemon Squeezy webhook'larının idempotency'sini sağlamak için
 -- gelen webhook event ID'lerini tracking eder.
 CREATE TABLE public.webhook_events (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
