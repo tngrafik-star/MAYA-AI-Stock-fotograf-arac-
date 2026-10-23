@@ -1119,6 +1119,57 @@ const removeUserImages = async (userId) => {
   }
 };
 
+// Delete one analysis from the user's history together with its image
+app.post('/api/history/delete', verifyAuth, async (req, res) => {
+  try {
+    if (!supabaseAdmin) {
+      return res.status(503).json({ error: { message: "Silme servisi yapılandırılmamış." } });
+    }
+
+    const resultId = String(req.body?.resultId || '');
+    if (!/^[0-9a-f-]{36}$/i.test(resultId)) {
+      return res.status(400).json({ error: { message: "Geçersiz kayıt." } });
+    }
+
+    const { data: result } = await supabaseAdmin
+      .from('results')
+      .select('id, user_id, upload_id, uploads:upload_id ( image_path )')
+      .eq('id', resultId)
+      .maybeSingle();
+
+    // Someone else's record looks the same as a missing one
+    if (!result || result.user_id !== req.userId) {
+      return res.status(404).json({ error: { message: "Kayıt bulunamadı." } });
+    }
+
+    const imagePath = result.uploads?.image_path;
+    if (imagePath) {
+      const { error: storageError } = await supabaseAdmin.storage.from('images').remove([imagePath]);
+      if (storageError) {
+        console.error('❌ History delete: storage remove failed:', storageError.message);
+        return res.status(500).json({ error: { message: "Görsel silinemedi. Lütfen tekrar deneyin." } });
+      }
+    }
+
+    // Deleting the upload cascades to its result
+    const { error: deleteError } = await supabaseAdmin
+      .from('uploads')
+      .delete()
+      .eq('id', result.upload_id)
+      .eq('user_id', req.userId);
+
+    if (deleteError) {
+      console.error('❌ History delete failed:', deleteError.message);
+      return res.status(500).json({ error: { message: "Kayıt silinemedi. Lütfen tekrar deneyin." } });
+    }
+
+    return res.json({ deleted: true });
+  } catch (err) {
+    console.error('❌ History delete error:', err);
+    return res.status(500).json({ error: { message: "Kayıt silinirken hata oluştu." } });
+  }
+});
+
 // Delete the account and all personal data (KVKK / GDPR right to erasure).
 // The paid subscription is cancelled first so billing cannot outlive the account.
 app.post('/api/account/delete', verifyAuth, async (req, res) => {

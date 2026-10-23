@@ -1,4 +1,4 @@
-import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs, syncUsage } from './db.js';
+import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs, syncUsage, deleteHistoryItem } from './db.js';
 import { logout, updateProfile, cancelSubscription, deleteAccount } from './auth.js';
 import { getCategories, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
 import { embedXmpInJpeg } from './xmp.js';
@@ -886,6 +886,7 @@ const initApp = async () => {
         <td><span class="table-badge">${getCategoryName(row.category)}</span></td>
         <td class="table-actions">
           <button class="btn btn-secondary btn-review" data-id="${row.id}" style="padding: 6px 12px; font-size: 11px;"><span>${t('dashboard.table.review')}</span></button>
+          <button class="btn btn-secondary btn-delete-result" data-id="${row.id}" style="padding: 6px 12px; font-size: 11px; margin-left: 6px;">${t('history.delete')}</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -895,6 +896,36 @@ const initApp = async () => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         viewResultDetails(id);
+      });
+    });
+
+    // Two-step delete: the first click asks, the second deletes
+    tbody.querySelectorAll('.btn-delete-result').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (btn.dataset.confirming !== 'true') {
+          btn.dataset.confirming = 'true';
+          btn.textContent = t('history.deleteConfirm');
+          btn.style.color = '#dc2626';
+          setTimeout(() => {
+            if (btn.isConnected && !btn.disabled) {
+              btn.dataset.confirming = 'false';
+              btn.textContent = t('history.delete');
+              btn.style.color = '';
+            }
+          }, 4000);
+          return;
+        }
+
+        btn.disabled = true;
+        try {
+          await deleteHistoryItem(btn.getAttribute('data-id'));
+          showToast(t('toast.historyItemDeleted'), 'success');
+          loadHistoryTable();
+          loadDashboardHome();
+        } catch (err) {
+          btn.disabled = false;
+          showToast(err.message, 'error');
+        }
       });
     });
   }

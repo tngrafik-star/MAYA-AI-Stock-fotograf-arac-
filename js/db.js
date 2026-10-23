@@ -254,6 +254,31 @@ export async function saveGeneration(userId, imageUrl, metadata, originalFilenam
   }
 }
 
+// Deletes one analysis and its stored image (through the server, which owns
+// storage and upload deletes)
+export async function deleteHistoryItem(resultId) {
+  if (supabase.isDummy) {
+    const localHistory = JSON.parse(localStorage.getItem('maya_history') || '[]');
+    localStorage.setItem('maya_history', JSON.stringify(localHistory.filter(item => item.id !== resultId)));
+    return true;
+  }
+
+  const { data: { session } } = await supabase.auth.getSession();
+  const response = await fetch('/api/history/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
+    },
+    body: JSON.stringify({ resultId })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error?.message || 'Silinemedi.');
+  }
+  return true;
+}
+
 export async function getUserHistory(userId) {
   try {
     if (supabase.isDummy) {

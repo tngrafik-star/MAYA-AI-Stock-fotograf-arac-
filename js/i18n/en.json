@@ -293,7 +293,9 @@
     "description": "Review all previously analyzed images and generated metadata.",
     "searchPlaceholder": "Search by title or keywords...",
     "allCategories": "All Categories",
-    "noResults": "No history records found matching your search criteria."
+    "noResults": "No history records found matching your search criteria.",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure?"
   },
   "export": {
     "title": "Bulk Export",
@@ -393,7 +395,8 @@
     "metadataDownloadFailed": "Could not write metadata into the image. Only JPG files are supported.",
     "accountDeleted": "Your account and all of your data have been deleted.",
     "accountDeleteFailed": "Could not delete the account. Please try again.",
-    "accountDeleteEmailMismatch": "Type your account email address exactly to confirm."
+    "accountDeleteEmailMismatch": "Type your account email address exactly to confirm.",
+    "historyItemDeleted": "The analysis and its image were deleted."
   },
   "common": {
     "copy": "Copy",

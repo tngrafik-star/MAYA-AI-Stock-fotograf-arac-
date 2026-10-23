@@ -292,7 +292,9 @@
     "description": "Daha önce analiz edilmiş tüm görselleri ve oluşturulan metadataları inceleyin.",
     "searchPlaceholder": "Başlık veya anahtar kelimelerde ara...",
     "allCategories": "Tüm Kategoriler",
-    "noResults": "Arama kriterlerine uygun geçmiş kaydı bulunamadı."
+    "noResults": "Arama kriterlerine uygun geçmiş kaydı bulunamadı.",
+    "delete": "Sil",
+    "deleteConfirm": "Emin misiniz?"
   },
   "export": {
     "title": "Toplu Dışa Aktar",
@@ -392,7 +394,8 @@
     "metadataDownloadFailed": "Metadata görsele yazılamadı. Yalnızca JPG dosyaları destekleniyor.",
     "accountDeleted": "Hesabınız ve tüm verileriniz silindi.",
     "accountDeleteFailed": "Hesap silinemedi. Lütfen tekrar deneyin.",
-    "accountDeleteEmailMismatch": "Onay için hesabınızın e-posta adresini aynen yazın."
+    "accountDeleteEmailMismatch": "Onay için hesabınızın e-posta adresini aynen yazın.",
+    "historyItemDeleted": "Analiz ve görseli silindi."
   },
   "common": {
     "copy": "Kopyala",
