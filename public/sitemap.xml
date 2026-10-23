@@ -210,4 +210,20 @@
     <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/araclar/metadata-kontrol/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/en/tools/metadata-checker/"/>
   </url>
+  <url>
+    <loc>https://mayalisting.com/blog/stok-fotograf-etsy-metadata-sinirlari</loc>
+    <lastmod>2026-10-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/stok-fotograf-etsy-metadata-sinirlari"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/stock-photo-etsy-metadata-limits"/>
+  </url>
+  <url>
+    <loc>https://mayalisting.com/blog/stock-photo-etsy-metadata-limits</loc>
+    <lastmod>2026-10-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://mayalisting.com/blog/stok-fotograf-etsy-metadata-sinirlari"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mayalisting.com/blog/stock-photo-etsy-metadata-limits"/>
+  </url>
 </urlset>

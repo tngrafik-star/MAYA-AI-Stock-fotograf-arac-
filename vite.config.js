@@ -60,6 +60,8 @@ export default defineConfig(({ mode }) => {
         blogEtsySeoEn: resolve(import.meta.dirname, 'blog/etsy-product-photography-and-seo-guide.html'),
         blogMidjourneyPromptTr: resolve(import.meta.dirname, 'blog/midjourney-stok-fotograf-prompt-ve-kalite-rehberi.html'),
         blogMidjourneyPromptEn: resolve(import.meta.dirname, 'blog/midjourney-stock-photography-prompts-and-quality-guide.html'),
+        blogMetadataLimitsTr: resolve(import.meta.dirname, 'blog/stok-fotograf-etsy-metadata-sinirlari.html'),
+        blogMetadataLimitsEn: resolve(import.meta.dirname, 'blog/stock-photo-etsy-metadata-limits.html'),
         toolMetadataCheckerTr: resolve(import.meta.dirname, 'araclar/metadata-kontrol/index.html'),
         toolMetadataCheckerEn: resolve(import.meta.dirname, 'en/tools/metadata-checker/index.html')
       },

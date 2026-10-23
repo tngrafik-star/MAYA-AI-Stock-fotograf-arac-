@@ -324,6 +324,11 @@
   color: var(--color-border-dark);
 }
 
+/* Tables inside posts */
+.blog-post-content table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 15px; }
+.blog-post-content th, .blog-post-content td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--color-border-dark); vertical-align: top; }
+.blog-post-content th { font-size: 13px; color: var(--color-text-secondary); font-weight: 600; }
+
 /* Responsive */
 @media (max-width: 768px) {
   /* Same compact header as the landing page: the nav links overlapped the logo */

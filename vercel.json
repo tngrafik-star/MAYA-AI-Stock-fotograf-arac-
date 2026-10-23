@@ -3,31 +3,46 @@
     {
       "source": "/assets/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/(.*)\\.(png|jpg|jpeg|gif|webp|svg|ico|mp4|woff|woff2)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     },
     {
       "source": "/(.*)\\.(css|js)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, must-revalidate"
+        }
       ]
     },
     {
       "source": "/site.webmanifest",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=604800" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
       ]
     },
     {
       "source": "/(sitemap.xml|robots.txt)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
       ]
     }
   ],
@@ -99,6 +114,14 @@
     {
       "source": "/blog/midjourney-stock-photography-prompts-and-quality-guide",
       "destination": "/blog/midjourney-stock-photography-prompts-and-quality-guide.html"
+    },
+    {
+      "source": "/blog/stok-fotograf-etsy-metadata-sinirlari",
+      "destination": "/blog/stok-fotograf-etsy-metadata-sinirlari.html"
+    },
+    {
+      "source": "/blog/stock-photo-etsy-metadata-limits",
+      "destination": "/blog/stock-photo-etsy-metadata-limits.html"
     }
   ]
 }
