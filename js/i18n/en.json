@@ -88,9 +88,9 @@
     "freePlan": "Free",
     "freePlanLimitNote": "5 Image Analyses / Month",
     "analysesPerMonth": "Image Analyses / Month",
-    "unlimitedAnalyses": "Unlimited Image Analyses",
+    "unlimitedAnalyses": "Unlimited Monthly Analyses (up to 150/day)",
     "startFree": "Start Free",
-    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Your analysis credits renew every month; unused credits do not roll over.",
+    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Your analysis credits renew every month; unused credits do not roll over. To prevent abuse, daily limits apply: 60 analyses per day on Starter, 150 per day on Pro and Studio (fair use).",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Compatible",
       "f2": "Standard Keywords",
@@ -111,7 +111,7 @@
       "f5": "Advanced AI Model (Gemini Pro)"
     },
     "studio": {
-      "f1": "Unlimited Image Analyses",
+      "f1": "Unlimited Monthly Analyses (up to 150/day)",
       "f2": "Studio-Grade E-Commerce Copy",
       "f3": "Download Images with Embedded Metadata",
       "f4": "Priority Email Support",
@@ -349,7 +349,7 @@
       "f3": "Bulk CSV Export"
     },
     "studioFeatures": {
-      "f1": "Unlimited Image Analyses",
+      "f1": "Unlimited Monthly Analyses (up to 150/day)",
       "f2": "Studio-Grade E-Commerce Copy",
       "f3": "Priority Email Support"
     },

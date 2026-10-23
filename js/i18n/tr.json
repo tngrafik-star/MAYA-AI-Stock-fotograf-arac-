@@ -88,8 +88,8 @@
     "freePlan": "Ücretsiz",
     "freePlanLimitNote": "Aylık 5 Görsel Analizi",
     "analysesPerMonth": "Görsel Analizi / Ay",
-    "unlimitedAnalyses": "Sınırsız Görsel Analizi",
-    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Analiz krediniz her ay yenilenir; kullanılmayan krediler bir sonraki aya devretmez.",
+    "unlimitedAnalyses": "Sınırsız Aylık Analiz (günde 150'ye kadar)",
+    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Analiz krediniz her ay yenilenir; kullanılmayan krediler bir sonraki aya devretmez. Kötüye kullanımı önlemek için günlük sınırlar uygulanır: Starter günde 60, Pro ve Studio günde 150 analiz (adil kullanım).",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Uyumlu",
       "f2": "Standart Anahtar Kelimeler",
@@ -110,7 +110,7 @@
       "f5": "Gelişmiş AI Modeli (Gemini Pro)"
     },
     "studio": {
-      "f1": "Sınırsız Görsel Analizi",
+      "f1": "Sınırsız Aylık Analiz (günde 150'ye kadar)",
       "f2": "Stüdyo Kalitesi E-Ticaret Metinleri",
       "f3": "Metadata Gömülü Görsel İndirme",
       "f4": "Öncelikli E-posta Desteği",
@@ -348,7 +348,7 @@
       "f3": "Toplu CSV Aktarımı"
     },
     "studioFeatures": {
-      "f1": "Sınırsız Görsel Analizi",
+      "f1": "Sınırsız Aylık Analiz (günde 150'ye kadar)",
       "f2": "Stüdyo Kalitesi E-Ticaret Metinleri",
       "f3": "Öncelikli E-posta Desteği"
     },
