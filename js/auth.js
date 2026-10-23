@@ -176,3 +176,26 @@ export async function cancelSubscription() {
 
   return data;
 }
+
+// Permanently deletes the account, its history and images (server cancels
+// any paid subscription first). Signs out locally afterwards.
+export async function deleteAccount(confirmEmail) {
+  const { data: { session } } = await supabase.auth.getSession();
+  const response = await fetch('/api/account/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
+    },
+    body: JSON.stringify({ confirmEmail })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error?.message || t('toast.accountDeleteFailed'));
+  }
+
+  await supabase.auth.signOut().catch(() => {});
+  setCurrentUser(null);
+  return true;
+}

@@ -1071,6 +1071,82 @@ app.post('/api/payment/lemon/cancel-subscription', verifyAuth, async (req, res) 
   }
 });
 
+// Remove every object under a user's folder in the private images bucket
+const removeUserImages = async (userId) => {
+  let removed = 0;
+  for (;;) {
+    const { data: files, error } = await supabaseAdmin.storage.from('images').list(userId, { limit: 100 });
+    if (error) throw new Error(`Storage list failed: ${error.message}`);
+    if (!files || files.length === 0) return removed;
+
+    const paths = files.map(file => `${userId}/${file.name}`);
+    const { error: removeError } = await supabaseAdmin.storage.from('images').remove(paths);
+    if (removeError) throw new Error(`Storage remove failed: ${removeError.message}`);
+    removed += paths.length;
+  }
+};
+
+// Delete the account and all personal data (KVKK / GDPR right to erasure).
+// The paid subscription is cancelled first so billing cannot outlive the account.
+app.post('/api/account/delete', verifyAuth, async (req, res) => {
+  try {
+    if (!supabaseAdmin) {
+      return res.status(503).json({ error: { message: "Hesap silme servisi yapılandırılmamış." } });
+    }
+
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.getUserById(req.userId);
+    if (authError || !authData?.user) {
+      return res.status(404).json({ error: { message: "Hesap bulunamadı." } });
+    }
+
+    // The user types their email to confirm; protects against a stray click
+    // or a stolen session silently wiping the account
+    const typed = String(req.body?.confirmEmail || '').trim().toLowerCase();
+    if (!typed || typed !== String(authData.user.email || '').toLowerCase()) {
+      return res.status(400).json({ error: { message: "Onay için e-posta adresinizi aynen yazın." } });
+    }
+
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('lemon_subscription_id, subscription_status')
+      .eq('id', req.userId)
+      .maybeSingle();
+
+    const billing = ['active', 'on_trial', 'past_due', 'paused', 'unpaid'];
+    if (profile?.lemon_subscription_id && billing.includes(profile.subscription_status)) {
+      const apiKey = process.env.LEMON_SQUEEZY_API_KEY;
+      const response = apiKey ? await fetch(`https://api.lemonsqueezy.com/v1/subscriptions/${encodeURIComponent(profile.lemon_subscription_id)}`, {
+        method: 'DELETE',
+        headers: {
+          "Accept": "application/vnd.api+json",
+          "Content-Type": "application/vnd.api+json",
+          "Authorization": `Bearer ${apiKey}`
+        }
+      }) : null;
+
+      if (!response?.ok) {
+        console.error(`❌ Account delete: could not cancel subscription ${profile.lemon_subscription_id}`, response?.status);
+        return res.status(502).json({ error: { message: "Aboneliğiniz iptal edilemediği için hesap silinmedi. Lütfen tekrar deneyin ya da destek ile iletişime geçin." } });
+      }
+    }
+
+    const removedImages = await removeUserImages(req.userId);
+
+    // Cascades to profiles, uploads, results and activity_history
+    const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(req.userId);
+    if (deleteError) {
+      console.error('❌ Account delete: auth user delete failed:', deleteError.message);
+      return res.status(500).json({ error: { message: "Hesap silinemedi. Lütfen tekrar deneyin." } });
+    }
+
+    console.log(`🗑️  Account ${req.userId} deleted (${removedImages} images removed).`);
+    return res.json({ deleted: true });
+  } catch (err) {
+    console.error('❌ Account delete error:', err);
+    return res.status(500).json({ error: { message: "Hesap silinirken hata oluştu. Lütfen tekrar deneyin." } });
+  }
+});
+
 // Webhook endpoint to receive inbound emails and reply automatically using Gemini & SMTP
 app.post('/api/email/inbound', rateLimiter(50, 60 * 1000, 'Email Inbound'), async (req, res) => {
   try {

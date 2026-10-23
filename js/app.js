@@ -1,5 +1,5 @@
 import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs, syncUsage } from './db.js';
-import { logout, updateProfile, cancelSubscription } from './auth.js';
+import { logout, updateProfile, cancelSubscription, deleteAccount } from './auth.js';
 import { getCategories, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
 import { embedXmpInJpeg } from './xmp.js';
 import { supabase } from './supabase.js';
@@ -1086,6 +1086,31 @@ const initApp = async () => {
         showToast(t('toast.profileUpdated'), 'success');
         updateSidebarProfile();
       } catch (err) {
+        showToast(err.message, 'error');
+      }
+    });
+  }
+
+  // Account deletion (KVKK): the user types their email to confirm
+  const accountDeleteForm = document.getElementById('account-delete-form');
+  if (accountDeleteForm) {
+    accountDeleteForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('account-delete-email');
+      const button = document.getElementById('account-delete-btn');
+      const user = getCurrentUser();
+      if (!user || input.value.trim().toLowerCase() !== String(user.email || '').toLowerCase()) {
+        showToast(t('toast.accountDeleteEmailMismatch'), 'error');
+        return;
+      }
+
+      button.disabled = true;
+      try {
+        await deleteAccount(input.value.trim());
+        showToast(t('toast.accountDeleted'), 'success');
+        setTimeout(() => { window.location.href = '/'; }, 1500);
+      } catch (err) {
+        button.disabled = false;
         showToast(err.message, 'error');
       }
     });

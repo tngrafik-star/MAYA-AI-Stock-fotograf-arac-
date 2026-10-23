@@ -647,6 +647,18 @@
               <button type="submit" class="btn btn-primary" style="margin-top: 32px;" data-i18n="account.saveBtn">Değişiklikleri Kaydet</button>
             </form>
           </div>
+
+          <div class="profile-form-card" style="margin-top: 24px; border: 1px solid rgba(220, 38, 38, 0.35);">
+            <h3 class="profile-section-title" style="color: #dc2626;" data-i18n="account.deleteTitle">Hesabı Sil</h3>
+            <p style="font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; max-width: 65ch;" data-i18n="account.deleteDescription">Hesabınız, tüm analiz geçmişiniz ve yüklediğiniz görseller kalıcı olarak silinir. Ücretli aboneliğiniz varsa iptal edilir. Bu işlem geri alınamaz.</p>
+            <form id="account-delete-form" style="margin-top: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="account-delete-email" data-i18n="account.deleteConfirmLabel">ONAY İÇİN E-POSTA ADRESİNİZİ YAZIN</label>
+                <input class="form-input" type="email" id="account-delete-email" autocomplete="off" required>
+              </div>
+              <button type="submit" class="btn" id="account-delete-btn" style="margin-top: 16px; background: #dc2626; border-color: #dc2626; color: #fff;" data-i18n="account.deleteBtn">Hesabımı Kalıcı Olarak Sil</button>
+            </form>
+          </div>
         </div>
       </section>
 
