@@ -9,7 +9,7 @@ import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import WebSocket from 'ws';
 import jwt from 'jsonwebtoken';
-import { planFromVariant, decideLemonUpdate } from './lib/billing.js';
+import { PLAN_LIMITS, planFromVariant, decideLemonUpdate } from './lib/billing.js';
 import {
   generateSchema,
   checkoutSessionSchema,
@@ -253,6 +253,32 @@ const verifyAuth = async (req, res, next) => {
 
   req.userId = userId;
   next();
+};
+
+// Creates a missing free-plan profile for an existing auth user. Returns true
+// when a profile exists afterwards.
+const ensureProfile = async (userId) => {
+  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.getUserById(userId);
+  if (authError || !authData?.user) return false;
+
+  const user = authData.user;
+  const { error } = await supabaseAdmin
+    .from('profiles')
+    .upsert({
+      id: userId,
+      name: user.user_metadata?.name || user.user_metadata?.full_name || 'Yeni Kullanıcı',
+      email: user.email || '',
+      plan: 'free',
+      generations_limit: PLAN_LIMITS.free,
+      generations_used: 0
+    }, { onConflict: 'id', ignoreDuplicates: true });
+
+  if (error) {
+    console.error(`❌ ensureProfile failed for ${userId}:`, error.message);
+    return false;
+  }
+  console.warn(`⚠️ Created missing profile for ${userId} (signup trigger did not run).`);
+  return true;
 };
 
 const refundGeneration = async (userId, ip = null) => {
@@ -572,8 +598,15 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
     let userPlan = 'starter';
     let usage = null;
     if (supabaseAdmin) {
-      const { data: consumed, error: consumeError } = await supabaseAdmin
+      let { data: consumed, error: consumeError } = await supabaseAdmin
         .rpc('consume_generation', { p_user_id: req.userId, p_ip: ip });
+
+      // The signup trigger should create the profile; if it did not, create a
+      // free profile here once and retry instead of locking the user out
+      if (!consumeError && consumed?.[0]?.reason === 'no_profile' && await ensureProfile(req.userId)) {
+        ({ data: consumed, error: consumeError } = await supabaseAdmin
+          .rpc('consume_generation', { p_user_id: req.userId, p_ip: ip }));
+      }
 
       if (consumeError) {
         console.error('❌ consume_generation error:', consumeError.message);
