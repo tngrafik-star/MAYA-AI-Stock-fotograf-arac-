@@ -1,5 +1,5 @@
 import { initDB, getCurrentUser } from './db.js';
-import { login, signup, loginWithGoogle, resetPassword } from './auth.js';
+import { login, signup, loginWithGoogle, resetPassword, resendConfirmation } from './auth.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getCurrentLanguage } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
 import { supabase } from './supabase.js';
@@ -302,6 +302,16 @@ const initMain = () => {
           window.location.href = '/app/';
         }, 1500);
       } catch (err) {
+        if (/email not confirmed/i.test(err.message || '')) {
+          // Send a fresh link so the user is not stuck
+          try {
+            await resendConfirmation(email);
+            showToast(t('toast.emailNotConfirmedResent'), 'warning');
+          } catch (resendErr) {
+            showToast(t('toast.emailNotConfirmed'), 'warning');
+          }
+          return;
+        }
         showToast(err.message, 'error');
       }
     });

@@ -53,7 +53,9 @@ export async function signup(name, email, password) {
     email,
     password,
     options: {
-      data: { name }
+      data: { name },
+      // The confirmation link lands on the callback, which signs the user in
+      emailRedirectTo: window.location.origin + '/auth/callback/'
     }
   });
   if (error) throw error;
@@ -198,4 +200,14 @@ export async function deleteAccount(confirmEmail) {
   await supabase.auth.signOut().catch(() => {});
   setCurrentUser(null);
   return true;
+}
+
+// Sends the signup confirmation email again (for "Email not confirmed")
+export async function resendConfirmation(email) {
+  const { error } = await supabase.auth.resend({
+    type: 'signup',
+    email,
+    options: { emailRedirectTo: window.location.origin + '/auth/callback/' }
+  });
+  if (error) throw error;
 }

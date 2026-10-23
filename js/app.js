@@ -24,6 +24,17 @@ const escapeHTML = (str) => {
     .replace(/'/g, '&#39;');
 };
 
+// Credits as the user will see them now: a passed reset date means the
+// server resets usage on the next analysis
+function usageView(user) {
+  const periodRenewed = user.usage_reset_at && new Date(user.usage_reset_at) <= new Date();
+  return {
+    used: periodRenewed ? 0 : (user.generations_used || 0),
+    limit: user.generations_limit,
+    resetAt: user.usage_reset_at && !periodRenewed ? new Date(user.usage_reset_at) : null
+  };
+}
+
 // Our categories mapped to Shutterstock's fixed category names
 const SHUTTERSTOCK_CATEGORIES = {
   decor: 'Interiors',
@@ -325,10 +336,20 @@ const initApp = async () => {
     // Update stats cards
     document.getElementById('stats-total-gen').textContent = history.length;
     
-    const limitVal = user.generations_limit === 999999 ? t('dashboard.home.unlimited') : user.generations_limit;
-    document.getElementById('stats-credits').textContent = user.generations_limit === 999999 ? t('dashboard.home.unlimited') : user.generations_limit - user.generations_used;
-    document.getElementById('stats-credits-change').textContent = `${user.generations_used} / ${limitVal} limit`;
+    const usage = usageView(user);
+    const limitVal = usage.limit === 999999 ? t('dashboard.home.unlimited') : usage.limit;
+    document.getElementById('stats-credits').textContent = usage.limit === 999999 ? t('dashboard.home.unlimited') : Math.max(0, usage.limit - usage.used);
+    const renews = usage.resetAt
+      ? ` · ${t('dashboard.home.renewsOn', { date: usage.resetAt.toLocaleDateString(getDateLocale(), { day: 'numeric', month: 'long' }) })}`
+      : '';
+    document.getElementById('stats-credits-change').textContent = `${usage.used} / ${limitVal}${renews}`;
     document.getElementById('stats-plan').textContent = user.plan;
+    const planNote = document.getElementById('stats-plan-note');
+    if (planNote) {
+      planNote.textContent = user.plan === 'free'
+        ? t('dashboard.home.freePlanNote')
+        : user.subscription_status === 'cancelled' ? t('billing.statusCancelled') : t('billing.active');
+    }
 
     const lastLog = logs.length > 0 ? translateActivityLog(logs[0].action) : t('common.noData');
     document.getElementById('stats-activity').textContent = lastLog;
@@ -1152,14 +1173,28 @@ const initApp = async () => {
     const user = getCurrentUser();
     if (!user) return;
 
-    const limitVal = user.generations_limit === 999999 ? t('dashboard.home.unlimited') : user.generations_limit;
+    const usage = usageView(user);
+    const limitVal = usage.limit === 999999 ? t('dashboard.home.unlimited') : usage.limit;
     document.getElementById('billing-plan-title').textContent = `${user.plan.toUpperCase()} PLAN`;
-    document.getElementById('billing-limit-text').textContent = `${user.generations_used} / ${limitVal} ${t('billing.imagesUnit')}`;
-    
+    document.getElementById('billing-limit-text').textContent = `${usage.used} / ${limitVal} ${t('billing.imagesUnit')}`;
+
+    // Real dates instead of placeholders: when credits renew, or when a
+    // cancelled subscription ends
+    const fmt = (d) => new Date(d).toLocaleDateString(getDateLocale(), { day: 'numeric', month: 'long', year: 'numeric' });
+    const renewal = document.getElementById('billing-renewal-text');
+    const badge = document.getElementById('billing-status-badge');
+    if (user.subscription_status === 'cancelled' && user.subscription_ends_at) {
+      renewal.textContent = t('billing.endsOn', { date: fmt(user.subscription_ends_at) });
+      badge.textContent = t('billing.statusCancelled');
+    } else {
+      renewal.textContent = usage.resetAt ? t('billing.creditsRenewOn', { date: fmt(usage.resetAt) }) : '';
+      badge.textContent = user.plan === 'free' ? t('billing.statusFree') : t('billing.active');
+    }
+
     // Update progress bar
     const progressFill = document.getElementById('billing-limit-progress');
     if (progressFill) {
-      const percentage = user.generations_limit === 999999 ? 100 : Math.min(100, (user.generations_used / user.generations_limit) * 100);
+      const percentage = usage.limit === 999999 ? 100 : Math.min(100, (usage.used / usage.limit) * 100);
       progressFill.style.width = `${percentage}%`;
     }
 

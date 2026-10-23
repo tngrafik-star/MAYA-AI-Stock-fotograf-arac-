@@ -153,7 +153,7 @@
           <div class="stats-card">
             <span class="stats-card-label" data-i18n="dashboard.home.activeSubscription">Aktif Abonelik</span>
             <div class="stats-card-value" id="stats-plan" style="text-transform: capitalize;">STARTER</div>
-            <div class="stats-card-change" data-i18n="dashboard.home.premiumLicensed">Premium Lisanslı</div>
+            <div class="stats-card-change" id="stats-plan-note"></div>
           </div>
           <div class="stats-card">
             <span class="stats-card-label" data-i18n="dashboard.home.lastActivity">Son Etkinlik</span>
@@ -678,9 +678,9 @@
               <div>
                 <span class="micro-label" data-i18n="billing.currentPlan">Mevcut Plan</span>
                 <h2 style="font-size: 32px; font-weight: 300;" id="billing-plan-title">PRO PLAN</h2>
-                <p style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;" data-i18n="billing.nextRenewal">Bir sonraki yenileme: 19 Temmuz 2026</p>
+                <p style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;" id="billing-renewal-text"></p>
               </div>
-              <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 16px; font-weight: 600; border-radius: 4px;" id="billing-status-badge" data-i18n="billing.active">AKTİF</div>
+              <div style="background-color: var(--color-accent-soft); color: var(--color-accent); font-size: 11px; padding: 6px 16px; font-weight: 600; border-radius: 4px;" id="billing-status-badge"></div>
             </div>
 
             <div class="plan-progress-container">
@@ -695,9 +695,8 @@
           </div>
 
           <div class="stats-card" style="justify-content: center; background-color: var(--color-secondary-bg); border-color: var(--color-border-dark);">
-            <span class="stats-card-label" data-i18n="billing.registeredCard">Kayıtlı Kart</span>
-            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">•••• •••• •••• 4242</div>
-            <div style="font-size: 11px; color: var(--color-text-secondary);">Visa • <span data-i18n="billing.cardExpiry">Son Kullanma</span>: 12/28</div>
+            <span class="stats-card-label" data-i18n="billing.paymentTitle">Ödeme Bilgileri</span>
+            <div style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6;" data-i18n="billing.paymentBody">Kart bilgileriniz bizde değil, ödeme sağlayıcımız Lemon Squeezy'de saklanır. Faturalarınıza ve kartınıza sipariş e-postanızdaki "Manage subscription" bağlantısından ulaşabilirsiniz.</div>
           </div>
         </div>
 

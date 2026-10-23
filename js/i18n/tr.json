@@ -220,7 +220,6 @@
       "allChannelsActive": "✓ Tüm Kanallarda Aktif",
       "remainingCredits": "Kalan Kredi",
       "activeSubscription": "Aktif Abonelik",
-      "premiumLicensed": "Premium Lisanslı",
       "lastActivity": "Son Etkinlik",
       "systemLog": "Sistem Günlüğü",
       "quickUploadTitle": "Hızlı Yükleme ve Analiz",
@@ -231,7 +230,9 @@
       "recentTitle": "Son Analiz Edilenler",
       "viewAll": "Tümünü Gör",
       "noHistory": "Henüz analiz edilmiş görsel bulunmuyor.",
-      "unlimited": "Sınırsız"
+      "unlimited": "Sınırsız",
+      "renewsOn": "{{date}} yenilenir",
+      "freePlanNote": "Ücretsiz plan"
     },
     "table": {
       "image": "Görsel",
@@ -328,12 +329,9 @@
     "title": "Faturalandırma ve Abonelik",
     "description": "Abonelik planınızı yönetin, limitlerinizi ve ödeme geçmişinizi izleyin.",
     "currentPlan": "Mevcut Plan",
-    "nextRenewal": "Bir sonraki yenileme: 19 Temmuz 2026",
     "active": "AKTİF",
     "imageLimit": "Kullanılan Görsel Limiti",
     "imagesUnit": "Görsel",
-    "registeredCard": "Kayıtlı Kart",
-    "cardExpiry": "Son Kullanma",
     "changePlan": "Abonelik Planını Değiştir",
     "currentPlanBtn": "Mevcut Planınız",
     "switchToPlan": "{{plan}} Planına Geç",
@@ -359,7 +357,13 @@
       "f3": "Öncelikli E-posta Desteği"
     },
     "vipMailtoSubject": "MayaListing - Studio VIP Destek Talebi",
-    "vipMailtoBody": "Merhaba, MayaListing Studio planı kullanıcısıyım. Destek istediğim konu:"
+    "vipMailtoBody": "Merhaba, MayaListing Studio planı kullanıcısıyım. Destek istediğim konu:",
+    "paymentTitle": "Ödeme Bilgileri",
+    "paymentBody": "Kart bilgileriniz bizde değil, ödeme sağlayıcımız Lemon Squeezy'de saklanır. Faturalarınıza ve kartınıza sipariş e-postanızdaki \"Manage subscription\" bağlantısından ulaşabilirsiniz.",
+    "endsOn": "Aboneliğiniz {{date}} tarihinde sona erecek",
+    "creditsRenewOn": "Analiz hakkınız {{date}} tarihinde yenilenir",
+    "statusCancelled": "İPTAL EDİLDİ",
+    "statusFree": "ÜCRETSİZ"
   },
   "toast": {
     "accountCreated": "Hesap başarıyla oluşturuldu! Yönlendiriliyorsunuz...",
@@ -395,7 +399,9 @@
     "accountDeleted": "Hesabınız ve tüm verileriniz silindi.",
     "accountDeleteFailed": "Hesap silinemedi. Lütfen tekrar deneyin.",
     "accountDeleteEmailMismatch": "Onay için hesabınızın e-posta adresini aynen yazın.",
-    "historyItemDeleted": "Analiz ve görseli silindi."
+    "historyItemDeleted": "Analiz ve görseli silindi.",
+    "emailNotConfirmed": "E-posta adresiniz henüz onaylanmamış. Gelen kutunuzdaki onay bağlantısına tıklayın.",
+    "emailNotConfirmedResent": "E-posta adresiniz henüz onaylanmamış. Onay bağlantısını yeniden gönderdik; gelen kutunuzu (ve spam klasörünü) kontrol edin."
   },
   "common": {
     "copy": "Kopyala",

@@ -221,7 +221,6 @@
       "allChannelsActive": "✓ Active Across All Channels",
       "remainingCredits": "Remaining Credits",
       "activeSubscription": "Active Subscription",
-      "premiumLicensed": "Premium Licensed",
       "lastActivity": "Last Activity",
       "systemLog": "System Log",
       "quickUploadTitle": "Quick Upload & Analyze",
@@ -232,7 +231,9 @@
       "recentTitle": "Recently Analyzed",
       "viewAll": "View All",
       "noHistory": "No analyzed images yet.",
-      "unlimited": "Unlimited"
+      "unlimited": "Unlimited",
+      "renewsOn": "renews {{date}}",
+      "freePlanNote": "Free plan"
     },
     "table": {
       "image": "Image",
@@ -329,12 +330,9 @@
     "title": "Billing & Subscription",
     "description": "Manage your subscription plan, monitor your limits, and review payment history.",
     "currentPlan": "Current Plan",
-    "nextRenewal": "Next renewal: July 19, 2026",
     "active": "ACTIVE",
     "imageLimit": "Image Usage Limit",
     "imagesUnit": "Images",
-    "registeredCard": "Card on File",
-    "cardExpiry": "Expires",
     "changePlan": "Change Subscription Plan",
     "currentPlanBtn": "Current Plan",
     "switchToPlan": "Switch to {{plan}}",
@@ -360,7 +358,13 @@
       "f3": "Priority Email Support"
     },
     "vipMailtoSubject": "MayaListing - Studio VIP Support Request",
-    "vipMailtoBody": "Hello, I am a MayaListing Studio plan user. The support topic I need help with is:"
+    "vipMailtoBody": "Hello, I am a MayaListing Studio plan user. The support topic I need help with is:",
+    "paymentTitle": "Payment Details",
+    "paymentBody": "We do not store your card; our payment provider Lemon Squeezy does. You can reach your invoices and card through the \"Manage subscription\" link in your order email.",
+    "endsOn": "Your subscription ends on {{date}}",
+    "creditsRenewOn": "Your analysis credits renew on {{date}}",
+    "statusCancelled": "CANCELLED",
+    "statusFree": "FREE"
   },
   "toast": {
     "accountCreated": "Account created successfully! Redirecting...",
@@ -396,7 +400,9 @@
     "accountDeleted": "Your account and all of your data have been deleted.",
     "accountDeleteFailed": "Could not delete the account. Please try again.",
     "accountDeleteEmailMismatch": "Type your account email address exactly to confirm.",
-    "historyItemDeleted": "The analysis and its image were deleted."
+    "historyItemDeleted": "The analysis and its image were deleted.",
+    "emailNotConfirmed": "Your email address is not confirmed yet. Click the confirmation link in your inbox.",
+    "emailNotConfirmedResent": "Your email address is not confirmed yet. We sent the confirmation link again; check your inbox (and spam folder)."
   },
   "common": {
     "copy": "Copy",
