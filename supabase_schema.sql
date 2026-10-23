@@ -154,3 +154,4 @@ CREATE POLICY "Kullanıcılar etkinlik geçmişi ekleyebilir"
 -- dosyasını çalıştırın (orijinal dosya adı, platform verisi, özel görsel deposu).
 -- Son olarak 20261023_lock_images_bucket.sql ve 20261023_abuse_and_cost_limits.sql
 -- (depo kilidi; günlük, IP ve genel kullanım sınırları).
+-- Kullanım raporu ve sayaç temizliği: 20261023_usage_report_and_cleanup.sql
