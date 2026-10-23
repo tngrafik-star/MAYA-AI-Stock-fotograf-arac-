@@ -163,3 +163,57 @@ describe('Plan Validation', () => {
     });
   });
 });
+
+import { parseImageDataUrl, geminiGenerationConfig, clientIp, consumeRefusal, skipAutoReplyReason, MAX_IMAGE_BYTES } from '../lib/api.js';
+
+describe('Cost guards', () => {
+  it('accepts a small JPEG data URL', () => {
+    expect(parseImageDataUrl('data:image/jpeg;base64,/9j/4AAQSkZJRg==')).toEqual({ mimeType: 'image/jpeg', data: '/9j/4AAQSkZJRg==' });
+  });
+
+  it('rejects unsupported types and oversized images before any credit is spent', () => {
+    expect(parseImageDataUrl('data:image/gif;base64,R0lGOD').error.status).toBe(415);
+    const big = 'A'.repeat(Math.ceil((MAX_IMAGE_BYTES + 1024) * 4 / 3));
+    expect(parseImageDataUrl(`data:image/png;base64,${big}`).error.status).toBe(413);
+    expect(parseImageDataUrl('not an image').error.status).toBe(400);
+  });
+
+  it('turns thinking off for Flash and caps it for Pro', () => {
+    expect(geminiGenerationConfig('gemini-2.5-flash')).toMatchObject({ maxOutputTokens: 4096, thinkingConfig: { thinkingBudget: 0 }, responseMimeType: 'application/json' });
+    expect(geminiGenerationConfig('gemini-2.5-pro').thinkingConfig.thinkingBudget).toBe(512);
+    expect(geminiGenerationConfig('gemini-2.5-flash', { json: false, maxOutputTokens: 800 })).toEqual({ maxOutputTokens: 800, thinkingConfig: { thinkingBudget: 0 } });
+  });
+
+  it('reads the client IP from proxy headers', () => {
+    expect(clientIp({ 'x-real-ip': '1.2.3.4', 'x-forwarded-for': '5.6.7.8' })).toBe('1.2.3.4');
+    expect(clientIp({ 'x-forwarded-for': '5.6.7.8, 10.0.0.1' })).toBe('5.6.7.8');
+    expect(clientIp({})).toBeNull();
+  });
+
+  it('maps every limit refusal to a distinct status', () => {
+    expect(consumeRefusal('monthly_limit').status).toBe(402);
+    expect(consumeRefusal('daily_limit').status).toBe(429);
+    expect(consumeRefusal('ip_limit').status).toBe(429);
+    expect(consumeRefusal('service_busy').status).toBe(503);
+    expect(consumeRefusal('email_not_confirmed').status).toBe(403);
+  });
+});
+
+describe('Auto-reply loop guard', () => {
+  const base = { fromEmail: 'customer@gmail.com', subject: 'Plan sorusu', ownAddress: 'destek.mayalisting@gmail.com' };
+
+  it('answers a normal customer email', () => {
+    expect(skipAutoReplyReason(base)).toBeNull();
+  });
+
+  it('skips automated senders, our own address and auto-replies', () => {
+    expect(skipAutoReplyReason({ ...base, fromEmail: 'no-reply@shop.com' })).toBe('automated_sender');
+    expect(skipAutoReplyReason({ ...base, fromEmail: 'MAILER-DAEMON@gmail.com' })).toBe('automated_sender');
+    expect(skipAutoReplyReason({ ...base, fromEmail: 'destek.mayalisting@gmail.com' })).toBe('own_address');
+    expect(skipAutoReplyReason({ ...base, subject: 'Otomatik yanıt: izindeyim' })).toBe('automated_subject');
+    expect(skipAutoReplyReason({ ...base, subject: 'Out of Office: back Monday' })).toBe('automated_subject');
+    expect(skipAutoReplyReason({ ...base, subject: 'Re: Re: Re: Plan' })).toBe('reply_chain');
+    expect(skipAutoReplyReason({ ...base, headers: { 'auto-submitted': 'auto-replied' } })).toBe('auto_submitted');
+    expect(skipAutoReplyReason({ ...base, headers: { precedence: 'bulk' } })).toBe('bulk_precedence');
+  });
+});

@@ -10,7 +10,16 @@ import nodemailer from 'nodemailer';
 import WebSocket from 'ws';
 import jwt from 'jsonwebtoken';
 import { planFromVariant, decideLemonUpdate } from './lib/billing.js';
-import { generateSchema, checkoutSessionSchema, handleGeminiError } from './lib/api.js';
+import {
+  generateSchema,
+  checkoutSessionSchema,
+  handleGeminiError,
+  parseImageDataUrl,
+  geminiGenerationConfig,
+  clientIp,
+  consumeRefusal,
+  skipAutoReplyReason
+} from './lib/api.js';
 
 // Polyfill WebSocket for Supabase Realtime in older Node versions
 if (typeof globalThis.WebSocket === 'undefined') {
@@ -246,9 +255,9 @@ const verifyAuth = async (req, res, next) => {
   next();
 };
 
-const refundGeneration = async (userId) => {
+const refundGeneration = async (userId, ip = null) => {
   if (!supabaseAdmin || !userId) return;
-  const { error } = await supabaseAdmin.rpc('refund_generation', { p_user_id: userId });
+  const { error } = await supabaseAdmin.rpc('refund_generation', { p_user_id: userId, p_ip: ip });
   if (error) {
     console.error(`❌ refund_generation failed for ${userId}:`, error.message);
   }
@@ -489,28 +498,22 @@ app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeez
   res.json({ received: true });
 });
 
-// Gemini prompts can be large, increase payload size limit to 20MB for high-res base64 images
-app.use(express.json({ limit: '20mb' }));
-app.use(express.urlencoded({ limit: '20mb', extended: true }));
+// The client sends a compressed 1024px image (well under 1 MB); keep bodies small
+app.use(express.json({ limit: '3mb' }));
+app.use(express.urlencoded({ limit: '1mb', extended: true }));
 
 // Endpoint for metadata generation (Rate limited: max 30 per 15 minutes)
 app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimiter(30, 15 * 60 * 1000), async (req, res) => {
   // Set once a credit is consumed so every failure path below can give it back
   let creditUserId = null;
+  const ip = clientIp(req.headers);
   try {
     const { base64DataUrl, categoryKey, language } = req.body;
 
-    if (!base64DataUrl) {
-      return res.status(400).json({ error: { message: "Görsel verisi bulunamadı." } });
-    }
-
-    // Validate image size (max 5MB)
-    const maxImageSize = 5 * 1024 * 1024; // 5MB in bytes
-    const imageSizeBytes = Math.ceil((base64DataUrl.length * 3) / 4); // base64 to bytes conversion
-    if (imageSizeBytes > maxImageSize) {
-      return res.status(413).json({
-        error: { message: `Görsel çok büyük. Maksimum 5MB olabilir. (${(imageSizeBytes / 1024 / 1024).toFixed(2)}MB)` }
-      });
+    // Type and size are checked before any credit or Gemini token is spent
+    const image = parseImageDataUrl(base64DataUrl);
+    if (image.error) {
+      return res.status(image.error.status).json({ error: { message: image.error.message } });
     }
 
     let apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
@@ -562,14 +565,7 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
     };
     const categoryName = cats[categoryKey] || (isEnglish ? 'General' : 'Genel');
 
-    // 2. Parse base64DataUrl
-    const regex = /^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/;
-    const matches = base64DataUrl.match(regex);
-    if (!matches) {
-      return res.status(400).json({ error: { message: "Geçersiz resim formatı." } });
-    }
-    const mimeType = matches[1];
-    const base64Data = matches[2];
+    const { mimeType, data: base64Data } = image;
 
     // Consume one credit atomically on the server; the plan comes from the
     // database, never from the request body
@@ -577,7 +573,7 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
     let usage = null;
     if (supabaseAdmin) {
       const { data: consumed, error: consumeError } = await supabaseAdmin
-        .rpc('consume_generation', { p_user_id: req.userId });
+        .rpc('consume_generation', { p_user_id: req.userId, p_ip: ip });
 
       if (consumeError) {
         console.error('❌ consume_generation error:', consumeError.message);
@@ -586,10 +582,16 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
         });
       }
 
+      // Monthly, daily, per-IP (free plan) and global daily limits live in the
+      // database (app_limits) so they can be tuned without a deploy
       const profile = consumed?.[0];
-      if (!profile) {
-        return res.status(402).json({
-          error: { message: "Kullanım limitinize ulaştınız. Lütfen aboneliğinizi yükseltin.", type: 'LIMIT_REACHED', retriable: false }
+      if (!profile?.ok) {
+        const refusal = consumeRefusal(profile?.reason);
+        if (profile?.reason === 'service_busy') {
+          console.error('🚨 Global daily AI cap reached - all analyses are paused until tomorrow.');
+        }
+        return res.status(refusal.status).json({
+          error: { message: refusal.message, type: refusal.type, retriable: false }
         });
       }
 
@@ -750,10 +752,11 @@ JSON Yapısı ve Kurallar:
 ÇIKTI SADECE YUKARIDAKİ JSON ŞABLONUNA UYGUN BİR JSON OLMALIDIR. Başka açıklama veya kod bloğu içermemelidir.`;
 
     // 4. API Request using Node 20 global fetch
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey
       },
       body: JSON.stringify({
         contents: [
@@ -769,9 +772,7 @@ JSON Yapısı ve Kurallar:
             ]
           }
         ],
-        generationConfig: {
-          responseMimeType: "application/json"
-        }
+        generationConfig: geminiGenerationConfig(modelName)
       })
     });
 
@@ -785,7 +786,7 @@ JSON Yapısı ve Kurallar:
       }
 
       const error = handleGeminiError(response.status, errorData);
-      await refundGeneration(creditUserId);
+      await refundGeneration(creditUserId, ip);
       console.error(`❌ Gemini API Error (${error.type}):`, errorData.error?.message);
 
       return res.status(error.status).json({
@@ -801,7 +802,7 @@ JSON Yapısı ve Kurallar:
     const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) {
       console.error('❌ Gemini API returned empty response');
-      await refundGeneration(creditUserId);
+      await refundGeneration(creditUserId, ip);
       return res.status(500).json({
         error: {
           message: "AI servisi boş yanıt döndürdü. Lütfen tekrar deneyin.",
@@ -817,7 +818,7 @@ JSON Yapısı ve Kurallar:
       return res.json({ ...parsedJson, usage });
     } catch (parseErr) {
       console.error('❌ Failed to parse AI response as JSON:', parseErr);
-      await refundGeneration(creditUserId);
+      await refundGeneration(creditUserId, ip);
       return res.status(500).json({
         error: {
           message: "AI yanıtı işlenemedi. Lütfen tekrar deneyin.",
@@ -829,7 +830,7 @@ JSON Yapısı ve Kurallar:
 
   } catch (err) {
     console.error('❌ Unexpected error in /api/generate:', err);
-    await refundGeneration(creditUserId);
+    await refundGeneration(creditUserId, ip);
     return res.status(500).json({
       error: {
         message: err.message || "Bilinmeyen sunucu hatası oluştu.",
@@ -1093,7 +1094,36 @@ app.post('/api/email/inbound', rateLimiter(50, 60 * 1000, 'Email Inbound'), asyn
       return res.status(400).json({ error: { message: "E-posta 'from', 'subject' ve 'text' alanları zorunludur." } });
     }
 
-    console.log(`📧 Gelen Mail: [Kimden: ${from}] [Konu: ${subject}]`);
+    const fromEmail = (from.includes('<') ? from.substring(from.indexOf('<') + 1, from.indexOf('>')) : from).trim().toLowerCase();
+    console.log(`📧 Gelen Mail: [Kimden: ${fromEmail}] [Konu: ${subject}]`);
+
+    // Never answer automated mail (two auto-responders would reply to each
+    // other forever, each round costing a Gemini call and an email)
+    const skipReason = skipAutoReplyReason({
+      fromEmail,
+      subject,
+      ownAddress: process.env.EMAIL_SMTP_USER,
+      headers: req.body.headers || {}
+    });
+    if (skipReason) {
+      console.log(`⏭️  Auto-reply skipped (${skipReason}) for ${fromEmail}`);
+      return res.json({ success: false, skipped: skipReason });
+    }
+
+    // Per-sender and total daily caps (app_limits.mail_*)
+    if (supabaseAdmin) {
+      const { data: allowed, error: limitError } = await supabaseAdmin.rpc('allow_mail_reply', { p_sender: fromEmail });
+      if (limitError || allowed !== true) {
+        console.warn(`⏭️  Auto-reply skipped for ${fromEmail}: ${limitError ? limitError.message : 'daily limit'}`);
+        return res.json({ success: false, skipped: limitError ? 'limit_check_failed' : 'daily_limit' });
+      }
+    } else if (IS_PRODUCTION) {
+      return res.json({ success: false, skipped: 'limit_check_unavailable' });
+    }
+
+    // Bound the prompt size
+    const safeSubject = String(subject).slice(0, 200);
+    const safeText = String(text).slice(0, 4000);
 
     // Prepare Gemini system prompt
     const systemPrompt = `You are the automated customer support representative for the MayaListing platform (an AI-powered stock photography and e-commerce metadata assistant).
@@ -1101,9 +1131,9 @@ Analyze the language of the incoming customer support email (either Turkish or E
 
 Incoming Email Details:
 From: ${from}
-Subject: ${subject}
+Subject: ${safeSubject}
 Message Content:
-${text}
+${safeText}
 
 Response Rules (Turkish / Türkçe):
 1. Yanıtın başında mutlaka gönderen kişiye kibar bir şekilde hitap et (örn: "Merhaba," veya isim varsa "Merhaba Ali Bey,").
@@ -1135,10 +1165,11 @@ Response Rules (English):
 
     if (apiKey) {
       try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey
           },
           body: JSON.stringify({
             contents: [
@@ -1147,7 +1178,8 @@ Response Rules (English):
                   { text: systemPrompt }
                 ]
               }
-            ]
+            ],
+            generationConfig: geminiGenerationConfig('gemini-2.5-flash', { json: false, maxOutputTokens: 800 })
           })
         });
 
@@ -1175,7 +1207,7 @@ Response Rules (English):
     // Send email response via nodemailer if configured
     if (emailTransporter) {
       // Parse clean sender email from the "from" header (e.g. "Name <email@domain.com>" -> "email@domain.com")
-      const toEmail = from.includes('<') ? from.substring(from.indexOf('<') + 1, from.indexOf('>')) : from.trim();
+      const toEmail = fromEmail;
 
       const isResponseEnglish = /best regards|support team|hello|dear/i.test(replyText);
       const senderName = isResponseEnglish ? "MayaListing Support" : "MayaListing Destek";
@@ -1183,7 +1215,7 @@ Response Rules (English):
       const mailOptions = {
         from: `"${senderName}" <${process.env.EMAIL_SMTP_USER}>`,
         to: toEmail,
-        subject: subject.toLowerCase().startsWith('re:') ? subject : `Re: ${subject}`,
+        subject: safeSubject.toLowerCase().startsWith('re:') ? safeSubject : `Re: ${safeSubject}`,
         text: replyText
       };
 

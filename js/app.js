@@ -538,6 +538,7 @@ const initApp = async () => {
     let done = 0;
     let failed = 0;
     let stopReason = null;
+    let stopMessage = '';
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -586,6 +587,13 @@ const initApp = async () => {
           stopReason = 'session';
           break;
         }
+        // Daily / network / service-wide limits and unconfirmed email apply to
+        // every remaining file too, so stop instead of failing each one
+        if (err.status === 403 || err.status === 429 || err.status === 503) {
+          stopReason = 'server';
+          stopMessage = err.message;
+          break;
+        }
         failed++;
         showToast(t('toast.analysisFailed', { name: file.name, error: err.message || '' }), 'error');
       }
@@ -611,6 +619,8 @@ const initApp = async () => {
       switchView('billing');
     } else if (stopReason === 'session') {
       showToast(t('toast.sessionNotFound'), 'error');
+    } else if (stopReason === 'server') {
+      showToast(stopMessage, 'warning');
     } else if (files.length > 1) {
       showToast(t('toast.batchComplete', { done, failed }), failed ? 'warning' : 'success');
     } else if (done === 1) {

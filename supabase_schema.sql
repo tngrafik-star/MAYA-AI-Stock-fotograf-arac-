@@ -152,3 +152,5 @@ CREATE POLICY "Kullanıcılar etkinlik geçmişi ekleyebilir"
 -- fonksiyonlarını oluşturur. Bu adım atlanırsa /api/generate çalışmaz.
 -- Ardından supabase/migrations/20261022_product_data_private_images.sql
 -- dosyasını çalıştırın (orijinal dosya adı, platform verisi, özel görsel deposu).
+-- Son olarak 20261023_lock_images_bucket.sql ve 20261023_abuse_and_cost_limits.sql
+-- (depo kilidi; günlük, IP ve genel kullanım sınırları).
