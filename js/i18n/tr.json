@@ -88,8 +88,8 @@
     "freePlan": "Ücretsiz",
     "freePlanLimitNote": "Aylık 5 Görsel Analizi",
     "analysesPerMonth": "Görsel Analizi / Ay",
-    "unlimitedAnalyses": "Sınırsız Aylık Analiz (günde 150'ye kadar)",
-    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Analiz krediniz her ay yenilenir; kullanılmayan krediler bir sonraki aya devretmez. Kötüye kullanımı önlemek için günlük sınırlar uygulanır: Starter günde 60, Pro ve Studio günde 150 analiz (adil kullanım).",
+    "unlimitedAnalyses": "Sınırsız Aylık Analiz (günde 100'e kadar)",
+    "pricingFootnote": "Yıllık faturalandırma 2 ay ücretsiz kullanım sağlar (aylık ücrete göre yaklaşık %17 indirim). Analiz krediniz her ay yenilenir; kullanılmayan krediler bir sonraki aya devretmez. Kötüye kullanımı önlemek için günlük sınırlar uygulanır: Starter günde 60, Pro günde 150, Studio günde 100 analiz (adil kullanım).",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Uyumlu",
       "f2": "Standart Anahtar Kelimeler",
@@ -110,29 +110,12 @@
       "f5": "Gelişmiş AI Modeli (Gemini Pro)"
     },
     "studio": {
-      "f1": "Sınırsız Aylık Analiz (günde 150'ye kadar)",
+      "f1": "Sınırsız Aylık Analiz (günde 100'e kadar)",
       "f2": "Stüdyo Kalitesi E-Ticaret Metinleri",
       "f3": "Metadata Gömülü Görsel İndirme",
       "f4": "Öncelikli E-posta Desteği",
       "f5": "En Detaylı Anahtar Kelime Setleri (45-50)"
     }
-  },
-  "testimonials": {
-    "microLabel": "Görüşler",
-    "title": "Yaratıcıların Tercihi",
-    "description": "Dünya standartlarında stok portföyü yöneten Türk yaratıcıların MayaListing hakkındaki yorumları.",
-    "t1Quote": "\"MayaListing sayesinde her hafta sisteme yüklediğim 200'den fazla stok fotoğrafının etiketleme süresi 4 saatten 15 dakikaya düştü. Üstelik satışlarımda gözle görülür bir artış var.\"",
-    "t1Name": "Emre Yıldız",
-    "t1Initials": "EY",
-    "t1Role": "Bağımsız Stok Fotoğrafçısı",
-    "t2Quote": "\"Etsy ve Amazon üzerinden sattığımız el yapımı ahşap ürünlerin etiketleme ve SEO açıklamalarını MayaListing ile yapıyoruz. Türkçe ve İngilizce sonuçlardaki doğruluk ve şıklık mükemmel.\"",
-    "t2Name": "Selin Çelik",
-    "t2Initials": "SC",
-    "t2Role": "E-Ticaret Marka Sahibi",
-    "t3Quote": "\"Bir görsel ajans olarak yüzlerce müşterimizin ürün görsellerini arşivliyor ve katalogluyoruz. MayaListing'ın sunduğu CSV toplu dışa aktarma ve geçmiş paneli tam aradığımız profesyonel çözüm.\"",
-    "t3Name": "Barış Arslan",
-    "t3Initials": "BA",
-    "t3Role": "Kreatif Direktör, Studio Piks"
   },
   "faq": {
     "microLabel": "Sorular",
@@ -352,7 +335,7 @@
       "f3": "Toplu CSV Aktarımı"
     },
     "studioFeatures": {
-      "f1": "Sınırsız Aylık Analiz (günde 150'ye kadar)",
+      "f1": "Sınırsız Aylık Analiz (günde 100'e kadar)",
       "f2": "Stüdyo Kalitesi E-Ticaret Metinleri",
       "f3": "Öncelikli E-posta Desteği"
     },

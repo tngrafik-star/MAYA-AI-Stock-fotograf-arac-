@@ -88,9 +88,9 @@
     "freePlan": "Free",
     "freePlanLimitNote": "5 Image Analyses / Month",
     "analysesPerMonth": "Image Analyses / Month",
-    "unlimitedAnalyses": "Unlimited Monthly Analyses (up to 150/day)",
+    "unlimitedAnalyses": "Unlimited Monthly Analyses (up to 100/day)",
     "startFree": "Start Free",
-    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Your analysis credits renew every month; unused credits do not roll over. To prevent abuse, daily limits apply: 60 analyses per day on Starter, 150 per day on Pro and Studio (fair use).",
+    "pricingFootnote": "Yearly billing gives you 2 months free (about 17% off the monthly rate). Your analysis credits renew every month; unused credits do not roll over. To prevent abuse, daily limits apply: 60 analyses per day on Starter, 150 on Pro and 100 on Studio (fair use).",
     "free": {
       "f1": "Trendyol, Hepsiburada, n11, Amazon, Stock Compatible",
       "f2": "Standard Keywords",
@@ -111,29 +111,12 @@
       "f5": "Advanced AI Model (Gemini Pro)"
     },
     "studio": {
-      "f1": "Unlimited Monthly Analyses (up to 150/day)",
+      "f1": "Unlimited Monthly Analyses (up to 100/day)",
       "f2": "Studio-Grade E-Commerce Copy",
       "f3": "Download Images with Embedded Metadata",
       "f4": "Priority Email Support",
       "f5": "Most Detailed Keyword Sets (45-50)"
     }
-  },
-  "testimonials": {
-    "microLabel": "Testimonials",
-    "title": "Trusted by Creators",
-    "description": "What creators managing world-class stock portfolios say about MayaListing.",
-    "t1Quote": "\"Thanks to MayaListing, the tagging time for the 200+ stock photos I upload weekly dropped from 4 hours to 15 minutes. Plus, I've seen a noticeable increase in my sales.\"",
-    "t1Name": "Ethan Vance",
-    "t1Initials": "EV",
-    "t1Role": "Independent Stock Photographer",
-    "t2Quote": "\"We use MayaListing for tagging and SEO descriptions of our handmade wood products sold on Etsy and Amazon. The accuracy and quality of results is absolutely outstanding.\"",
-    "t2Name": "Sarah Campbell",
-    "t2Initials": "SC",
-    "t2Role": "E-Commerce Brand Owner",
-    "t3Quote": "\"As a visual agency, we archive and catalog product images for hundreds of clients. MayaListing' CSV bulk export and history panel is exactly the professional solution we were looking for.\"",
-    "t3Name": "Benjamin Adams",
-    "t3Initials": "BA",
-    "t3Role": "Creative Director, Pixel Studio"
   },
   "faq": {
     "microLabel": "Questions",
@@ -353,7 +336,7 @@
       "f3": "Bulk CSV Export"
     },
     "studioFeatures": {
-      "f1": "Unlimited Monthly Analyses (up to 150/day)",
+      "f1": "Unlimited Monthly Analyses (up to 100/day)",
       "f2": "Studio-Grade E-Commerce Copy",
       "f3": "Priority Email Support"
     },
