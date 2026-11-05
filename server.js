@@ -869,7 +869,7 @@ JSON Yapısı ve Kurallar:
     await refundGeneration(creditUserId, ip);
     return res.status(500).json({
       error: {
-        message: err.message || "Bilinmeyen sunucu hatası oluştu.",
+        message: "Bilinmeyen sunucu hatası oluştu.",
         type: 'UNKNOWN_ERROR',
         retriable: true
       }
@@ -1043,7 +1043,7 @@ app.post('/api/payment/lemon/create-checkout-session', verifyAuth, validateReque
     return res.json({ id: result.data.id, url: checkoutUrl });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: { message: err.message || "Lemon Squeezy oturumu oluşturulurken hata oluştu." } });
+    return res.status(500).json({ error: { message: "Lemon Squeezy oturumu oluşturulurken hata oluştu." } });
   }
 });
 
@@ -1103,7 +1103,7 @@ app.post('/api/payment/lemon/cancel-subscription', verifyAuth, async (req, res) 
     return res.json({ status: attrs.status || 'cancelled', endsAt: attrs.ends_at || null });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: { message: err.message || "Abonelik iptal edilirken hata oluştu." } });
+    return res.status(500).json({ error: { message: "Abonelik iptal edilirken hata oluştu." } });
   }
 });
 
@@ -1246,7 +1246,12 @@ app.post('/api/email/inbound', rateLimiter(50, 60 * 1000, 'Email Inbound'), asyn
       return res.status(500).json({ error: { message: "Internal Server Error: Secure token configuration missing." } });
     }
 
-    if (expectedSecret && expectedSecret !== 'your_inbound_webhook_secret_here' && clientSecret !== expectedSecret) {
+    const secretMatches = (a, b) => {
+      const x = Buffer.from(String(a || ''));
+      const y = Buffer.from(String(b || ''));
+      return x.length === y.length && crypto.timingSafeEqual(x, y);
+    };
+    if (expectedSecret && expectedSecret !== 'your_inbound_webhook_secret_here' && !secretMatches(clientSecret, expectedSecret)) {
       console.warn("⚠️ Inbound Email Webhook: Unauthorized webhook request.");
       return res.status(401).json({ error: { message: "Unauthorized: Invalid secret." } });
     }
@@ -1397,7 +1402,7 @@ Response Rules (English):
     }
   } catch (err) {
     console.error("❌ Inbound email handler error:", err);
-    return res.status(500).json({ error: { message: err.message || "E-posta işlenirken sunucu hatası oluştu." } });
+    return res.status(500).json({ error: { message: "E-posta işlenirken sunucu hatası oluştu." } });
   }
 });
 
@@ -1525,7 +1530,8 @@ if (!process.env.VERCEL) {
 app.use((err, req, res, next) => {
   console.error("❌ Sunucu Hatası:", err.stack || err.message);
   res.status(err.status || 500).json({
-    error: { message: err.message || "Bilinmeyen bir sunucu hatası oluştu." }
+    // Client errors (e.g. invalid JSON, oversized body) keep their message; server errors stay generic
+    error: { message: (err.status && err.status < 500 && err.expose) ? err.message : "Bilinmeyen bir sunucu hatası oluştu." }
   });
 });
 

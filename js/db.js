@@ -279,7 +279,8 @@ export async function deleteHistoryItem(resultId) {
   return true;
 }
 
-export async function getUserHistory(userId) {
+// The newest `limit` analyses (lists and exports); use getHistoryCount for totals
+export async function getUserHistory(userId, limit = 500) {
   try {
     if (supabase.isDummy) {
       const localHistory = JSON.parse(localStorage.getItem('maya_history') || '[]');
@@ -306,7 +307,8 @@ export async function getUserHistory(userId) {
         )
       `)
       .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
     if (error) throw error;
 
@@ -343,6 +345,17 @@ export async function getUserHistory(userId) {
     console.error('getUserHistory error:', error);
     return [];
   }
+}
+
+export async function getHistoryCount(userId) {
+  if (supabase.isDummy) {
+    return JSON.parse(localStorage.getItem('maya_history') || '[]').filter(item => item.user_id === userId).length;
+  }
+  const { count, error } = await supabase
+    .from('results')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', userId);
+  return error ? null : count;
 }
 
 // Log activity history

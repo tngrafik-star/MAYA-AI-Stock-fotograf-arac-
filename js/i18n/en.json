@@ -140,8 +140,6 @@
     "brandDesc": "A premium and functional metadata platform that optimizes creators' workflows with artificial intelligence.",
     "product": "Product",
     "company": "Company",
-    "aboutUs": "About Us",
-    "careers": "Careers",
     "contact": "Contact",
     "legal": "Legal",
     "terms": "Terms of Service",
@@ -239,7 +237,9 @@
     "selectImage": "Select Image",
     "loadingTitle": "AI is Analyzing...",
     "loadingDesc": "Processing image colors, composition elements, and keyword volumes.",
-    "batchProgress": "Analyzing {{current}} of {{total}}: {{name}}"
+    "batchProgress": "Analyzing {{current}} of {{total}}: {{name}}",
+    "stopBatch": "Stop the Rest",
+    "stopping": "Stopping after this image…"
   },
   "results": {
     "title": "Analysis Results",
@@ -387,7 +387,8 @@
     "accountDeleteEmailMismatch": "Type your account email address exactly to confirm.",
     "historyItemDeleted": "The analysis and its image were deleted.",
     "emailNotConfirmed": "Your email address is not confirmed yet. Click the confirmation link in your inbox.",
-    "emailNotConfirmedResent": "Your email address is not confirmed yet. We sent the confirmation link again; check your inbox (and spam folder)."
+    "emailNotConfirmedResent": "Your email address is not confirmed yet. We sent the confirmation link again; check your inbox (and spam folder).",
+    "batchStopped": "{{done}} of {{total}} images analyzed; the rest were stopped."
   },
   "common": {
     "copy": "Copy",

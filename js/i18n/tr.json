@@ -140,8 +140,6 @@
     "brandDesc": "Yaratıcıların iş akışlarını yapay zeka ile optimize eden, lüks ve işlevsel metadata platformu.",
     "product": "Ürün",
     "company": "Şirket",
-    "aboutUs": "Hakkımızda",
-    "careers": "Kariyer",
     "contact": "İletişim",
     "legal": "Yasal",
     "terms": "Kullanım Koşulları",
@@ -239,7 +237,9 @@
     "selectImage": "Görsel Seç",
     "loadingTitle": "Yapay Zeka Analiz Ediyor...",
     "loadingDesc": "Görsel renkleri, kompozisyon ögeleri ve anahtar kelime hacimleri hesaplanıyor.",
-    "batchProgress": "{{current}} / {{total}} analiz ediliyor: {{name}}"
+    "batchProgress": "{{current}} / {{total}} analiz ediliyor: {{name}}",
+    "stopBatch": "Kalanları Durdur",
+    "stopping": "Bu görsel bitince duracak…"
   },
   "results": {
     "title": "Analiz Sonucu",
@@ -387,7 +387,8 @@
     "accountDeleteEmailMismatch": "Onay için hesabınızın e-posta adresini aynen yazın.",
     "historyItemDeleted": "Analiz ve görseli silindi.",
     "emailNotConfirmed": "E-posta adresiniz henüz onaylanmamış. Gelen kutunuzdaki onay bağlantısına tıklayın.",
-    "emailNotConfirmedResent": "E-posta adresiniz henüz onaylanmamış. Onay bağlantısını yeniden gönderdik; gelen kutunuzu (ve spam klasörünü) kontrol edin."
+    "emailNotConfirmedResent": "E-posta adresiniz henüz onaylanmamış. Onay bağlantısını yeniden gönderdik; gelen kutunuzu (ve spam klasörünü) kontrol edin.",
+    "batchStopped": "{{done}} / {{total}} görsel analiz edildi; kalanlar durduruldu."
   },
   "common": {
     "copy": "Kopyala",

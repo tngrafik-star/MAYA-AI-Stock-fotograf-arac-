@@ -1,4 +1,4 @@
-import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs, syncUsage, deleteHistoryItem } from './db.js';
+import { initDB, getCurrentUser, getUserHistory, getHistoryCount, saveGeneration, getActivityLogs, syncUsage, deleteHistoryItem } from './db.js';
 import { logout, updateProfile, cancelSubscription, deleteAccount } from './auth.js';
 import { getCategories, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
 import { embedXmpInJpeg } from './xmp.js';
@@ -158,6 +158,15 @@ const initApp = async () => {
 
   // State Variables
   let isProcessing = false;
+  let stopRequested = false;
+  const stopBtn = document.getElementById('generator-stop-btn');
+  if (stopBtn) {
+    stopBtn.addEventListener('click', () => {
+      stopRequested = true;
+      stopBtn.disabled = true;
+      stopBtn.textContent = t('upload.stopping');
+    });
+  }
   let activeFile = null; // Original file of the result on screen (for metadata download)
   let activeMetadata = null; // Holds currently active generation metadata
 
@@ -353,11 +362,14 @@ const initApp = async () => {
     const user = getCurrentUser();
     if (!user) return;
 
-    const history = await getUserHistory(user.id);
-    const logs = await getActivityLogs(user.id);
+    const [history, logs, totalCount] = await Promise.all([
+      getUserHistory(user.id, 5),
+      getActivityLogs(user.id),
+      getHistoryCount(user.id)
+    ]);
 
     // Update stats cards
-    document.getElementById('stats-total-gen').textContent = history.length;
+    document.getElementById('stats-total-gen').textContent = totalCount ?? history.length;
     
     const usage = usageView(user);
     const limitVal = usage.limit === 999999 ? t('dashboard.home.unlimited') : usage.limit;
@@ -574,6 +586,13 @@ const initApp = async () => {
     const progress = document.getElementById('generator-progress');
 
     isProcessing = true;
+    stopRequested = false;
+    if (stopBtn) {
+      // Only useful when several images are queued; the current one always finishes
+      stopBtn.style.display = files.length > 1 ? '' : 'none';
+      stopBtn.disabled = false;
+      stopBtn.textContent = t('upload.stopBatch');
+    }
     dropzone.style.display = 'none';
     loading.style.display = 'flex';
     results.style.display = 'none';
@@ -585,6 +604,10 @@ const initApp = async () => {
     let stopMessage = '';
 
     for (let i = 0; i < files.length; i++) {
+      if (stopRequested) {
+        stopReason = 'stopped';
+        break;
+      }
       const file = files[i];
       const current = getCurrentUser() || user;
 
@@ -644,6 +667,7 @@ const initApp = async () => {
     }
 
     isProcessing = false;
+    if (stopBtn) stopBtn.style.display = 'none';
     loading.style.display = 'none';
     if (progress) progress.textContent = '';
 
@@ -665,6 +689,8 @@ const initApp = async () => {
       showToast(t('toast.sessionNotFound'), 'error');
     } else if (stopReason === 'server') {
       showToast(stopMessage, 'warning');
+    } else if (stopReason === 'stopped') {
+      showToast(t('toast.batchStopped', { done, total: files.length }), 'warning');
     } else if (files.length > 1) {
       showToast(t('toast.batchComplete', { done, failed }), failed ? 'warning' : 'success');
     } else if (done === 1) {
