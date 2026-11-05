@@ -127,7 +127,7 @@
         "name": "Yapay zeka metadata üretim doğruluğu nedir?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "MayaListing, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir."
+          "text": "MayaListing görselleri Google Gemini yapay zeka modeliyle analiz eder; görseldeki nesneleri, kompozisyonu ve renkleri inceleyerek stok sitelerinin kurallarına uygun başlık ve anahtar kelimeler önerir. Sonuçlar yapay zeka önerisidir; yüklemeden önce gözden geçirmenizi öneririz."
         }
       },
       {
@@ -135,7 +135,7 @@
         "name": "Hangi platformları destekliyorsunuz?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz."
+          "text": "Adobe Stock, Shutterstock, Freepik ve Vecteezy için platforma özel İngilizce başlık, açıklama ve anahtar kelimeler üretir ve bunları CSV olarak dışa aktarırız. Ayrıca Etsy, Trendyol, Amazon ve Shopify gibi e-ticaret siteleri için ürün başlığı, açıklama ve etiketler hazırlarız."
         }
       },
       {
@@ -143,7 +143,7 @@
         "name": "Yüklediğim görsellerin gizliliği nasıl korunuyor?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz."
+          "text": "Görselleriniz yalnızca size metadata üretmek için işlenir. Analiz için küçültülmüş bir kopyası Google Gemini API'ye gönderilir; Google bu içeriği kendi modellerini eğitmek için kullanmaz. Kopya, yalnızca sizin erişebildiğiniz özel bir depoda saklanır ve istediğiniz an silebilirsiniz. Görselleriniz satılmaz ve reklam için kullanılmaz."
         }
       },
       {
@@ -317,8 +317,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
           </div>
-          <h3 data-i18n="geo.hl1Title">3 Saniye / Görsel İşlem Hızı</h3>
-          <p data-i18n="geo.hl1Desc">Geleneksel etiketlemedeki ~4.5 saatlik manuel süreci 50 görsel için sadece 2.5 dakikaya indirir.</p>
+          <h3 data-i18n="geo.hl1Title">Saniyeler İçinde Sonuç</h3>
+          <p data-i18n="geo.hl1Desc">Her görsel için başlık, açıklama ve anahtar kelimeler saniyeler içinde hazır; elle saatler süren etiketleme işi dakikalara iner.</p>
         </div>
 
         <div class="feature-card">
@@ -338,7 +338,7 @@
             </svg>
           </div>
           <h3 data-i18n="geo.hl3Title">Platforma Özel CSV Formatları</h3>
-          <p data-i18n="geo.hl3Desc">Adobe Stock, Shutterstock ve Freepik yüklemeleri için %100 uyumlu CSV dosyaları tek tıkla dışa aktarılır.</p>
+          <p data-i18n="geo.hl3Desc">Adobe Stock, Shutterstock, Freepik ve Vecteezy yükleme formatlarına göre hazırlanmış, orijinal dosya adlarını içeren CSV dosyaları tek tıkla dışa aktarılır.</p>
         </div>
 
         <div class="feature-card">
@@ -377,7 +377,7 @@
         <div class="step-card">
           <div class="step-number">03</div>
           <h3 data-i18n="howItWorks.step3Title">Metadata Oluştur</h3>
-          <p data-i18n="howItWorks.step3Desc">Saniyeler içinde E-ticaret ve Stock platformlarına özel Türkçe metadata setleri üretilsin.</p>
+          <p data-i18n="howItWorks.step3Desc">Saniyeler içinde stok platformları için İngilizce, e-ticaret siteleri için seçtiğiniz dilde metadata setleri üretilsin.</p>
         </div>
         <div class="step-card">
           <div class="step-number">04</div>
@@ -417,7 +417,7 @@
             </svg>
           </div>
           <h3 data-i18n="features.f2Title">Akıllı Anahtar Kelime Motoru</h3>
-          <p data-i18n="features.f2Desc">Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ kelimelik etiket havuzları üretir.</p>
+          <p data-i18n="features.f2Desc">Görselin içeriğini yansıtan ve aramada öne çıkmasına yardımcı olan 20-50 anahtar kelimelik setler üretir.</p>
         </div>
         <!-- Feature 3 -->
         <div class="feature-card">
@@ -427,7 +427,7 @@
             </svg>
           </div>
           <h3 data-i18n="features.f3Title">Toplu İşlem (Batch Processing)</h3>
-          <p data-i18n="features.f3Desc">Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.</p>
+          <p data-i18n="features.f3Desc">Birden çok fotoğrafı tek seferde seçin; hepsi sırayla analiz edilip geçmişinize kaydedilir.</p>
         </div>
         <!-- Feature 4 -->
         <div class="feature-card">
@@ -437,7 +437,7 @@
             </svg>
           </div>
           <h3 data-i18n="features.f4Title">Gelişmiş Dışa Aktarım</h3>
-          <p data-i18n="features.f4Desc">Adobe Stock, Shutterstock, Freepik veya Etsy gibi online satış kanallarına özel CSV formatlarında çıktı alın.</p>
+          <p data-i18n="features.f4Desc">Adobe Stock, Shutterstock, Freepik ve Vecteezy için ayrı CSV formatları ile e-ticaret ürün listeleri için genel bir CSV indirin.</p>
         </div>
         <!-- Feature 5 -->
         <div class="feature-card">
@@ -632,21 +632,21 @@
         <div class="faq-item">
           <button class="faq-question" data-i18n="faq.q1">Yapay zeka metadata üretim doğruluğu nedir?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a1">MayaListing, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir.</p>
+            <p data-i18n="faq.a1">MayaListing görselleri Google Gemini yapay zeka modeliyle analiz eder; görseldeki nesneleri, kompozisyonu ve renkleri inceleyerek stok sitelerinin kurallarına uygun başlık ve anahtar kelimeler önerir. Sonuçlar yapay zeka önerisidir; yüklemeden önce gözden geçirmenizi öneririz.</p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-question" data-i18n="faq.q2">Hangi platformları destekliyorsunuz?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a2">Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz.</p>
+            <p data-i18n="faq.a2">Adobe Stock, Shutterstock, Freepik ve Vecteezy için platforma özel İngilizce başlık, açıklama ve anahtar kelimeler üretir ve bunları CSV olarak dışa aktarırız. Ayrıca Etsy, Trendyol, Amazon ve Shopify gibi e-ticaret siteleri için ürün başlığı, açıklama ve etiketler hazırlarız.</p>
           </div>
         </div>
 
         <div class="faq-item">
           <button class="faq-question" data-i18n="faq.q3">Yüklediğim görsellerin gizliliği nasıl korunuyor?</button>
           <div class="faq-answer">
-            <p data-i18n="faq.a3">Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz.</p>
+            <p data-i18n="faq.a3">Görselleriniz yalnızca size metadata üretmek için işlenir. Analiz için küçültülmüş bir kopyası Google Gemini API'ye gönderilir; Google bu içeriği kendi modellerini eğitmek için kullanmaz. Kopya, yalnızca sizin erişebildiğiniz özel bir depoda saklanır ve istediğiniz an silebilirsiniz. Görselleriniz satılmaz ve reklam için kullanılmaz.</p>
           </div>
         </div>
 

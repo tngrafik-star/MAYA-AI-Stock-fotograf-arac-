@@ -40,7 +40,7 @@
     "step2Title": "Yapay Zeka Analiz Etsin",
     "step2Desc": "Gelişmiş görsel işleme modelimiz renkleri, kompozisyonu, nesneleri ve potansiyel SEO değerlerini çözsün.",
     "step3Title": "Metadata Oluştur",
-    "step3Desc": "Saniyeler içinde e-ticaret siteleri ile stok platformlarına özel Türkçe metadata setleri üretilsin.",
+    "step3Desc": "Saniyeler içinde stok platformları için İngilizce, e-ticaret siteleri için seçtiğiniz dilde metadata setleri üretilsin.",
     "step4Title": "Platformlara Yükle",
     "step4Desc": "Dışa aktarılan CSV dosyaları veya hızlı kopyalama araçlarıyla saniyeler içinde yüklemenizi tamamlayın."
   },
@@ -51,11 +51,11 @@
     "f1Title": "Yapay Zeka Metadata Üretici",
     "f1Desc": "Yüklenen fotoğrafa uygun, arama hacmi yüksek Türkçe başlık ve pazaryeri uyumlu açıklamalar oluşturur.",
     "f2Title": "Akıllı Anahtar Kelime Motoru",
-    "f2Desc": "Görselin içeriğini en iyi şekilde yansıtan ve arama algoritlarında öne çıkaran 25+ etiket havuzları üretir.",
+    "f2Desc": "Görselin içeriğini yansıtan ve aramada öne çıkmasına yardımcı olan 20-50 anahtar kelimelik setler üretir.",
     "f3Title": "Toplu İşlem (Batch Processing)",
-    "f3Desc": "Yüzlerce fotoğrafı aynı anda kuyruğa ekleyin, arka planda tüm metadata setlerini tek seferde oluşturun.",
+    "f3Desc": "Birden çok fotoğrafı tek seferde seçin; hepsi sırayla analiz edilip geçmişinize kaydedilir.",
     "f4Title": "Gelişmiş Dışa Aktarım",
-    "f4Desc": "Etsy, Amazon, Shopify veya Adobe Stock, Shutterstock, Freepik gibi mecralara özel CSV formatlarında çıktı alın.",
+    "f4Desc": "Adobe Stock, Shutterstock, Freepik ve Vecteezy için ayrı CSV formatları ile e-ticaret ürün listeleri için genel bir CSV indirin.",
     "f5Title": "Geçmiş ve Arşiv Yönetimi",
     "f5Desc": "Daha önce yaptığınız tüm analiz ve üretimleri güvenle saklayın, dilediğiniz an tekrar arayın ve kopyalayın.",
     "f6Title": "Çoklu Platform Uyumluluğu",
@@ -115,18 +115,19 @@
       "f3": "Metadata Gömülü Görsel İndirme",
       "f4": "Öncelikli E-posta Desteği",
       "f5": "En Detaylı Anahtar Kelime Setleri (45-50)"
-    }
+    },
+    "startFree": "Ücretsiz Başla"
   },
   "faq": {
     "microLabel": "Sorular",
     "title": "Sıkça Sorulan Sorular",
     "description": "MayaListing hakkında merak ettiğiniz temel konular ve yanıtları.",
     "q1": "Yapay zeka metadata üretim doğruluğu nedir?",
-    "a1": "MayaListing, gelişmiş bilgisayarlı görü (computer vision) ve doğal dil işleme algoritmalarını kullanır. Görseldeki objeleri, kompozisyonu ve renk tonlarını analiz ederek %95'in üzerinde doğruluk oranında stok sitesi politikalarına uygun başlık ve etiketler üretir.",
+    "a1": "MayaListing görselleri Google Gemini yapay zeka modeliyle analiz eder; görseldeki nesneleri, kompozisyonu ve renkleri inceleyerek stok sitelerinin kurallarına uygun başlık ve anahtar kelimeler önerir. Sonuçlar yapay zeka önerisidir; yüklemeden önce gözden geçirmenizi öneririz.",
     "q2": "Hangi platformları destekliyorsunuz?",
-    "a2": "Başta Adobe Stock, Shutterstock, Freepik, Vecteezy olmak üzere küresel tüm stok fotoğraf platformlarını destekliyoruz. Ayrıca online ürün satan Trendyol, Etsy, Amazon, Shopify gibi e-ticaret platformlarına uyumlu SEO başlıkları ve arama etiketleri de üretebiliyoruz.",
+    "a2": "Adobe Stock, Shutterstock, Freepik ve Vecteezy için platforma özel İngilizce başlık, açıklama ve anahtar kelimeler üretir ve bunları CSV olarak dışa aktarırız. Ayrıca Etsy, Trendyol, Amazon ve Shopify gibi e-ticaret siteleri için ürün başlığı, açıklama ve etiketler hazırlarız.",
     "q3": "Yüklediğim görsellerin gizliliği nasıl korunuyor?",
-    "a3": "Gizliliğiniz bizim için çok önemlidir. Yüklediğiniz görseller sadece analiz işlemi sırasında işlenir ve güvenli sunucularımızda şifrelenerek saklanır. Hiçbir görseliniz üçüncü taraflarla paylaşılmaz veya yapay zeka modellerinin genel eğitimi için kullanılmaz.",
+    "a3": "Görselleriniz yalnızca size metadata üretmek için işlenir. Analiz için küçültülmüş bir kopyası Google Gemini API'ye gönderilir; Google bu içeriği kendi modellerini eğitmek için kullanmaz. Kopya, yalnızca sizin erişebildiğiniz özel bir depoda saklanır ve istediğiniz an silebilirsiniz. Görselleriniz satılmaz ve reklam için kullanılmaz.",
     "q4": "İstediğim zaman aboneliğimi iptal edebilir miyim?",
     "a4": "Evet, dilediğiniz an taahhüt olmadan aboneliğinizi panelinizdeki faturalandırma sayfasından iptal edebilir veya planlar arasında geçiş yapabilirsiniz. İptal durumunda haklarınız fatura kesim tarihine kadar devam eder."
   },
@@ -511,12 +512,12 @@
     "badge": "KISACA MAYALISTING NEDİR?",
     "title": "Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Otomasyonu",
     "description": "Görsellerinizi Gemini 2.5 ile analiz eder; Adobe Stock, Shutterstock, Freepik, Trendyol, Etsy ve Amazon uyumlu metadata üretir.",
-    "hl1Title": "3 Saniye / Görsel İşlem Hızı",
-    "hl1Desc": "Geleneksel etiketlemedeki ~4.5 saatlik manuel süreci 50 görsel için sadece 2.5 dakikaya indirir.",
+    "hl1Title": "Saniyeler İçinde Sonuç",
+    "hl1Desc": "Her görsel için başlık, açıklama ve anahtar kelimeler saniyeler içinde hazır; elle saatler süren etiketleme işi dakikalara iner.",
     "hl2Title": "Google AI Overviews & GEO Uyumlu",
     "hl2Desc": "Yapay zeka arama motorları ve pazaryeri AI indeksleme sistemleri için anlamsal SEO ve etiket setleri hazırlar.",
     "hl3Title": "Platforma Özel CSV Formatları",
-    "hl3Desc": "Adobe Stock, Shutterstock ve Freepik yüklemeleri için %100 uyumlu CSV dosyaları tek tıkla dışa aktarılır.",
+    "hl3Desc": "Adobe Stock, Shutterstock, Freepik ve Vecteezy yükleme formatlarına göre hazırlanmış, orijinal dosya adlarını içeren CSV dosyaları tek tıkla dışa aktarılır.",
     "hl4Title": "E-Ticaret & Pazaryeri Desteği",
     "hl4Desc": "Trendyol, Etsy, Amazon, Hepsiburada ve n11 için dönüşümü yüksek Türkçe başlık ve emojili açıklama metinleri üretir."
   }
