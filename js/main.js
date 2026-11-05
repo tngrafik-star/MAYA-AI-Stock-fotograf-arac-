@@ -3,6 +3,7 @@ import { login, signup, loginWithGoogle, resetPassword, resendConfirmation } fro
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getCurrentLanguage } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
 import { supabase } from './supabase.js';
+import { track } from './analytics.js';
 
 // Initialize Database on load
 initDB();
@@ -271,6 +272,7 @@ const initMain = () => {
 
       try {
         await signup(name, email, password);
+        track('sign_up', { method: 'email' });
         
         // Wait and check if session is active immediately
         const { data: { session } } = await supabase.auth.getSession();
@@ -297,6 +299,7 @@ const initMain = () => {
 
       try {
         await login(email, password);
+        track('login', { method: 'email' });
         showToast(t('toast.loginSuccess'), 'success');
         setTimeout(() => {
           window.location.href = '/app/';
@@ -339,6 +342,7 @@ const initMain = () => {
   const handleGoogleLogin = async () => {
     try {
       showToast(t('toast.googleRedirect'), 'success');
+      track('login', { method: 'google' });
       await loginWithGoogle();
     } catch (err) {
       showToast(err.message, 'error');

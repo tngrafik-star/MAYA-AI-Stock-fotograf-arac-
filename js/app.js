@@ -2,6 +2,7 @@ import { initDB, getCurrentUser, getUserHistory, saveGeneration, getActivityLogs
 import { logout, updateProfile, cancelSubscription, deleteAccount } from './auth.js';
 import { getCategories, generateGeminiMetadata, detectCategoryFromFilename } from './ai.js';
 import { embedXmpInJpeg } from './xmp.js';
+import { track, planItem, planValue } from './analytics.js';
 import { supabase } from './supabase.js';
 import { t, applyTranslations, updateSEOMeta, updateHtmlLang, getDateLocale, getCurrentLanguage, translateActivityLog } from './i18n/index.js';
 import { createLanguageSwitcher } from './languageSwitcher.js';
@@ -262,6 +263,15 @@ const initApp = async () => {
         
         if (profile && (profile.plan !== currentUser.plan || checkCount > 5)) {
           clearInterval(checkInterval);
+          if (profile.plan !== currentUser.plan && profile.plan !== 'free') {
+            // Client-side estimate (monthly list price); Lemon Squeezy holds the exact amount
+            track('purchase', {
+              transaction_id: `${session.user.id}-${profile.plan}-${new Date().toISOString().slice(0, 10)}`,
+              value: planValue(profile.plan),
+              currency: 'USD',
+              items: [planItem(profile.plan)]
+            });
+          }
           currentUser = {
             id: session.user.id,
             name: profile.name,
@@ -659,6 +669,9 @@ const initApp = async () => {
       showToast(t('toast.batchComplete', { done, failed }), failed ? 'warning' : 'success');
     } else if (done === 1) {
       showToast(t('toast.analysisComplete'), 'success');
+    }
+    if (done > 0) {
+      track('analysis_complete', { images: done, plan: user.plan });
     }
   }
 
@@ -1303,6 +1316,7 @@ const initApp = async () => {
 
     try {
       showToast(t('toast.paymentRedirect'), 'success');
+      track('begin_checkout', { value: planValue(plan), currency: 'USD', items: [planItem(plan, billingCycle)] });
 
       // Get JWT token from Supabase session
       const { supabase } = await import('./supabase.js');
