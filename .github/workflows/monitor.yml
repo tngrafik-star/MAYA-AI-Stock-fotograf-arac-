@@ -1,0 +1,50 @@
+name: Production Monitor
+
+# Every hour: checks that the live site answers, the Gemini models are still
+# served, the credit system works and the global daily AI cap is not nearly
+# used up. On failure it opens (or comments on) a "monitor" issue, which
+# GitHub emails to the repository owner.
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Deep health check
+        id: health
+        run: |
+          set +e
+          BODY=$(curl -sS --max-time 30 -w '\n%{http_code}' "https://www.mayalisting.com/api/health?deep=1")
+          CODE=$(echo "$BODY" | tail -n1)
+          JSON=$(echo "$BODY" | sed '$d')
+          echo "HTTP $CODE"
+          echo "$JSON"
+          {
+            echo 'report<<EOF'
+            echo "HTTP $CODE"
+            echo "$JSON"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          if [ "$CODE" != "200" ]; then exit 1; fi
+
+      - name: Report problem as an issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT: ${{ steps.health.outputs.report }}
+        run: |
+          TITLE="Production monitor: mayalisting.com needs attention"
+          BODY=$(printf 'The hourly check failed at %s UTC.\n\n```\n%s\n```\n\nRun: %s/%s/actions/runs/%s' "$(date -u +'%Y-%m-%d %H:%M')" "$REPORT" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "$TITLE in:title" --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY"
+          fi

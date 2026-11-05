@@ -38,11 +38,14 @@ const validateEnv = () => {
   const required = [
     'VITE_SUPABASE_URL',
     'VITE_SUPABASE_ANON_KEY',
-    'VITE_GEMINI_API_KEY'
+    'GEMINI_API_KEY'
   ];
 
   const missing = required.filter(key => {
-    const value = process.env[key];
+    // GEMINI_API_KEY is server-only; VITE_GEMINI_API_KEY is the old name, still accepted
+    const value = key === 'GEMINI_API_KEY'
+      ? (process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY)
+      : process.env[key];
     return !value || value.startsWith('your_') || value.includes('placeholder');
   });
 

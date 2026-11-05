@@ -1,106 +1,67 @@
-# MayaListing - Yapay Zeka Destekli Stok Fotoğraf Asistanı 📷✨
+# MayaListing — Yapay Zeka Destekli Stok Fotoğraf ve E-Ticaret Metadata Aracı 📷✨
 
-MayaListing, profesyonel fotoğrafçılar, içerik üreticileri ve e-ticaret satıcıları için geliştirilmiş, yapay zeka destekli bir stok fotoğraf ve ürün metadata otomasyon platformudur. Görsellerinizi saniyeler içinde analiz ederek platforma özel başlık, açıklama ve SEO uyumlu etiket (keyword) setleri üretir.
-
----
-
-## 🚀 Öne Çıkan Özellikler
-
-- 🧠 **Yapay Zeka Analizi:** Görselin kompozisyonunu, objelerini, renklerini ve temasını gelişmiş yapay zeka (`gemini-2.5-flash`) ile çözümler.
-- 🛍️ **Çoklu Platform Desteği:** 
-  - **Stok Siteleri:** Adobe Stock, Shutterstock, Freepik ve Vecteezy standartlarına tam uyumlu meta veriler.
-  - **E-Ticaret Pazaryerleri:** Trendyol, Etsy, Amazon, Hepsiburada ve n11 için optimize edilmiş, zengin başlık ve emojili açıklama şablonları.
-- 📦 **Toplu İşlem (Batch Processing):** Birden fazla fotoğrafı aynı anda kuyruğa ekleme ve arka planda analiz etme imkanı.
-- 📥 **Gelişmiş Dışa Aktarma:** Analiz edilen görsellerin verilerini stok sitelerinin kabul ettiği formatlarda toplu CSV olarak indirme.
-- 🔐 **Güvenli Kimlik Doğrulama & Veritabanı:** Supabase entegrasyonu ile güvenli üyelik sistemi, kullanıcı yönetimi ve geçmiş arşivleme.
-- 🌓 **Karanlık/Aydınlık Tema:** Modern, göz yormayan lüks arayüz tasarımı.
+MayaListing, görselleri Google Gemini ile analiz edip stok fotoğraf siteleri ve e-ticaret pazaryerleri için başlık, açıklama ve anahtar kelime üretir. Canlı adres: https://www.mayalisting.com
 
 ---
 
-## 🛠️ Teknolojiler
+## Özellikler
 
-- **Frontend:** HTML5, Vanilla CSS, JavaScript (Vite derleyicisi ile)
-- **Backend:** Node.js, Express.js (Güvenli API Proxy sunucusu)
-- **Yapay Zeka:** Google Gemini API (`gemini-2.5-flash` modeli)
-- **Veritabanı & Auth:** Supabase (PostgreSQL)
+- **Yapay zeka analizi:** Ücretsiz ve Starter planlarda Gemini Flash, Pro ve Studio'da Gemini Pro (model adları ortam değişkeniyle değiştirilebilir).
+- **Platforma özel çıktı:** Adobe Stock, Shutterstock, Freepik ve Vecteezy için her zaman İngilizce; e-ticaret (Etsy, Trendyol, Amazon, Shopify…) için seçilen dilde.
+- **Toplu analiz:** Birden çok görsel seçilir, sırayla analiz edilip geçmişe kaydedilir (sekme açık kalmalı).
+- **Dışa aktarma:** Orijinal dosya adlarıyla Adobe Stock, Shutterstock, Freepik, Vecteezy CSV'leri ve genel bir e-ticaret CSV'si.
+- **Metadata'lı JPG indirme:** Başlık, açıklama ve anahtar kelimeler XMP olarak orijinal JPEG'e yazılır.
+- **Hesap:** Geçmişten tek analiz silme, hesabı ve tüm verileri silme (KVKK), yıllık/aylık plan, abonelik iptali.
+- **Ücretsiz araç:** Kayıtsız metadata kontrol aracı (`/araclar/metadata-kontrol/`, `/en/tools/metadata-checker/`).
+- **TR/EN arayüz**, açık/koyu tema, çerez onayı (Google Consent Mode v2).
 
----
+## Mimari
 
-## 📂 Proje Yapısı
+| Katman | Teknoloji |
+| --- | --- |
+| Ön yüz | Vanilla JS + Vite 8 (çok sayfalı), i18next |
+| Sunucu | Node.js 22, Express (`server.js`), Vercel serverless (`api/index.js`) |
+| Veritabanı, giriş, depolama | Supabase (Postgres + RLS, Auth, özel `images` deposu) |
+| Yapay zeka | Google Gemini API (sunucu tarafında, anahtar istemciye gitmez) |
+| Ödeme | Lemon Squeezy (Merchant of Record) + webhook'lar |
 
-```text
-├── app/                  # Gösterge paneli ve uygulama arayüzü dosyaları
-├── auth/                 # Supabase Auth yönlendirme ve callback sayfaları
-├── css/                  # Proje genelindeki stil dosyaları (landing.css, global.css vb.)
-├── js/                   # Frontend mantıksal JavaScript dosyaları (main.js, supabase.js vb.)
-├── public/               # Statik varlıklar (resimler, videolar, logolar)
-├── server.js             # Express.js API Proxy sunucusu
-├── index.html            # Landing (Giriş) sayfası
-├── vite.config.js        # Vite yapılandırma dosyası
-└── package.json          # Proje bağımlılıkları ve script tanımları
-```
+Kredi ve kötüye kullanım sınırları veritabanında tutulur (`public.app_limits`, `consume_generation`): aylık kota, plan başına günlük sınır, ücretsiz planda IP başına günlük sınır ve tüm sistem için günlük tavan. Sınırlar deploy gerektirmeden SQL ile değiştirilebilir.
 
----
+## Kurulum
 
-## ⚙️ Kurulum ve Yapılandırma
-
-### 1. Gereksinimler
-Sisteminizde **Node.js** (v18+) kurulu olmalıdır.
-
-### 2. Bağımlılıkların Yüklenmesi
-Proje dizininde terminali açıp aşağıdaki komutu çalıştırın:
 ```bash
 npm install
+cp .env.example .env   # değerleri doldurun
+npm run dev            # Vite (3000) + Express (3001)
 ```
 
-### 3. Çevre Değişkenlerinin Tanımlanması
-Projenin kök dizininde `.env` adında bir dosya oluşturun ve `.env.example` içindeki değişkenleri kendi anahtarlarınızla doldurun:
+Veritabanı: Supabase SQL Editor'de önce `supabase_schema.sql`, ardından `supabase/migrations/` altındaki dosyaları tarih sırasıyla çalıştırın.
 
-```env
-# Gemini API Key (Google AI Studio'dan alınır)
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
+### Ortam değişkenleri
 
-# Supabase Yapılandırması
-VITE_SUPABASE_URL=your_supabase_project_url_here
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-```
+| Değişken | Nerede | Not |
+| --- | --- | --- |
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` | ön yüz + sunucu | Herkese açık anahtarlar |
+| `SUPABASE_SERVICE_ROLE_KEY` | yalnız sunucu | Kredi kontrolü, webhook'lar, silme işlemleri için zorunlu |
+| `GEMINI_API_KEY` | yalnız sunucu | `VITE_` öneki kullanmayın; eski `VITE_GEMINI_API_KEY` adı da okunur |
+| `GEMINI_MODEL_FAST`, `GEMINI_MODEL_PRO` | yalnız sunucu | İsteğe bağlı model değişimi |
+| `LEMON_SQUEEZY_*` | yalnız sunucu | API anahtarı, mağaza, webhook secret, plan varyantları |
+| `EMAIL_SMTP_*`, `EMAIL_INBOUND_SECRET` | yalnız sunucu | Destek e-postası otomatik yanıtı |
 
----
+## Komutlar
 
-## 💻 Çalıştırma Komutları
-
-Projede frontend (Vite) ve backend (Express) sunucularını aynı anda veya ayrı ayrı başlatabilirsiniz:
-
-### Geliştirme Ortamı (Önerilen)
-Hem frontend hem de backend sunucusunu tek komutla başlatmak için:
 ```bash
-npm run dev
+npm test          # Vitest (birim testler)
+npm run build     # yasal sayfaları üretir + Vite build
+npm start         # dist/ klasörünü Express ile sunar
 ```
-- Sunucu varsayılan olarak **http://localhost:3000** portunda çalışacaktır (Express sunucusu 3001 numaralı portu kullanır).
 
-### Servisleri Ayrı Ayrı Çalıştırma
-- **Sadece Frontend:** `npm run dev:frontend`
-- **Sadece Backend:** `npm run dev:backend`
+## İzleme ve CI
 
-### Üretim (Production) Ortamı
-1. Arayüzü derleyin (Derlenen dosyalar `dist/` klasörüne aktarılır):
-   ```bash
-   npm run build
-   ```
-2. Express sunucusunu başlatın (Vite ile derlenmiş dosyaları statik olarak sunar):
-   ```bash
-   npm start
-   ```
+- `.github/workflows/ci.yml`: her push'ta test, build ve bağımlılık denetimi.
+- `.github/workflows/monitor.yml`: saatlik `/api/health?deep=1` kontrolü; sorun varsa GitHub'da "monitor" issue'su açar.
+- Kullanım ve tahmini maliyet: Supabase'de `admin_usage_daily`, `admin_usage_today`, `admin_top_users_today` görünümleri.
 
----
+## Lisans
 
-## 🔒 Güvenlik Notu
-
-Gemini API anahtarınızın güvenliği için, doğrudan tarayıcı üzerinden istek atılması yerine `server.js` üzerinde çalışan güvenli bir proxy yapısı kurgulanmıştır. İstemci (frontend), görseli backend sunucusundaki `/api/generate` uç noktasına (endpoint) gönderir; sunucu ise kendi `.env` dosyasındaki API anahtarını kullanarak Google Gemini sunucuları ile güvenli bir şekilde haberleşir.
-
----
-
-## 📄 Lisans ve Katkıda Bulunma
-
-Bu proje **[MIT Lisansı](LICENSE)** ile lisanslanmıştır. Projeye katkıda bulunmak için lütfen **[Katkıda Bulunma Rehberi](CONTRIBUTING.md)**'ni inceleyin.
-
+[MIT](LICENSE) — katkı için [CONTRIBUTING.md](CONTRIBUTING.md).

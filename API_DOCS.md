@@ -1,387 +1,129 @@
-# MayaListing API Documentation
+# MayaListing API
 
-Base URL: `https://mayalisting.com` or `http://localhost:3001` (development)
+Base URL: `https://www.mayalisting.com` (local: `http://localhost:3001`).
+All endpoints return JSON. Errors have the shape `{ "error": { "message": "...", "type": "...", "retriable": false } }`.
 
-All requests require `Authorization: Bearer {token}` header for protected endpoints.
+## Authentication
+
+Endpoints marked 🔒 need the user's Supabase access token:
+
+```
+Authorization: Bearer <supabase access_token>
+```
+
+The server validates it with Supabase Auth (`auth.getUser`); expired, revoked or forged tokens get `401`.
 
 ---
 
-## 🔐 Authentication
+## Health
 
-### GET /health
-Health check endpoint for monitoring.
+### GET /api/health
 
-**No authentication required**
+Configuration status of Gemini, Supabase and email. Always `200`.
 
-```bash
-curl http://localhost:3001/health
-```
+### GET /api/health?deep=1
 
-**Response (200 OK):**
-```json
-{
-  "status": "ok",
-  "timestamp": "2024-07-24T12:00:00.000Z",
-  "environment": "production",
-  "services": {
-    "supabase": { "status": "healthy" },
-    "email": { "status": "healthy" },
-    "gemini": { "status": "healthy" }
-  }
-}
-```
+Also checks that both Gemini models are still served, that the credit tables are readable and how close the global daily cap is. Answers `503` with `status: "degraded"` and a `deep.problems` list when something is wrong. Cached for 10 minutes. Used by `.github/workflows/monitor.yml`.
 
 ---
 
-## 🖼️ Image Analysis
+## Image analysis
 
-### POST /api/generate
-Generate metadata (title, description, keywords) for an image using AI.
+### POST /api/generate 🔒
 
-**Authentication:** Required (Bearer token)
-
-**Rate Limit:** 30 requests per 15 minutes per IP
-
-**Request Headers:**
-```
-Authorization: Bearer {jwt_token}
-Content-Type: application/json
+```json
+{ "base64DataUrl": "data:image/jpeg;base64,...", "categoryKey": "decor", "language": "tr" }
 ```
 
-**Request Body:**
+- `base64DataUrl`: JPEG, PNG or WEBP data URL, at most 2 MB (the app sends a 1024px JPEG).
+- `categoryKey`: one of `decor, cosmetics, tech, food, landscape, fashion, fitness, business, architecture, animals, travel, automotive, portrait, other`.
+- `language`: `tr` or `en` (stock fields are always English).
+
+The plan is read from the database, never from the request. One credit is consumed atomically before the AI call and refunded if the call fails.
+
+**200** — generated metadata plus the user's usage:
+
 ```json
 {
-  "imageData": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA...",
-  "categoryKey": "decor",
-  "plan": "starter",
-  "language": "tr"
+  "category": "decor",
+  "title": "...", "description": "...", "keywords": "...", "tags": "...",
+  "adobe": { "title": "...", "keywords": "..." },
+  "shutterstock": { "title": "...", "description": "...", "keywords": "..." },
+  "freepik": { "title": "...", "keywords": "..." },
+  "vecteezy": { "title": "...", "description": "...", "keywords": "..." },
+  "ecommerce": { "title": "...", "description": "...", "tags": "..." },
+  "usage": { "plan": "pro", "generations_used": 12, "generations_limit": 1000, "usage_reset_at": "..." }
 }
 ```
 
-**Parameters:**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| imageData | string (base64) | ✓ | Image as data URL with base64 encoding (max 5MB) |
-| categoryKey | string | ✓ | Category: `decor`, `cosmetics`, `tech`, `fashion`, etc. |
-| plan | string | | Plan tier: `free`, `starter` (default), `pro`, `studio` |
-| language | string | | Output language: `tr` (Turkish, default), `en` (English) |
-| customApiKey | string | | (Deprecated) User's own Gemini API key |
+| Status | `type` | Meaning |
+| --- | --- | --- |
+| 400 | — | Invalid body or image data |
+| 401 | — | Missing or invalid token |
+| 402 | `LIMIT_REACHED` | Monthly quota used up |
+| 403 | `EMAIL_NOT_CONFIRMED` | Email address not confirmed |
+| 413 / 415 | — | Image over 2 MB / unsupported type |
+| 429 | `DAILY_LIMIT`, `IP_LIMIT`, `RATE_LIMIT` | Daily plan limit, free-plan per-network limit, or Gemini rate limit |
+| 503 | `SERVICE_BUSY`, `QUOTA_CHECK_FAILED` | Global daily cap reached, or credit system not configured |
+| 500 | `PARSE_ERROR`, `EMPTY_RESPONSE`, ... | AI call failed (credit refunded) |
 
-**Response (200 OK):**
-```json
-{
-  "title": "Minimalist Home Decor Set - White and Beige",
-  "description": "Perfect for modern living spaces...",
-  "keywords": "home decor, minimalist, white, beige, interior design",
-  "tags": ["home-decor", "minimalist", "interior-design"],
-  "adobestock": {
-    "title": "Minimalist Home Decor",
-    "keywords": "home decor, minimalist, beige"
-  },
-  "shutterstock": {
-    "title": "Minimalist white home decor set",
-    "keywords": "home decor, minimalist, white"
-  }
-}
-```
-
-**Error Responses:**
-
-| Status | Error Type | Description |
-|--------|-----------|-------------|
-| 400 | INVALID_INPUT | Invalid image format or size |
-| 401 | Unauthorized | Missing or invalid JWT token |
-| 413 | Payload Too Large | Image exceeds 5MB limit |
-| 429 | RATE_LIMIT | Too many requests, try again later |
-| 403 | QUOTA_EXCEEDED | API quota exceeded |
-| 500 | SERVICE_ERROR | Gemini API temporarily unavailable |
-
-**Example cURL:**
-```bash
-curl -X POST http://localhost:3001/api/generate \
-  -H "Authorization: Bearer eyJhbG..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "imageData": "data:image/jpeg;base64,/9j/...",
-    "categoryKey": "decor",
-    "plan": "starter",
-    "language": "tr"
-  }'
-```
+Limits live in `public.app_limits` and can be changed with SQL.
 
 ---
 
-## 💳 Payments
+## History and account
 
-### POST /api/payment/lemon/create-checkout-session (Lemon Squeezy)
-Create a checkout session with Lemon Squeezy payment processor.
+### POST /api/history/delete 🔒
 
-**Authentication:** Required (Bearer token)
+`{ "resultId": "<uuid>" }` — deletes one analysis and its stored image. `404` when the record does not belong to the caller.
 
-**Request:**
-```json
-{
-  "plan": "pro",
-  "userId": "550e8400-e29b-41d4-a716-446655440000",
-  "billingCycle": "monthly"
-}
-```
+### POST /api/account/delete 🔒
 
-**Response (200 OK):**
-```json
-{
-  "id": "ord_123456",
-  "url": "https://lemonsqueezy.com/checkout/..."
-}
-```
+`{ "confirmEmail": "user@example.com" }` — the user's own email, typed to confirm. Cancels a paying Lemon Squeezy subscription (stops with `502` if that fails), removes every image in the user's storage folder and deletes the auth user, which cascades to profile, uploads, results and activity.
 
 ---
 
-## 📧 Email Webhook
+## Payments (Lemon Squeezy)
+
+### POST /api/payment/lemon/create-checkout-session 🔒
+
+```json
+{ "plan": "pro", "userId": "<uuid>", "billingCycle": "monthly", "successUrl": "...", "cancelUrl": "..." }
+```
+
+Returns `{ "url": "https://...lemonsqueezy.com/checkout/..." }` for a new subscription. If the user already has an active subscription, the plan is switched on that subscription instead and the response is `{ "updated": true, "plan": "pro", "cycle": "monthly" }`.
+
+### POST /api/payment/lemon/cancel-subscription 🔒
+
+Cancels the current subscription at the end of the paid period. Returns `{ "status": "cancelled", "endsAt": "..." }`.
+
+### POST /api/payment/lemon/webhook
+
+Signed by Lemon Squeezy (`X-Signature`, HMAC-SHA256 of the raw body with `LEMON_SQUEEZY_WEBHOOK_SECRET`). Handled events:
+
+| Event | Effect |
+| --- | --- |
+| `subscription_created` | Sets plan, limit, fresh monthly quota, stores subscription id |
+| `subscription_updated`, `_resumed`, `_unpaused`, `_paused`, `_cancelled` | Stores status and end date; plan changes apply the new plan |
+| `subscription_payment_success` | Resets the monthly quota |
+| `subscription_payment_refunded` | Downgrades to Free |
+| `subscription_expired` | Downgrades to Free |
+
+Events for an older subscription are ignored. Each event is recorded in `webhook_events` for idempotency.
+
+---
+
+## Support email auto-reply
 
 ### POST /api/email/inbound
-Receive inbound emails and reply automatically.
 
-**Authentication:** Query parameter or header (`x-inbound-secret`)
+Called by the inbound email provider with `x-inbound-secret: <EMAIL_INBOUND_SECRET>` (or `?secret=`). Body: `{ "from": "...", "subject": "...", "text": "..." }`. Automated senders, our own address, auto-submitted/bulk mail and long reply chains are skipped; replies are capped per sender and per day.
 
-**Rate Limit:** 50 requests per minute per IP
+---
 
-**Request:**
+## Testing locally
+
 ```bash
-POST /api/email/inbound?secret=inbound_sec_xxxxx
-Content-Type: application/json
-
-{
-  "from": "customer@example.com",
-  "subject": "How do I use the tool?",
-  "text": "I need help getting started..."
-}
+npm test
+curl http://localhost:3001/api/health?deep=1
 ```
-
-**Response (200 OK):**
-```json
-{
-  "success": true,
-  "replied": true
-}
-```
-
----
-
-## 🪝 Webhooks
-
-### Lemon Squeezy Webhook: POST /api/payment/lemon/webhook
-Receives payment events from Lemon Squeezy.
-
-**Signature Verification:** Required in production
-
-**Headers:**
-```
-x-signature: hash
-```
-
-**Events Handled:**
-- `order_created`: New order placed
-- `subscription_created`: New subscription
-
----
-
-## 🔒 Authentication & Authorization
-
-### JWT Token
-All protected endpoints require a valid JWT token in the `Authorization` header:
-
-```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
-
-**Token obtained from:**
-- Supabase Auth (via email/password or OAuth)
-- Frontend: `supabase.auth.getSession()`
-
-**Token Claims:**
-```json
-{
-  "sub": "550e8400-e29b-41d4-a716-446655440000",
-  "email": "user@example.com",
-  "iat": 1234567890,
-  "exp": 1234571490
-}
-```
-
----
-
-## 🛑 Error Handling
-
-### Standard Error Response
-
-```json
-{
-  "error": {
-    "message": "User-friendly error message in Turkish or English",
-    "type": "ERROR_TYPE",
-    "retriable": true
-  }
-}
-```
-
-**Error Types:**
-- `RATE_LIMIT` - Too many requests (retriable)
-- `QUOTA_EXCEEDED` - API quota exceeded (not retriable)
-- `INVALID_INPUT` - Invalid request data (not retriable)
-- `SERVICE_ERROR` - External service unavailable (retriable)
-- `UNKNOWN_ERROR` - Unexpected error (may be retriable)
-
-### HTTP Status Codes
-
-| Status | Meaning |
-|--------|---------|
-| 200 | Success |
-| 400 | Bad request (invalid input) |
-| 401 | Unauthorized (missing/invalid token) |
-| 403 | Forbidden (insufficient permissions) |
-| 413 | Payload too large |
-| 429 | Rate limited |
-| 500 | Server error |
-| 503 | Service unavailable |
-
----
-
-## 🔄 Idempotency
-
-Payment webhooks are idempotent:
-- Same webhook event processed multiple times = same result
-- Tracked by `event_id` in database
-- Safe to retry failed webhook deliveries
-
----
-
-## 📊 Rate Limiting Headers
-
-Responses include rate limit information:
-
-```
-X-RateLimit-Limit: 30
-X-RateLimit-Remaining: 28
-X-RateLimit-Reset: 1234567890
-```
-
-When rate limited (429):
-
-```json
-{
-  "error": {
-    "message": "Çok fazla istek gönderdiniz. 5 saniye bekleyiniz.",
-    "retryAfter": 5,
-    "resetTime": "2024-07-24T12:05:30.000Z"
-  }
-}
-```
-
----
-
-## 📦 Request/Response Sizes
-
-- **Max Request Body:** 20MB (for image base64)
-- **Max Image Size:** 5MB (base64 encoded)
-- **Max Response Size:** ~1MB (metadata JSON)
-
----
-
-## 🧪 Testing
-
-### Health Check
-```bash
-curl http://localhost:3001/health | jq
-```
-
-### Generate Metadata (Development)
-```bash
-# Get token first (Supabase)
-TOKEN="eyJhbGc..."
-
-# Send image
-curl -X POST http://localhost:3001/api/generate \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "imageData": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA...",
-    "categoryKey": "decor",
-    "language": "tr"
-  }'
-```
-
-### Test Rate Limiting
-```bash
-# Should work (30 per 15 minutes)
-for i in {1..5}; do curl http://localhost:3001/api/generate; done
-
-# Should get rate limited after 30 requests
-for i in {1..50}; do curl http://localhost:3001/api/generate; done
-```
-
----
-
-## 📚 SDKs & Libraries
-
-### JavaScript/TypeScript
-```javascript
-import { supabase } from './supabase.js';
-
-// Get session
-const { data: { session } } = await supabase.auth.getSession();
-
-// Make API call
-const response = await fetch('/api/generate', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${session.access_token}`,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    imageData: base64Image,
-    categoryKey: 'decor',
-    language: 'tr'
-  })
-});
-```
-
-### Python (Future)
-```python
-import requests
-
-response = requests.post(
-  'https://api.mayalisting.com/api/generate',
-  headers={'Authorization': f'Bearer {token}'},
-  json={
-    'imageData': base64_image,
-    'categoryKey': 'decor',
-    'language': 'tr'
-  }
-)
-```
-
----
-
-## 🔄 API Versioning
-
-Current version: **v1** (stable)
-
-Future versions will use `/api/v2/`, `/api/v3/`, etc.
-
----
-
-## 🚀 Deployment
-
-See `DEPLOYMENT_GUIDE.md` for production setup.
-
----
-
-## 📞 Support
-
-- **Documentation:** https://docs.mayalisting.com
-- **Issues:** Create issue on GitHub
-- **Email:** support@mayalisting.com
-
-Last updated: 2024-07-24
-API Version: 1.0.0
