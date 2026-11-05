@@ -308,7 +308,8 @@
     "deleteTitle": "Delete Account",
     "deleteDescription": "Your account, all analysis history and uploaded images are permanently deleted. Any paid subscription is cancelled. This cannot be undone.",
     "deleteConfirmLabel": "TYPE YOUR EMAIL ADDRESS TO CONFIRM",
-    "deleteBtn": "Permanently Delete My Account"
+    "deleteBtn": "Permanently Delete My Account",
+    "passwordResetNotice": "You signed in with your password reset link. Enter your new password in the \"New Password\" fields below and save."
   },
   "billing": {
     "title": "Billing & Subscription",

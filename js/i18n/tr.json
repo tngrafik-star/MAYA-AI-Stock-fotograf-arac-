@@ -308,7 +308,8 @@
     "deleteTitle": "Hesabı Sil",
     "deleteDescription": "Hesabınız, tüm analiz geçmişiniz ve yüklediğiniz görseller kalıcı olarak silinir. Ücretli aboneliğiniz varsa iptal edilir. Bu işlem geri alınamaz.",
     "deleteConfirmLabel": "ONAY İÇİN E-POSTA ADRESİNİZİ YAZIN",
-    "deleteBtn": "Hesabımı Kalıcı Olarak Sil"
+    "deleteBtn": "Hesabımı Kalıcı Olarak Sil",
+    "passwordResetNotice": "Şifre sıfırlama bağlantınızla giriş yaptınız. Aşağıdaki \"Yeni Şifre\" alanlarına yeni şifrenizi yazıp kaydedin."
   },
   "billing": {
     "title": "Faturalandırma ve Abonelik",

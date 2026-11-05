@@ -14,10 +14,17 @@ const initCallback = () => {
     return;
   }
 
-  const redirectPath = safeRedirectPath(urlParams.get('redirect'), window.location.origin);
+  // Password recovery links must end on the "set a new password" form
+  const isRecovery = urlParams.get('reset') === 'true' || hashParams.get('type') === 'recovery';
+  let redirectPath = isRecovery
+    ? '/app/?tab=account&reset=1'
+    : safeRedirectPath(urlParams.get('redirect'), window.location.origin);
 
   // Listen for auth state changes (e.g. SIGNED_IN)
   const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      redirectPath = '/app/?tab=account&reset=1';
+    }
     if (session && session.user) {
       subscription.unsubscribe();
       // Delay slightly for a premium loading feel

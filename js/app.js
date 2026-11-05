@@ -289,7 +289,20 @@ const initApp = async () => {
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 
-  if (tabParam) {
+  if (urlParams.get('reset') === '1') {
+    // Arrived from a password recovery link: ask for the new password right away
+    switchView('account');
+    const notice = document.getElementById('password-reset-notice');
+    if (notice) notice.hidden = false;
+    window.history.replaceState({}, document.title, window.location.pathname);
+    setTimeout(() => {
+      const field = document.getElementById('profile-password');
+      if (field) {
+        field.scrollIntoView({ block: 'center' });
+        field.focus();
+      }
+    }, 300);
+  } else if (tabParam) {
     switchView(tabParam);
     if (tabParam === 'billing' && selectPlanParam) {
       handlePlanUpgrade(selectPlanParam, cycleParam);
@@ -1136,6 +1149,12 @@ const initApp = async () => {
       try {
         await updateProfile(name, email, pwd, null);
         showToast(t('toast.profileUpdated'), 'success');
+        if (pwd) {
+          const notice = document.getElementById('password-reset-notice');
+          if (notice) notice.hidden = true;
+          document.getElementById('profile-password').value = '';
+          document.getElementById('profile-password-confirm').value = '';
+        }
         updateSidebarProfile();
       } catch (err) {
         showToast(err.message, 'error');
