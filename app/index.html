@@ -702,7 +702,13 @@
         </div>
 
         <!-- Plan selection grids -->
-        <h3 class="profile-section-title" style="margin-bottom: 32px;" data-i18n="billing.changePlan">Abonelik Planını Değiştir</h3>
+        <h3 class="profile-section-title" style="margin-bottom: 24px;" data-i18n="billing.changePlan">Abonelik Planını Değiştir</h3>
+        <div class="toggle-row" style="margin-bottom: 32px;">
+          <span class="toggle-label active" id="billing-lbl-monthly" data-i18n="pricing.monthly">Aylık</span>
+          <button class="pricing-switch" id="billing-cycle-switch" aria-label="Yıllık faturalandırma" aria-pressed="false"><span class="knob"></span></button>
+          <span class="toggle-label" id="billing-lbl-yearly" data-i18n="pricing.yearly">Yıllık</span>
+          <span class="save-badge" data-i18n="pricing.save2months">2 ay ücretsiz</span>
+        </div>
         <div class="pricing-grid">
           <!-- Free -->
           <div class="pricing-card" id="billing-card-free">
@@ -722,7 +728,7 @@
           <div class="pricing-card" id="billing-card-starter">
             <div class="pricing-header">
               <h3>Starter</h3>
-              <div class="pricing-price">9.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
+              <div class="pricing-price"><span class="price-val" data-m="9.99" data-y="7.99">9.99</span> $<span data-i18n="pricing.perMonth">/ ay</span></div>
             </div>
             <ul class="pricing-features">
               <li data-i18n="billing.starterFeatures.f1">Aylık 300 Görsel Analizi</li>
@@ -737,7 +743,7 @@
             <span class="pricing-badge" data-i18n="pricing.activePlan">Aktif Plan</span>
             <div class="pricing-header">
               <h3>Pro</h3>
-              <div class="pricing-price">29.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
+              <div class="pricing-price"><span class="price-val" data-m="29.99" data-y="24.99">29.99</span> $<span data-i18n="pricing.perMonth">/ ay</span></div>
             </div>
             <ul class="pricing-features">
               <li data-i18n="billing.proFeatures.f1">Aylık 1.000 Görsel Analizi</li>
@@ -751,7 +757,7 @@
           <div class="pricing-card" id="billing-card-studio">
             <div class="pricing-header">
               <h3>Studio</h3>
-              <div class="pricing-price">49.99 $<span data-i18n="pricing.perMonth">/ ay</span></div>
+              <div class="pricing-price"><span class="price-val" data-m="49.99" data-y="41.99">49.99</span> $<span data-i18n="pricing.perMonth">/ ay</span></div>
             </div>
             <ul class="pricing-features">
               <li data-i18n="billing.studioFeatures.f1">Sınırsız Aylık Analiz (günde 100'e kadar)</li>

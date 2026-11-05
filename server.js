@@ -18,7 +18,8 @@ import {
   geminiGenerationConfig,
   clientIp,
   consumeRefusal,
-  skipAutoReplyReason
+  skipAutoReplyReason,
+  geminiModels
 } from './lib/api.js';
 
 // Polyfill WebSocket for Supabase Realtime in older Node versions
@@ -431,7 +432,8 @@ app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeez
     'subscription_expired',
     'subscription_paused',
     'subscription_unpaused',
-    'subscription_payment_success'
+    'subscription_payment_success',
+    'subscription_payment_refunded'
   ];
   if (!handledEvents.includes(eventName)) {
     // order_created is followed by subscription_created for subscriptions; nothing to do here
@@ -455,7 +457,7 @@ app.post('/api/payment/lemon/webhook', rateLimiter(100, 60 * 1000, 'Lemon Squeez
   }
 
   const subscriptionId = String(
-    eventName === 'subscription_payment_success' ? attrs.subscription_id : data.id
+    eventName.startsWith('subscription_payment_') ? attrs.subscription_id : data.id
   );
 
   // Resolve the user: checkout custom data first, then the stored subscription id
@@ -646,10 +648,8 @@ app.post('/api/generate', verifyAuth, validateRequest(generateSchema), rateLimit
     }
 
     // Select Gemini model based on user plan
-    let modelName = 'gemini-2.5-flash';
-    if (userPlan === 'pro' || userPlan === 'studio') {
-      modelName = 'gemini-2.5-pro';
-    }
+    const models = geminiModels();
+    const modelName = (userPlan === 'pro' || userPlan === 'studio') ? models.pro : models.fast;
 
     // Construct plan instructions
     let planInstructions = "";
@@ -1325,7 +1325,8 @@ Response Rules (English):
 
     if (apiKey) {
       try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
+        const supportModel = geminiModels().fast;
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${supportModel}:generateContent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1339,7 +1340,7 @@ Response Rules (English):
                 ]
               }
             ],
-            generationConfig: geminiGenerationConfig('gemini-2.5-flash', { json: false, maxOutputTokens: 800 })
+            generationConfig: geminiGenerationConfig(supportModel, { json: false, maxOutputTokens: 800 })
           })
         });
 
@@ -1430,8 +1431,63 @@ app.get(['/api/health', '/health'], async (req, res) => {
   // Check Email
   checks.services.email = emailTransporter ? { status: 'healthy' } : { status: 'unconfigured' };
 
+  // ?deep=1 (used by the scheduled monitor): are the Gemini models still
+  // served, does the credit system work and how close is the global cap?
+  if (req.query.deep === '1') {
+    checks.deep = await deepHealth(apiKey);
+    if (checks.deep.problems.length > 0) {
+      checks.status = 'degraded';
+      return res.status(503).json(checks);
+    }
+  }
+
   return res.status(200).json(checks);
 });
+
+// Cached for 10 minutes so the public endpoint cannot be used to hammer Google
+let deepHealthCache = { at: 0, result: null };
+async function deepHealth(apiKey) {
+  if (deepHealthCache.result && Date.now() - deepHealthCache.at < 10 * 60 * 1000) {
+    return deepHealthCache.result;
+  }
+
+  const result = { models: {}, credits: 'unknown', globalCap: 'unknown', problems: [] };
+
+  for (const model of Object.values(geminiModels())) {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}`, {
+        headers: { 'x-goog-api-key': apiKey || '' }
+      });
+      result.models[model] = response.ok ? 'available' : `unavailable (${response.status})`;
+      if (!response.ok) result.problems.push(`model ${model} unavailable`);
+    } catch (err) {
+      result.models[model] = 'unreachable';
+      result.problems.push(`model ${model} unreachable`);
+    }
+  }
+
+  if (!supabaseAdmin) {
+    result.credits = 'unconfigured';
+    if (IS_PRODUCTION) result.problems.push('SUPABASE_SERVICE_ROLE_KEY missing');
+  } else {
+    const [{ data: limits, error: limitsError }, { data: counter }] = await Promise.all([
+      supabaseAdmin.from('app_limits').select('global_daily_cap').eq('id', 1).maybeSingle(),
+      supabaseAdmin.from('usage_counters').select('count').eq('key', 'global').eq('day', new Date().toISOString().slice(0, 10)).maybeSingle()
+    ]);
+    if (limitsError || !limits) {
+      result.credits = 'error';
+      result.problems.push('credit tables unreadable');
+    } else {
+      result.credits = 'ok';
+      const share = (counter?.count || 0) / Math.max(1, limits.global_daily_cap);
+      result.globalCap = share >= 1 ? 'reached' : share >= 0.8 ? 'near' : 'ok';
+      if (share >= 0.8) result.problems.push(`global daily cap ${share >= 1 ? 'reached' : 'above 80%'}`);
+    }
+  }
+
+  deepHealthCache = { at: Date.now(), result };
+  return result;
+}
 
 // Serve static files and handle SPA fallback only when not running on Vercel
 if (!process.env.VERCEL) {

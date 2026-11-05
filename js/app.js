@@ -1201,6 +1201,22 @@ const initApp = async () => {
   }
 
   // 10. BILLING & SUBSCRIPTIONS CONTROLLER
+  // Monthly / yearly switch on the billing page (yearly = 2 months free)
+  let billingCycle = 'monthly';
+  const billingCycleSwitch = document.getElementById('billing-cycle-switch');
+  if (billingCycleSwitch) {
+    billingCycleSwitch.addEventListener('click', () => {
+      billingCycle = billingCycle === 'monthly' ? 'yearly' : 'monthly';
+      const yearly = billingCycle === 'yearly';
+      billingCycleSwitch.classList.toggle('on', yearly);
+      billingCycleSwitch.setAttribute('aria-pressed', String(yearly));
+      document.getElementById('billing-lbl-monthly').classList.toggle('active', !yearly);
+      document.getElementById('billing-lbl-yearly').classList.toggle('active', yearly);
+      document.querySelectorAll('#view-billing .price-val[data-m]').forEach(el => {
+        el.textContent = yearly ? el.getAttribute('data-y') : el.getAttribute('data-m');
+      });
+    });
+  }
   function loadBillingSettings() {
     const user = getCurrentUser();
     if (!user) return;
@@ -1282,7 +1298,7 @@ const initApp = async () => {
         newBtn.style.borderColor = '';
         newBtn.style.color = '';
         newBtn.addEventListener('click', () => {
-          handlePlanUpgrade(plan);
+          handlePlanUpgrade(plan, billingCycle);
         });
         btn.replaceWith(newBtn);
         

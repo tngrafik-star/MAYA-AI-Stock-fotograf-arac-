@@ -89,6 +89,16 @@ describe('decideLemonUpdate', () => {
     expect(updates).toMatchObject({ plan: 'studio', generations_limit: PLAN_LIMITS.studio });
   });
 
+  it('a refunded payment downgrades to free', () => {
+    const { updates } = decideLemonUpdate({ eventName: 'subscription_payment_refunded', attrs: { subscription_id: 'sub_1' }, subscriptionId: 'sub_1', profile: subscribed, now });
+    expect(updates).toMatchObject({ plan: 'free', generations_limit: PLAN_LIMITS.free, subscription_status: 'refunded' });
+  });
+
+  it('ignores a refund for an older subscription', () => {
+    const result = decideLemonUpdate({ eventName: 'subscription_payment_refunded', attrs: {}, subscriptionId: 'sub_old', profile: subscribed, now });
+    expect(result.updates).toBeNull();
+  });
+
   it('ignores events for an older subscription', () => {
     const result = decideLemonUpdate({ eventName: 'subscription_expired', attrs: { status: 'expired' }, subscriptionId: 'sub_old', profile: subscribed, now });
     expect(result.updates).toBeNull();
