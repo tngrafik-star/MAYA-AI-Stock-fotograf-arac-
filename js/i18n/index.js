@@ -1,17 +1,46 @@
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import trTranslations from './tr.json';
-import enTranslations from './en.json';
 
-// Initialize i18next
-i18next
+// Each language is its own chunk: a page downloads only the texts it shows,
+// and the other language loads on demand when the visitor switches
+const LOADERS = {
+  tr: () => import('./tr.json'),
+  en: () => import('./en.json')
+};
+
+// Same order as the detector below (?lang=, saved choice, browser language)
+function initialLanguage() {
+  try {
+    const fromQuery = new URLSearchParams(window.location.search).get('lang');
+    if (LOADERS[fromQuery]) return fromQuery;
+    const saved = (localStorage.getItem('maya-language') || '').slice(0, 2);
+    if (LOADERS[saved]) return saved;
+  } catch (e) {
+    // Storage can be blocked; fall through to the browser language
+  }
+  return (navigator.language || 'tr').slice(0, 2).toLowerCase() === 'en' ? 'en' : 'tr';
+}
+
+async function loadBundle(lng) {
+  if (!i18next.hasResourceBundle(lng, 'translation')) {
+    const module = await LOADERS[lng]();
+    i18next.addResourceBundle(lng, 'translation', module.default || module, true, true);
+  }
+}
+
+const startLanguage = initialLanguage();
+const startBundle = await LOADERS[startLanguage]();
+
+// Initialize i18next (modules importing this file wait for it: top-level await)
+await i18next
   .use(LanguageDetector)
   .init({
+    lng: startLanguage,
     resources: {
-      tr: { translation: trTranslations },
-      en: { translation: enTranslations }
+      [startLanguage]: { translation: startBundle.default || startBundle }
     },
-    fallbackLng: 'tr',
+    partialBundledLanguages: true,
+    fallbackLng: startLanguage,
     supportedLngs: ['tr', 'en'],
     nonExplicitSupportedLngs: false,
     debug: false,
@@ -46,7 +75,14 @@ export const getCurrentLanguage = () => i18next.language?.substring(0, 2) || 'tr
 /**
  * Change the active language and apply all DOM translations
  */
-export function changeLanguage(lng) {
+export async function changeLanguage(lng) {
+  if (!LOADERS[lng]) return;
+  try {
+    await loadBundle(lng);
+  } catch (err) {
+    console.error('[i18n] Could not load language:', err);
+    return;
+  }
   i18next.changeLanguage(lng, (err) => {
     if (err) {
       console.error('[i18n] Language change error:', err);
