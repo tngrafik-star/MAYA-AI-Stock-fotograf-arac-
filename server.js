@@ -1532,6 +1532,17 @@ async function deepHealth(apiKey) {
       result.globalCap = share >= 1 ? 'reached' : share >= 0.8 ? 'near' : 'ok';
       if (share >= 0.8) result.problems.push(`global daily cap ${share >= 1 ? 'reached' : 'above 80%'}`);
     }
+
+    // The key must also be allowed to call the credit functions and the auth
+    // admin API (account deletion). Both probes change nothing: the counter
+    // key does not exist and the user list is only read.
+    const { error: rpcError } = await supabaseAdmin.rpc('decrement_counter', { p_key: 'health:probe' });
+    result.creditFunctions = rpcError ? 'error' : 'ok';
+    if (rpcError) result.problems.push(`credit functions not callable: ${rpcError.message}`);
+
+    const { error: adminError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1 });
+    result.authAdmin = adminError ? 'error' : 'ok';
+    if (adminError) result.problems.push(`auth admin API not usable: ${adminError.message}`);
   }
 
   deepHealthCache = { at: Date.now(), result };
