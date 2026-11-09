@@ -92,7 +92,35 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production' || process.env.VERCE
 // Only the service_role key works here: plan/credit columns are closed to the
 // anon key by RLS, so falling back to it would silently break billing.
 const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+// SUPABASE_SERVICE_ROLE_KEY is the expected name; common misspellings are
+// accepted so a naming slip in the hosting panel does not take billing down
+const SERVICE_KEY_NAMES = [
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'VITE_SUPABASE_SERVICE_ROLE_KEY',
+  'SUPABASE_SERVICE_KEY',
+  'SUPABASE_SERVICE_ROLE',
+  'SUPABASE_SECRET_KEY'
+];
+const serviceKeyName = SERVICE_KEY_NAMES.find(name => (process.env[name] || '').trim());
+const supabaseKey = serviceKeyName ? process.env[serviceKeyName].trim() : '';
+
+// Which kind of key it is, without revealing it: legacy JWT keys carry a
+// role claim; new keys start with sb_secret_ / sb_publishable_
+const describeKey = (key) => {
+  if (!key) return 'none';
+  if (key.startsWith('sb_secret_')) return 'secret';
+  if (key.startsWith('sb_publishable_')) return 'publishable';
+  try {
+    const payload = JSON.parse(Buffer.from(key.split('.')[1], 'base64url').toString('utf8'));
+    return payload.role || 'unknown';
+  } catch (e) {
+    return 'unknown';
+  }
+};
+const serviceKeyKind = describeKey(supabaseKey);
+if (serviceKeyName && serviceKeyName !== 'SUPABASE_SERVICE_ROLE_KEY') {
+  console.warn(`⚠️ Supabase service key read from ${serviceKeyName}; rename it to SUPABASE_SERVICE_ROLE_KEY.`);
+}
 const supabaseAdmin = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: false
@@ -1472,6 +1500,19 @@ async function deepHealth(apiKey) {
       result.models[model] = 'unreachable';
       result.problems.push(`model ${model} unreachable`);
     }
+  }
+
+  // Names only, never values: lets the owner see what the hosting panel provides
+  result.serviceKey = {
+    readFrom: serviceKeyName || null,
+    kind: serviceKeyKind,
+    supabaseVariablesPresent: Object.keys(process.env).filter(name => /SUPABASE/i.test(name)).sort()
+  };
+  if (serviceKeyName && serviceKeyName !== 'SUPABASE_SERVICE_ROLE_KEY') {
+    result.problems.push(`service key found under ${serviceKeyName}; rename it to SUPABASE_SERVICE_ROLE_KEY`);
+  }
+  if (supabaseKey && !['service_role', 'secret'].includes(serviceKeyKind)) {
+    result.problems.push(`service key is a "${serviceKeyKind}" key, not the service_role key`);
   }
 
   if (!supabaseAdmin) {
